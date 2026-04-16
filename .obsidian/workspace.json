@@ -11,10 +11,14 @@
             "id": "1df98239640df025",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "my-dev-brain/00-首页/我的目标.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "我的目标"
             }
           }
         ]
@@ -90,6 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "my-dev-brain/00-首页/我的目标.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "反向链接"
+              "title": "我的目标 的反向链接列表"
             }
           },
           {
@@ -108,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "my-dev-brain/00-首页/我的目标.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "出链"
+              "title": "我的目标 的出链列表"
             }
           },
           {
@@ -150,12 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "my-dev-brain/00-首页/我的目标.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "我的目标 的大纲"
             }
           }
         ]
@@ -176,15 +183,22 @@
       "bases:新建数据库": false
     }
   },
-  "active": "e67cd5a56e720781",
+  "active": "1df98239640df025",
   "lastOpenFiles": [
+    "my-dev-brain/00-首页/如何做梦.md",
     "my-dev-brain/00-首页/工作说明.md",
+    "WisdomLedger/模板/报表模板.md",
+    "WisdomLedger/知识库/报表/报表-对公存款余额日报.md",
+    "WisdomLedger/AGENTS.md",
+    "WisdomLedger/工具/检索外部知识库.py",
+    "WisdomLedger/知识库/概念/概念-外部来源关联.md",
+    "my-dev-brain/90-模板/监管报表页模板.md",
+    "my-dev-brain/90-模板/监管系统页模板.md",
     "my-dev-brain/CLAUDE.md",
     "my-dev-brain/AGENTS.md",
     "WisdomLedger/知识库/数据表/数据表-客户维表.md",
     "WisdomLedger/知识库/数据表/数据表-账户余额日快照事实表.md",
     "WisdomLedger/知识库/来源/来源-示例-对公存款余额日报.md",
-    "WisdomLedger/知识库/报表/报表-对公存款余额日报.md",
     "WisdomLedger/知识库/指标/指标-活跃对公账户数.md",
     "WisdomLedger/知识库/指标/指标-期末对公存款余额.md",
     "WisdomLedger/知识库/血缘/血缘-对公存款余额日报.md",
@@ -194,25 +208,18 @@
     "WisdomLedger/模板/数据表模板.md",
     "WisdomLedger/工具/血缘脚手架.py",
     "WisdomLedger/模板/来源模板.md",
-    "WisdomLedger/模板/报表模板.md",
     "WisdomLedger/模板/指标模板.md",
     "WisdomLedger/模板/血缘模板.md",
     "WisdomLedger/原始材料/SQL/示例-对公存款余额日报.sql",
     "WisdomLedger/模板/字段模板.md",
     "WisdomLedger/原始材料/背景材料/示例-监管要求摘要.md",
     "WisdomLedger/知识库/数据表/TBL-dwd_account_balance_snapshot.md",
-    "WisdomLedger/知识库/数据表/TBL-dim_customer.md",
     "WisdomLedger/知识库/数据表",
-    "WisdomLedger/知识库/来源/SRC-sample-corp-deposit-balance-daily.md",
     "WisdomLedger/知识库/来源",
-    "WisdomLedger/知识库/报表/REP-对公存款余额日报.md",
     "WisdomLedger/知识库/报表",
-    "WisdomLedger/知识库/指标/MET-活跃对公账户数.md",
-    "WisdomLedger/知识库/指标/MET-期末对公存款余额.md",
     "WisdomLedger/知识库/指标",
     "WisdomLedger/知识库/血缘",
     "WisdomLedger/知识库/字段",
-    "WisdomLedger/知识库/概念",
-    "WisdomLedger/原始材料/SQL/sample_corp_deposit_balance_daily.sql"
+    "WisdomLedger/知识库/概念"
   ]
 }
