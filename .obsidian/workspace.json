@@ -1,0 +1,218 @@
+{
+  "main": {
+    "id": "f08f1b03493fd7a0",
+    "type": "split",
+    "children": [
+      {
+        "id": "72cf78823c5cbeb4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1df98239640df025",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "关系图谱"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "be8b964068413aee",
+    "type": "split",
+    "children": [
+      {
+        "id": "5f4e02a2d8a4e42c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e67cd5a56e720781",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "f1de266f37a89956",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "bdac1b4d94389f89",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "224d2f9387f78c88",
+    "type": "split",
+    "children": [
+      {
+        "id": "96e0e3f43b574911",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3a4a3ea38459a240",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "9fe6dd94b346651e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "出链"
+            }
+          },
+          {
+            "id": "6b02559b7f8f378f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "86b57e80d0d762a9",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "0c84d149014807b9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "e67cd5a56e720781",
+  "lastOpenFiles": [
+    "my-dev-brain/00-首页/工作说明.md",
+    "my-dev-brain/CLAUDE.md",
+    "my-dev-brain/AGENTS.md",
+    "WisdomLedger/知识库/数据表/数据表-客户维表.md",
+    "WisdomLedger/知识库/数据表/数据表-账户余额日快照事实表.md",
+    "WisdomLedger/知识库/来源/来源-示例-对公存款余额日报.md",
+    "WisdomLedger/知识库/报表/报表-对公存款余额日报.md",
+    "WisdomLedger/知识库/指标/指标-活跃对公账户数.md",
+    "WisdomLedger/知识库/指标/指标-期末对公存款余额.md",
+    "WisdomLedger/知识库/血缘/血缘-对公存款余额日报.md",
+    "WisdomLedger/知识库/字段/字段-余额.md",
+    "WisdomLedger/知识库/概念/概念-监管报表知识库.md",
+    "WisdomLedger/知识库/概念/概念-业务口径.md",
+    "WisdomLedger/模板/数据表模板.md",
+    "WisdomLedger/工具/血缘脚手架.py",
+    "WisdomLedger/模板/来源模板.md",
+    "WisdomLedger/模板/报表模板.md",
+    "WisdomLedger/模板/指标模板.md",
+    "WisdomLedger/模板/血缘模板.md",
+    "WisdomLedger/原始材料/SQL/示例-对公存款余额日报.sql",
+    "WisdomLedger/模板/字段模板.md",
+    "WisdomLedger/原始材料/背景材料/示例-监管要求摘要.md",
+    "WisdomLedger/知识库/数据表/TBL-dwd_account_balance_snapshot.md",
+    "WisdomLedger/知识库/数据表/TBL-dim_customer.md",
+    "WisdomLedger/知识库/数据表",
+    "WisdomLedger/知识库/来源/SRC-sample-corp-deposit-balance-daily.md",
+    "WisdomLedger/知识库/来源",
+    "WisdomLedger/知识库/报表/REP-对公存款余额日报.md",
+    "WisdomLedger/知识库/报表",
+    "WisdomLedger/知识库/指标/MET-活跃对公账户数.md",
+    "WisdomLedger/知识库/指标/MET-期末对公存款余额.md",
+    "WisdomLedger/知识库/指标",
+    "WisdomLedger/知识库/血缘",
+    "WisdomLedger/知识库/字段",
+    "WisdomLedger/知识库/概念",
+    "WisdomLedger/原始材料/SQL/sample_corp_deposit_balance_daily.sql"
+  ]
+}
