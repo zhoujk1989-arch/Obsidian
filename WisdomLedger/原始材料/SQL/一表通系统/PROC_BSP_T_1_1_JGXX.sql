@@ -1,0 +1,270 @@
+CREATE PROCEDURE "PROC_BSP_T_1_1_JGXX"(IN I_DATE VARCHAR(8),
+                                       OUT OI_RETCODE   INT,-- 返回code
+                                       OUT OI_REMESSAGE VARCHAR -- 返回message
+)
+BEGIN
+/******
+      程序名称  ：机构信息
+      程序功能  ：加工机构信息
+      目标表：T_1_1
+      源表  ：
+      创建人  ：LZ
+      创建日期  ：20240109
+      版本号：V0.0.1 
+  ******/
+-- JLBA202411070004_关于一表通监管数据报送系统修改逻辑的需求20241212	
+ /*需求编号：JLBA202507090010 上线日期：2025-08-07，修改人：巴启威，提出人：吴大为  修改原因：关于一表通监管数据报送系统调整失效数据保留时间的需求*/
+  #声明变量
+  DECLARE P_DATE   		DATE;			#数据日期
+  DECLARE P_PROC_NAME  	VARCHAR(200);	#存储过程名称
+  DECLARE P_STATUS  	INT;  			#执行状态
+  DECLARE P_START_DT  	DATETIME;		#日志开始日期
+  DECLARE P_END_TIME  	DATETIME;		#日志结束日期
+  DECLARE P_SQLCDE		VARCHAR(200);	#日志错误代码
+  DECLARE P_STATE  		VARCHAR(200);	#日志状态代码
+  DECLARE P_SQLMSG		VARCHAR(2000);	#日志详细信息
+  DECLARE P_STEP_NO   	INT;			#日志执行步骤
+  DECLARE P_DESCB  		VARCHAR(200);	#日志执行步骤描述
+  DECLARE BEG_MON_DT 	VARCHAR(8);		#月初
+  DECLARE BEG_QUAR_DT 	VARCHAR(8);		#季初
+  DECLARE BEG_YEAR_DT 	VARCHAR(8);		#年初
+  DECLARE LAST_MON_DT  	VARCHAR(8);		#上月末
+  DECLARE LAST_QUAR_DT  VARCHAR(8);		#上季末
+  DECLARE LAST_YEAR_DT  VARCHAR(8);		#上年末
+  DECLARE LAST_DT  		VARCHAR(8);		#上日
+  DECLARE FINISH_FLG    VARCHAR(8);		#完成标志  
+  #声明异常
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+   GET DIAGNOSTICS CONDITION 1 P_SQLCDE = GBASE_ERRNO,P_SQLMSG = MESSAGE_TEXT,P_STATE = RETURNED_SQLSTATE;
+   SET P_STATUS = -1;
+   SET P_START_DT = NOW();
+   SET P_STEP_NO = P_STEP_NO + 1;
+   SET P_DESCB = '程序异常';
+   CALL PROC_ETL_JOB_LOG(P_DATE,P_PROC_NAME,P_STATUS,P_START_DT,NOW(),P_SQLCDE,P_STATE,P_SQLMSG,P_STEP_NO,P_DESCB);
+   SET OI_RETCODE = P_STATUS; 
+   SET OI_REMESSAGE = P_DESCB || ':' || P_SQLCDE || ' - ' || P_SQLMSG;
+   select OI_RETCODE,'|',OI_REMESSAGE;
+  END;
+  
+    #变量初始化
+	SET P_DATE = TO_DATE(I_DATE,'YYYYMMDD');		
+	SET BEG_MON_DT = SUBSTR(I_DATE,1,6) || '01';	
+	SET BEG_QUAR_DT = TO_CHAR(TO_DATE(I_DATE,'YYYYMMDD'),'YYYY') || TRIM(TO_CHAR(QUARTER(TO_DATE(I_DATE,'YYYYMMDD')) * 3 - 2,'00')) || '01'; 
+	SET BEG_YEAR_DT = SUBSTR(I_DATE,1,4) || '0101';	
+    SET LAST_MON_DT = TO_CHAR(TO_DATE(BEG_MON_DT,'YYYYMMDD') - 1,'YYYYMMDD');	
+    SET LAST_QUAR_DT = TO_CHAR(TO_DATE(BEG_QUAR_DT,'YYYYMMDD') - 1,'YYYYMMDD');	
+    SET LAST_YEAR_DT = TO_CHAR(TO_DATE(BEG_YEAR_DT,'YYYYMMDD') - 1,'YYYYMMDD');	
+	SET LAST_DT = TO_CHAR(TO_DATE(I_DATE,'YYYYMMDD') - 1,'YYYYMMDD'); 			
+	SET P_PROC_NAME = 'PROC_BSP_T_1_1_JGXX';
+	SET OI_RETCODE = 0;
+	SET P_STATUS = 0;
+	SET P_STEP_NO = 0;
+	
+    #1.过程开始执行
+	SET P_START_DT = NOW();
+	SET P_STEP_NO = P_STEP_NO + 1;
+	SET P_DESCB = '过程开始执行';
+				 
+	CALL PROC_ETL_JOB_LOG(P_DATE,P_PROC_NAME,P_STATUS,P_START_DT,NOW(),P_SQLCDE,P_STATE,P_SQLMSG,P_STEP_NO,P_DESCB);								
+
+    #2.清除数据
+	SET P_START_DT = NOW();
+	SET P_STEP_NO = P_STEP_NO + 1;
+	SET P_DESCB = '清除数据';
+	
+	DELETE FROM T_1_1 WHERE A010020 = to_char(P_DATE,'yyyy-mm-dd');
+	
+	COMMIT;
+   														
+	CALL PROC_ETL_JOB_LOG(P_DATE,P_PROC_NAME,P_STATUS,P_START_DT,NOW(),P_SQLCDE,P_STATE,P_SQLMSG,P_STEP_NO,P_DESCB);
+    
+    #3.插入数据
+	SET P_START_DT = NOW();
+	SET P_STEP_NO = P_STEP_NO + 1;
+	SET P_DESCB = '数据插入';
+	
+	--  update 20250305  zjk  吴大为邮件需求 如果机构名称重复则取             成立日期最早的机构成后面拼接（待撤销）
+	
+	
+	INSERT INTO T_1_1 (
+    A010001, -- 01机构id
+    A010002, -- 02内部机构号
+    A010003, -- 03金融许可证号
+    A010004, -- 04统一社会信用代码
+    A010005, -- 05银行机构名称
+    A010006, -- 06支付行号
+    A010007, -- 07机构类型
+    A010008, -- 08机构类别
+    A010009, -- 09县域机构标识
+    A010010, -- 10科技支行标识
+    A010011, -- 11科技特色支行标识
+    A010012, -- 12科技金融专营机构标识
+    A010013, -- 13行政区划
+    A010014, -- 14运营状态
+    A010015, -- 15成立日期
+    A010016, -- 16机构地址
+    A010017, -- 17负责人姓名
+    A010018, -- 18负责人工号
+    A010019, -- 19负责人联系电话
+    A010020, -- 20采集日期
+    DIS_DATA_DATE,  -- 装入数据日期
+    DIS_BANK_ID,    -- 机构号
+    DIS_DEPT,
+    DEPARTMENT_ID,
+    A010021,  -- 2.0zdsj  h
+    A010022,  -- 2.0zdsj  h
+    A010023   -- 2.0zdsj  h
+)
+SELECT
+    A010001,
+    A010002,
+    A010003,
+    A010004,
+    CASE 
+      WHEN dup_cnt > 1 AND rn = 1 THEN computed_name || '(待撤销)'
+      ELSE computed_name
+    END AS A010005,
+    A010006,
+    A010007,
+    A010008,
+    A010009,
+    A010010,
+    A010011,
+    A010012,
+    A010013,
+    A010014,
+    A010015,
+    A010016,
+    A010017,
+    A010018,
+    A010019,
+    A010020,
+    DIS_DATA_DATE,
+    DIS_BANK_ID,
+    DIS_DEPT,
+    DEPARTMENT_ID,
+    A010021,
+    A010022,
+    A010023
+FROM (
+  SELECT 
+    inner_q.*,
+    COUNT(*) OVER (PARTITION BY computed_name) AS dup_cnt,
+    ROW_NUMBER() OVER (PARTITION BY computed_name ORDER BY established_date ASC) AS rn
+  FROM (
+    SELECT
+      CONCAT(SUBSTR(COALESCE(TRIM(T1.FIN_LIN_NUM), TRIM(T2.FIN_LIN_NUM)), 1, 11), T1.ORG_NUM) AS A010001,
+      T1.ORG_NUM AS A010002,
+      COALESCE(TRIM(T1.FIN_LIN_NUM), TRIM(T2.FIN_LIN_NUM), TRIM(T4.FIN_LIN_NUM)) AS A010003,
+      COALESCE(T1.ID_NO, T2.ID_NO, T4.ID_NO, T5.ID_NO, T6.ID_NO) AS A010004,
+      CASE 
+        WHEN T1.ORG_NUM = '990000' THEN T1.ORG_NAM
+        WHEN T1.ORG_NUM = '000000' THEN '吉林银行股份有限公司' || '(总行)'
+        WHEN T1.ORG_NUM LIKE '%0000' THEN T1.ORG_NAM || '(分行管理机构)'
+        WHEN T1.ORG_NUM LIKE '%00' THEN 
+          CASE 
+            WHEN (T1.LEADER_NAME IS NULL OR T1.fzr_id IS NULL) 
+                 AND (T1.BANK_TYPE2 IN ('A','B','C','D') OR T1.BANK_TYPE2 IS NULL) 
+              THEN T1.ORG_NAM
+            WHEN T1.BANK_TYPE2 IN ('B','C','D') THEN T1.ORG_NAM
+            ELSE T1.ORG_NAM || '(管理机构)'
+          END
+        ELSE T1.ORG_NAM
+      END AS computed_name,
+      COALESCE(T1.BANK_CD, T2.BANK_CD, T4.BANK_CD, T5.BANK_CD, T6.BANK_CD) AS A010006,
+      '05' AS A010007,
+      CASE 
+        WHEN T1.BANK_TYPE2 = 'A' THEN '0101'
+        WHEN T1.BANK_TYPE2 = 'B' THEN '0201'
+        WHEN (T1.BANK_TYPE2 = 'C' or T1.BANK_TYPE='虚拟机构') THEN '0301' 
+        WHEN (T1.BANK_TYPE2 = 'D' or T1.BANK_TYPE='内设机构') THEN '0401'
+        WHEN T1.BANK_TYPE2 = 'E' THEN '0501'
+      END AS A010008,
+      T1.XYJGBS AS A010009,
+      '0' AS A010010,
+      CASE WHEN T1.ORG_NUM = '013500' THEN '1' ELSE '0' END AS A010011,
+      '0' AS A010012,
+      T1.REGION_CD AS A010013,
+      CASE 
+        WHEN T1.BUSI_STATE = '01' THEN '01'
+        WHEN T1.BUSI_STATE = '02' THEN '02'
+        ELSE '00'
+      END AS A010014,
+      TO_CHAR(
+        TO_DATE(COALESCE(T1.BEGAN_TIME, T2.BEGAN_TIME, T4.BEGAN_TIME, T5.BEGAN_TIME, T6.BEGAN_TIME), 'YYYYMMDD'),
+        'YYYY-MM-DD'
+      ) AS A010015,
+      T1.ORG_ADD AS A010016,
+      T1.LEADER_NAME AS A010017,
+      T1.fzr_id AS A010018,
+      T1.LEADER_TEL AS A010019,
+      TO_CHAR(TO_DATE(I_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS A010020,
+      TO_CHAR(TO_DATE(I_DATE, 'YYYYMMDD'), 'YYYY-MM-DD') AS DIS_DATA_DATE,
+      '990000' AS DIS_BANK_ID,
+      '' AS DIS_DEPT,
+      CASE 
+        WHEN T1.BANK_TYPE2 = 'C' THEN '0098RL'
+        ELSE '009822'
+      END AS DEPARTMENT_ID,
+      '0' AS A010021,
+      T1.ORG_NUM AS A010022,
+      CASE 
+        WHEN T1.BANK_TYPE2 IN ('C','D') THEN '99'
+        WHEN T1.ORG_TYP IN ('0','6') THEN '01'
+        WHEN T1.ORG_TYP = '2' THEN '02'
+        WHEN T1.ORG_TYP = '3' THEN '04'
+        WHEN T1.ORG_TYP = '4' THEN '06'
+      END AS A010023,
+      TO_DATE(COALESCE(T1.BEGAN_TIME, T2.BEGAN_TIME, T4.BEGAN_TIME, T5.BEGAN_TIME, T6.BEGAN_TIME), 'YYYYMMDD') AS established_date
+    FROM SMTMODS.L_PUBL_ORG_BRA T1
+      LEFT JOIN SMTMODS.L_PUBL_ORG_BRA T2
+        ON T1.UP_ORG_NUM = T2.ORG_NUM
+       AND T2.DATA_DATE = I_DATE
+      LEFT JOIN SMTMODS.L_PUBL_ORG_BRA T4
+        ON T4.DATA_DATE = T1.DATA_DATE
+       AND T2.UP_ORG_NUM = T4.ORG_NUM
+      LEFT JOIN SMTMODS.L_PUBL_ORG_BRA T5
+        ON T5.DATA_DATE = T1.DATA_DATE
+       AND T4.UP_ORG_NUM = T5.ORG_NUM
+      LEFT JOIN SMTMODS.L_PUBL_ORG_BRA T6
+        ON T6.DATA_DATE = T1.DATA_DATE
+       AND T5.UP_ORG_NUM = T6.ORG_NUM
+    WHERE T1.DATA_DATE = I_DATE
+      AND T1.ORG_NUM <> '999999'
+      AND T1.ORG_NUM NOT LIKE '5%'
+      AND T1.ORG_NUM NOT LIKE '6%'
+      AND T1.ORG_NUM NOT LIKE '7%'
+      AND T1.ORG_NUM NOT IN ('012102','012103','012104','012105','012106','012107','012108','012150',
+                             '012151','012152','012153','012154','012155','012156','012157')
+      AND T1.ORG_NUM NOT IN (
+            '120000','120100','120101','021203','020206','021305',
+            '020212','021407','020214','021204','020204',
+            '010312','010624','010625','010627','010911','012512'
+      )
+      AND (T1.ORG_STATUS <> 'U'
+	    OR EXISTS (SELECT 1 FROM SMTMODS.L_PUBL_ORG_BRA T7 
+		                   WHERE T1.ORG_NUM = T7.ORG_NUM 
+						     AND T7.ORG_STATUS <> 'U'
+		                     AND T7.DATA_DATE = CONCAT(YEAR(STR_TO_DATE(I_DATE, '%Y%m%d')) - 1, '1231'))
+		 OR EXISTS (SELECT 1 FROM SMTMODS.L_PUBL_ORG_BRA T8
+		                   WHERE T1.ORG_NUM = T8.ORG_NUM 
+						     AND T8.ORG_STATUS <> 'U' 
+		                     AND substr(T8.DATA_DATE,1,4) = substr(I_DATE,1,4))
+           )
+  ) inner_q
+) final;
+
+    COMMIT;
+	
+	CALL PROC_ETL_JOB_LOG(P_DATE,P_PROC_NAME,P_STATUS,P_START_DT,NOW(),P_SQLCDE,P_STATE,P_SQLMSG,P_STEP_NO,P_DESCB);		
+
+    #4.过程结束执行
+	SET P_START_DT = NOW();
+	SET P_STEP_NO = P_STEP_NO + 1;
+	SET P_DESCB = '过程结束执行';
+	CALL PROC_ETL_JOB_LOG(P_DATE,P_PROC_NAME,P_STATUS,P_START_DT,NOW(),P_SQLCDE,P_STATE,P_SQLMSG,P_STEP_NO,P_DESCB);
+    SET OI_RETCODE = P_STATUS; 
+    SET OI_REMESSAGE = P_DESCB;
+    select OI_RETCODE,'|',OI_REMESSAGE;
+END
