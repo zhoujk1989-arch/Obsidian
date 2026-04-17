@@ -1,0 +1,60 @@
+系统ID	类型	名称	中文名	createTime	数据类型	长度	是否主键	允许为空	计算公式	取数SQL	引用码表	值域	校验规则	发文号	updateTime	生效日期	业务口径	填报说明	研发备注	自动取数	负责人	状态(1正常0停用)	序号	是否初始化项	是否归并公式项	是否填报业务项	代码片段	是否脱敏	脱敏字段类型	reqId	plannedDate	changeDescription
+26584	FIELD	DATA_DATE	数据日期		INT		1	1												已上线		1	1	0	0	0		0				
+26585	FIELD	ORG_NUM	机构号		VARCHAR2(12)		1	1												已上线		1	2	0	0	0		0				
+26586	FIELD	ORG_NAM	机构名称		VARCHAR2(100)		0	1												已上线		1	3	0	0	0		0				
+26587	FIELD	ORG_NAM_ENG	机构英文名称		VARCHAR2(256)		0	1												已上线		1	4	0	0	0		0				
+26588	FIELD	ORG_TYP	机构类型		CHAR(1)		0	1			P0005									已上线		1	5	0	0	0		0				
+26589	FIELD	ORG_STATUS	机构状态		CHAR(1)		0	1			P0006									已上线		1	6	0	0	0		0				
+26590	FIELD	REGION_CD	区域代码		CHAR(6)		0	1			C0002									已上线		1	7	0	0	0		0				
+26591	FIELD	UP_ORG_NUM	上级机构号		VARCHAR2(12)		0	1												已上线		1	8	0	0	0		0				
+26592	FIELD	ORG_OWNLEVEL	机构所属层级		CHAR(1)		0	1			P0007									已上线		1	9	0	0	0		0				
+26593	FIELD	NATION_CD	国别代码		CHAR(3)		0	1			C0010									已上线		1	10	0	0	0		0				
+26594	FIELD	ID_TYP	证件类别		CHAR(1)		0	1			P0008									已上线		1	11	0	0	0		0				
+26595	FIELD	ID_NO	证件号码		VARCHAR2(18)		0	1												已上线		1	12	0	0	0		0				
+26596	FIELD	EC_TYP	经济类型		CHAR(3)		0	1			C0011									已上线		1	13	0	0	0		0				
+26597	FIELD	THELEAD_DEPARMENT	牵头部门		VARCHAR2(256)		0	1												已上线		1	14	0	0	0		0				
+26598	FIELD	THELEAD_DEPARMENT_CONTACTS	牵头部门联系人		VARCHAR2(256)		0	1												已上线		1	15	0	0	0		0				
+26599	FIELD	THELEAD_DEPARMENT_TEL	牵头部门联系电话		VARCHAR2(256)		0	1												已上线		1	16	0	0	0		0				
+26600	FIELD	BANK_CD	银行机构代码		VARCHAR2(30)		0	1												已上线		1	17	0	0	0		0				
+26601	FIELD	FIN_LIN_NUM	金融许可证号		CHAR(15)		0	1												已上线		1	18	0	0	0		0				
+26602	FIELD	ACCOUNTBANK	金融机构编码		VARCHAR2(14)		0	1												已上线		1	19	0	0	0		0				
+26603	FIELD	BANK_TYPE	机构类别		VARCHAR2(30)		0	1												已上线		1	20	0	0	0		0				
+26604	FIELD	ZIP_CD	邮政编码		VARCHAR2(6)		0	1												已上线		1	21	0	0	0		0				
+26605	FIELD	BUSI_STATE	营业状态		CHAR(1)		0	1			P0012									已上线		1	22	0	0	0		0				
+26606	FIELD	BEGAN_TIME	成立时间		DATE		0	1												已上线		1	23	0	0	0		0				
+26607	FIELD	OPEN_TIME	机构工作开始时间		CHAR(6)		0	1												已上线		1	24	0	0	0		0				
+26608	FIELD	CLOSE_TIME	机构工作终止时间		CHAR(6)		0	1												已上线		1	25	0	0	0		0				
+26609	FIELD	ORG_ADD	机构地址		VARCHAR2(400)		0	1												已上线		1	26	0	0	0		0				
+26610	FIELD	LEADER_NAME	负责人姓名		VARCHAR2(100)		0	1												已上线		1	27	0	0	0		0				
+26611	FIELD	LEADER_POST	负责人职务		VARCHAR2(60)		0	1												已上线		1	28	0	0	0		0				
+26612	FIELD	LEADER_TEL	负责人联系电话		VARCHAR2(30)		0	1												已上线		1	29	0	0	0		0				
+26613	FIELD	CBRC_CODE	非现场监管编码		VARCHAR2(30)		0	1												已上线		1	30	0	0	0		0				
+26614	FIELD	IS_ENTITY	是否实体机构		CHAR(1)		0	1			A0010									已上线		1	31	0	0	0		0				
+26615	FIELD	IS_LEGAL	是否法人行		CHAR(1)		0	1			A0010									已上线		1	32	0	0	0		0				
+26616	FIELD	FINA_TECH_TYPE	科技金融机构类型		CHAR(1)		0	1			P0025									已上线		1	33	0	0	0		0				
+26617	FIELD	IS_SERVICE_CENTER	是否业务中心		CHAR(1)		0	1			A0010									已上线		1	34	0	0	0		0				
+26618	FIELD	ORG_TYP_SUB	机构类型细类		CHAR(1)		0	1			P0036									已上线		1	35	0	0	0		0				
+26619	FIELD	IS_VIRTUAL	是否虚拟汇总机构		CHAR(1)		0	1			A0010									已上线		1	36	0	0	0		0				
+26620	FIELD	BANK_TYPE2	机构分类		CHAR(1)		0	1			P0037									已上线		1	37	0	0	0		0				
+26621	FIELD	LIST_FLG	上市标志		CHAR(1)		0	1			A0010									已上线		1	38	0	0	0		0				
+26622	FIELD	IS_REPORT	是否主报送行		CHAR(1)		0	1			A0010									已上线		1	39	0	0	0		0				
+26623	FIELD	FINA_ORG_CODE	金融机构类型代码		CHAR(3)		0	1			C0137									已上线		1	40	0	0	0		0				
+26624	FIELD	REGION_CD_NEW	最新区域代码		CHAR(6)		0	1			F0020									已上线		1	41	0	0	0		0				
+26625	FIELD	REG_CAPITAL	注册资本		NUMBER(20)		0	1												已上线		1	42	0	0	0		0				
+26626	FIELD	CORP_HOLD_TYPE	控股类型		VARCHAR2(3)		0	1			C0006									已上线		1	43	0	0	0		0				
+26627	FIELD	CORP_SCALE	企业规模		CHAR(1)		0	1			C0004									已上线		1	44	0	0	0		0				
+26628	FIELD	ACTR_CTRL_TYPE	实际控制人身份类别		VARCHAR2(60)		0	1			C0136									已上线		1	45	0	0	0		0				
+26629	FIELD	ACTR_CTRL_NAME	实际控制人名称		VARCHAR2(100)		0	1												已上线		1	46	0	0	0		0				
+26630	FIELD	ACTR_CTRL_ID	实际控制人代码		VARCHAR2(400)		0	1												已上线		1	47	0	0	0		0				
+26631	FIELD	HEAD_OFFIC_FLG	是否总行本部		CHAR(1)		0	1			A0010									已上线		1	48	0	0	0		0				
+26632	FIELD	BUSI_UNIT_FLG	是否事业部		CHAR(1)		0	1			A0010									已上线		1	49	0	0	0		0				
+26633	FIELD	DISTRICT_CODE	机构行政区划代码		VARCHAR2(6)		0	1			F0025									已上线		1	50	0	0	0		0				
+26634	FIELD	DEPARTMENTD	归属部门		VARCHAR2(100)		0	1												已上线		1	51	0	0	0		0				
+26635	FIELD	DATE_SOURCESD	数据来源		VARCHAR2(100)		0	1												已上线		1	52	0	0	0		0				
+26636	FIELD	VILLAGE_FLG	是否归属乡镇		CHAR(1)		0	1			A0010									已上线		1	53	0	0	0		0				
+26637	FIELD	SWIFT_CODE	SWIFT代码		VARCHAR2(11)		0	1												已上线		1	54	0	0	0		0				
+26638	FIELD	LEGAL_ORG_NUM	法人机构号		VARCHAR2(12)		0	1												已上线		1	55	0	0	0		0				
+26639	FIELD	LCZGS_FLAG	理财子公司标志		CHAR(1)		0	1			A0010									已上线		1	56	0	0	0		0				
+26640	FIELD	ORGAN_PHONE	机构联系电话		VARCHAR2(30)		0	1												已上线		1	57	0	0	0		0				
+26641	FIELD	BUS_LICENSE_NO	营业执照号		VARCHAR2(60)		0	1												已上线		1	58	0	0	0		0				
+26642	FIELD	XYJGBS	县域机构标识		CHAR(1)		0	1											1.县域机构标识：“是否类”的项目，字典如下：0.否,1.是。县域地区参照民政部公布的2020年中华人民共和国行政区划代码，包含由地级行政区、直辖市管辖或由省级行政区（仅限于省、自治区）直接管辖的县级行政区，包括县级市、县、自治县、旗、自治旗、特区、林区，不含市辖区。对县域机构的认定以金融机构注册地是否在县域地区为主要依据	已上线		1	59	0	0	0		0				
