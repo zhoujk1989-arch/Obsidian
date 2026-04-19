@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "c4efdf30a4e1a5f7",
+        "id": "1fc8a9044c49757d",
         "type": "tabs",
         "children": [
           {
-            "id": "753d308db8b3b672",
+            "id": "ed7f61b0fa24e76c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-码值字典.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "来源-监管集市系统-码值字典"
+              "title": "新标签页"
             }
           }
         ]
@@ -78,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 583.5
+    "width": 418.5
   },
   "right": {
     "id": "224d2f9387f78c88",
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-码值字典.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "来源-监管集市系统-码值字典 的反向链接列表"
+              "title": "反向链接"
             }
           },
           {
@@ -181,35 +176,35 @@
       "bases:新建数据库": false
     }
   },
-  "active": "753d308db8b3b672",
+  "active": "e67cd5a56e720781",
   "lastOpenFiles": [
-    "C0022-股东/关联企业类型.md",
+    "概念-码值总览-监管集市系统.md",
     "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-码值字典.md",
     "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-机构表-l_publ_org_bra.md",
-    "WisdomLedger/知识库/码值/监管集市系统/A0002-存款账户类型.md",
+    "WisdomLedger/索引.md",
+    "来源-示例-对公存款余额日报.md",
+    "WisdomLedger/说明.md",
+    "WisdomLedger/知识库/数据表/监管集市系统/数据表-机构表-l_publ_org_bra-监管集市系统.md",
+    "概念-码值集合-P0025-科技金融机构类型.md",
     "WisdomLedger/知识库/码值/监管集市系统/概念-码值总览-监管集市系统.md",
+    "WisdomLedger/模板/报表模板.md",
+    "WisdomLedger/模板/来源模板.md",
+    "WisdomLedger/模板/码值模板.md",
+    "WisdomLedger/模板/数据表模板.md",
+    "WisdomLedger/模板/血缘模板.md",
+    "WisdomLedger/日志.md",
     "WisdomLedger/原始材料/码值/监管集市系统/README.md",
+    "C0022-股东/关联企业类型.md",
+    "WisdomLedger/知识库/码值/监管集市系统/A0002-存款账户类型.md",
     "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
     "WisdomLedger/知识库/概念/概念-监管报表知识库.md",
     "WisdomLedger/知识库/报表/一表通系统/报表-1.1-机构信息-一表通系统.md",
-    "WisdomLedger/模板/报表模板.md",
     "my-dev-brain/README.md",
     "my-dev-brain/CLAUDE.md",
     "my-dev-brain/AGENTS.md",
     "概念-码值映射-....md",
     "C0022-股东",
     "WisdomLedger/知识库/码值/监管集市系统/P0013-员工状态.md",
-    "报表-....md",
-    "WisdomLedger/AGENTS.md",
-    "WisdomLedger/知识库/概念/概念-业务口径.md",
-    "WisdomLedger/知识库/概念/概念-系统边界.md",
-    "WisdomLedger/知识库/概念/概念-系统-监管集市系统.md",
-    "WisdomLedger/知识库/概念/概念-外部来源关联.md",
-    "WisdomLedger/知识库/概念/概念-码值知识管理.md",
-    "WisdomLedger/知识库/码值/监管集市系统/A0003-利率类型.md",
-    "WisdomLedger/索引.md",
-    "WisdomLedger/说明.md",
-    "WisdomLedger/日志.md",
     "WisdomLedger/知识库/字段/一表通系统",
     "WisdomLedger/知识库/数据表/一表通系统",
     "WisdomLedger/原始材料/SQL/一表通系统/PROC_BSP_T_1_1_JGXX.sql",
