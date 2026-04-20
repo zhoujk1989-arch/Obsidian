@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "1fc8a9044c49757d",
+        "id": "dd229637eb2d0836",
         "type": "tabs",
         "children": [
           {
-            "id": "ed7f61b0fa24e76c",
+            "id": "ac6ce768dd04677f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/AGENTS.md",
+                "file": "my-dev-brain/AGENTS.md",
                 "mode": "source",
                 "source": false
               },
@@ -180,15 +180,20 @@
       "bases:新建数据库": false
     }
   },
-  "active": "ed7f61b0fa24e76c",
+  "active": "ac6ce768dd04677f",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/1104-S65-大中小微型企业贷款分地区情况表.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-20-S65-大中小微型企业贷款分地区情况表-填报说明-原文.md",
+    "WisdomLedger/AGENTS.md",
+    "my-dev-brain/04-综合/知识库巡检-2026-04-20.md",
+    "my-dev-brain/01-资料库/一表通系统/README.md",
+    "my-dev-brain/01-资料库/1104系统/README.md",
     "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
     "WisdomLedger/知识库/报表/一表通系统/报表-1.1-机构信息-一表通系统.md",
     "WisdomLedger/知识库/数据表/监管集市系统/数据表-机构表-l_publ_org_bra-监管集市系统.md",
     "概念-码值集合-A0010-是否标志.md",
     "WisdomLedger/模板/报表模板.md",
     "WisdomLedger/模板/来源模板.md",
-    "WisdomLedger/AGENTS.md",
     "WisdomLedger/原始材料/码值/监管集市系统/README.md",
     "my-dev-brain/03-实体/一表通-3.6-共同债务人.md",
     "WisdomLedger/日志.md",
@@ -203,11 +208,6 @@
     "my-dev-brain/03-实体/1104-S70-科技金融情况表.md",
     "my-dev-brain/01-资料库/1104系统/2026-04-20-S70-科技金融情况表-填报说明-原文.md",
     "my-dev-brain/03-实体/1104-S71-银行业普惠金融重点领域贷款情况表.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-20-S71-银行业普惠金融重点领域贷款情况表-填报说明-原文.md",
-    "my-dev-brain/03-实体/1104-S72-制造业融资情况表.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-20-S72-制造业融资情况表-填报说明-原文.md",
-    "my-dev-brain/03-实体/1104-S73-养老金融情况表.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-20-S73-养老金融情况表-填报说明-原文.md",
     "my-dev-brain/01-资料库/S74系统",
     "C0022-股东",
     "WisdomLedger/知识库/字段/一表通系统",
