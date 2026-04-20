@@ -11,10 +11,10 @@
             "id": "ed7f61b0fa24e76c",
             "type": "leaf",
             "state": {
-              "type": "empty",
+              "type": "graph",
               "state": {},
-              "icon": "lucide-file",
-              "title": "新标签页"
+              "icon": "lucide-git-fork",
+              "title": "关系图谱"
             }
           }
         ]
@@ -176,8 +176,18 @@
       "bases:新建数据库": false
     }
   },
-  "active": "e67cd5a56e720781",
+  "active": "ed7f61b0fa24e76c",
   "lastOpenFiles": [
+    "my-dev-brain/01-资料库/1104系统/2026-04-20-S74-数字金融情况表-填报说明-原文.md",
+    "my-dev-brain/00-首页/工作说明.md",
+    "my-dev-brain/CLAUDE.md",
+    "my-dev-brain/03-实体/1104-S74-数字金融情况表.md",
+    "my-dev-brain/04-综合/S74系统-报表关系.md",
+    "my-dev-brain/03-实体/S74-数字金融情况表.md",
+    "my-dev-brain/03-实体/S74系统.md",
+    "my-dev-brain/01-资料库/S74系统/2026-04-20-S74数字金融情况表-填报说明-原文.md",
+    "my-dev-brain/01-资料库/S74系统",
+    "my-dev-brain/AGENTS.md",
     "概念-码值总览-监管集市系统.md",
     "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-码值字典.md",
     "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-机构表-l_publ_org_bra.md",
@@ -195,16 +205,7 @@
     "WisdomLedger/日志.md",
     "WisdomLedger/原始材料/码值/监管集市系统/README.md",
     "C0022-股东/关联企业类型.md",
-    "WisdomLedger/知识库/码值/监管集市系统/A0002-存款账户类型.md",
-    "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
-    "WisdomLedger/知识库/概念/概念-监管报表知识库.md",
-    "WisdomLedger/知识库/报表/一表通系统/报表-1.1-机构信息-一表通系统.md",
-    "my-dev-brain/README.md",
-    "my-dev-brain/CLAUDE.md",
-    "my-dev-brain/AGENTS.md",
-    "概念-码值映射-....md",
     "C0022-股东",
-    "WisdomLedger/知识库/码值/监管集市系统/P0013-员工状态.md",
     "WisdomLedger/知识库/字段/一表通系统",
     "WisdomLedger/知识库/数据表/一表通系统",
     "WisdomLedger/原始材料/SQL/一表通系统/PROC_BSP_T_1_1_JGXX.sql",
@@ -212,7 +213,6 @@
     "WisdomLedger/知识库/报表/一表通系统",
     "WisdomLedger/知识库/来源/一表通系统",
     "WisdomLedger/原始材料/SQL/一表通系统",
-    "WisdomLedger/原始材料/表结构/监管集市系统/l_publ_org_bra-字段字典.tsv",
-    "WisdomLedger/知识库/数据表/监管集市系统"
+    "WisdomLedger/原始材料/表结构/监管集市系统/l_publ_org_bra-字段字典.tsv"
   ]
 }
