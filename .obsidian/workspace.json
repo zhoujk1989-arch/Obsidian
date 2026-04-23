@@ -191,8 +191,10 @@
       "bases:新建数据库": false
     }
   },
-  "active": "38a2583f5cd17816",
+  "active": "e67cd5a56e720781",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/一表通-4.2-科目信息.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-24-4.2-科目信息-数据字典-原文.md",
     "my-dev-brain/IDENTITY.md",
     "my-dev-brain/HEARTBEAT.md",
     "my-dev-brain/README.md",
@@ -217,8 +219,6 @@
     "my-dev-brain/01-资料库/一表通系统/2026-04-23-OTDS_T_8_13_表8.13授信情况-数据字典-原文.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-23-OTDS_T_8_12_表8.12五级分类状态-数据字典-原文.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-23-OTDS_T_8_11_表8.11表外业务手续费及收益-数据字典-原文.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-23-OTDS_T_8_9_表8.9融资情况-数据字典-原文.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-23-OTDS_T_8_8_表8.8投资情况-数据字典-原文.md",
     "my-dev-brain/01-资料库/一表通系统",
     "my-dev-brain/01-资料库/一表通",
     "my-dev-brain/01-资料库/OTDS",
