@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/AGENTS.md",
+                "file": "my-dev-brain/03-实体/一表通系统.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AGENTS"
+              "title": "一表通系统"
             }
           }
         ]
@@ -180,8 +180,27 @@
       "bases:新建数据库": false
     }
   },
-  "active": "e67cd5a56e720781",
+  "active": "ac6ce768dd04677f",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/一表通-1.1-机构信息.md",
+    "my-dev-brain/03-实体/1104-G52-地方政府融资平台及支出责任债务持有情况统计表.md",
+    "my-dev-brain/03-实体/1104系统.md",
+    "my-dev-brain/03-实体/一表通系统.md",
+    "my-dev-brain/03-实体/Obsidian.md",
+    "my-dev-brain/03-实体/Karpathy.md",
+    "my-dev-brain/03-实体/1104系统-G14_V大额风险暴露统计表.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-23-1.2-机构关系-数据字典-原文.md",
+    "01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文.md",
+    "01-资料库/一表通系统",
+    "01-资料库",
+    "my-dev-brain/03-实体/一表通-1.3-员工.md",
+    "my-dev-brain/03-实体/一表通-1.2-机构关系.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-23-1.1-机构信息-数据字典-原文.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-16-1.2-机构关系-数据字典-原文.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-17-6.10-贸易融资协议-数据字典-原文.md",
+    "my-dev-brain/AGENTS.md",
+    "WisdomLedger/AGENTS.md",
     "my-dev-brain/temp/一表通/095_OTDS_企业账户分析情况表-月度_企业账户分析情况表-月度.md",
     "my-dev-brain/temp/一表通/094_OTDS_企业账户分析情况表-日度_企业账户分析情况表-日度.md",
     "my-dev-brain/temp/一表通/093_OTDS_资产负债期限匹配情况_资产负债期限匹配情况.md",
@@ -191,23 +210,6 @@
     "my-dev-brain/temp/一表通/084_OTDS_T_10_2_表10.2汇率利率.md",
     "my-dev-brain/temp/一表通/083_OTDS_T_9_4_表9.4商业单据.md",
     "my-dev-brain/temp/一表通/082_OTDS_T_9_3_表9.3抵质押品.md",
-    "my-dev-brain/temp/一表通/081_OTDS_T_9_2_表9.2自营投资标的.md",
-    "my-dev-brain/temp/一表通/080_OTDS_T_9_1_表9.1投资标的关系.md",
-    "my-dev-brain/temp/一表通/079_OTDS_T_8_15_表8.15还款状态.md",
-    "my-dev-brain/temp/一表通/078_OTDS_T_8_14_表8.14存款状态.md",
-    "my-dev-brain/temp/一表通/077_OTDS_T_8_13_表8.13授信情况.md",
-    "my-dev-brain/temp/一表通/076_OTDS_T_8_12_表8.12五级分类状态.md",
-    "my-dev-brain/temp/一表通/075_OTDS_T_8_11_表8.11表外业务手续费及收益.md",
-    "my-dev-brain/temp/一表通/074_OTDS_T_8_9_表8.9融资情况.md",
-    "my-dev-brain/temp/一表通/073_OTDS_T_8_8_表8.8投资情况.md",
-    "my-dev-brain/temp/一表通/072_OTDS_T_8_7_表8.7同业存量情况.md",
-    "my-dev-brain/temp/一表通/071_OTDS_T_8_6_表8.6衍生品存量情况.md",
-    "my-dev-brain/temp/一表通/070_OTDS_T_8_5_表8.5信用卡分期状态.md",
-    "my-dev-brain/temp/一表通/069_OTDS_T_8_4_表8.4信用卡账户状态.md",
-    "my-dev-brain/temp/一表通/068_OTDS_T_8_3_表8.3垫款状态.md",
-    "my-dev-brain/temp/一表通/067_OTDS_T_8_2_表8.2信用证状态.md",
-    "my-dev-brain/temp/一表通/066_OTDS_T_8_1_表8.1贷款借据.md",
-    "my-dev-brain/temp/一表通/065_OTDS_T_7_12_表7.12融资交易.md",
     "my-dev-brain/temp/一表通",
     "WisdomLedger/知识库/码值映射",
     "WisdomLedger/知识库/码值",
@@ -216,8 +218,6 @@
     "未命名.canvas",
     "my-dev-brain/05-日志/1104-temp",
     "my-dev-brain/01-资料库/1104系统报表监管类",
-    "未命名 1",
-    "未命名",
-    "my-dev-brain/01-资料库/1104系统/提炼"
+    "未命名 1"
   ]
 }
