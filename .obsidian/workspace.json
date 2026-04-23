@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "my-dev-brain/03-实体/一表通系统.md",
+                "file": "my-dev-brain/04-综合/监管系统-报表清单.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "一表通系统"
+              "title": "监管系统-报表清单"
             }
           }
         ]
@@ -182,20 +182,23 @@
   },
   "active": "ac6ce768dd04677f",
   "lastOpenFiles": [
-    "my-dev-brain/03-实体/一表通-1.1-机构信息.md",
-    "my-dev-brain/03-实体/1104-G52-地方政府融资平台及支出责任债务持有情况统计表.md",
-    "my-dev-brain/03-实体/1104系统.md",
+    "my-dev-brain/04-综合/一表通系统-报表关系.md",
     "my-dev-brain/03-实体/一表通系统.md",
-    "my-dev-brain/03-实体/Obsidian.md",
     "my-dev-brain/03-实体/Karpathy.md",
-    "my-dev-brain/03-实体/1104系统-G14_V大额风险暴露统计表.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-23-1.2-机构关系-数据字典-原文.md",
-    "01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文.md",
+    "my-dev-brain/01-资料库/一表通系统/README.md",
+    "my-dev-brain/03-实体/一表通-1.1-机构信息.md",
+    "01-资料库/一表通系统/2026-04-16-1.3-员工-数据字典-原文.md",
     "01-资料库/一表通系统",
     "01-资料库",
-    "my-dev-brain/03-实体/一表通-1.3-员工.md",
-    "my-dev-brain/03-实体/一表通-1.2-机构关系.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-23-1.1-机构信息-数据字典-原文.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-23-1.2-机构关系-数据字典-原文.md",
+    "my-dev-brain/03-实体/一表通-1.2-机构关系.md",
+    "my-dev-brain/03-实体/1104-G52-地方政府融资平台及支出责任债务持有情况统计表.md",
+    "my-dev-brain/03-实体/1104系统.md",
+    "my-dev-brain/03-实体/Obsidian.md",
+    "my-dev-brain/03-实体/1104系统-G14_V大额风险暴露统计表.md",
+    "01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文.md",
+    "my-dev-brain/03-实体/一表通-1.3-员工.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-16-1.2-机构关系-数据字典-原文.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-17-6.10-贸易融资协议-数据字典-原文.md",
@@ -207,9 +210,6 @@
     "my-dev-brain/temp/一表通/092_OTDS_企业账户分析情况表-按地区-月度_企业账户分析情况表-按地区-月度.md",
     "my-dev-brain/temp/一表通/091_OTDS_dis_verify_config_规则指标表.md",
     "my-dev-brain/temp/一表通/090_OTDS_一表通重点指标核对表_一表通重点指标核对表.md",
-    "my-dev-brain/temp/一表通/084_OTDS_T_10_2_表10.2汇率利率.md",
-    "my-dev-brain/temp/一表通/083_OTDS_T_9_4_表9.4商业单据.md",
-    "my-dev-brain/temp/一表通/082_OTDS_T_9_3_表9.3抵质押品.md",
     "my-dev-brain/temp/一表通",
     "WisdomLedger/知识库/码值映射",
     "WisdomLedger/知识库/码值",
