@@ -100,7 +100,8 @@ def render_markdown(path: Path, ctes: list[str], tables: list[str], metrics: lis
     lines.append("- 这份 SQL 对应哪张监管报表")
     lines.append("- 报表的统计对象、时点和粒度是什么")
     lines.append("- 哪些过滤条件决定业务口径")
-    lines.append("- 哪些字段需要单独建字段页")
+    lines.append("- 哪些字段口径需要补入数据表页")
+    lines.append("- 是否需要同步更新系统页、概念页或接口表字段中的码值说明")
     lines.append("- 是否存在隐含字典映射、汇率折算、去重规则")
     return "\n".join(lines)
 
