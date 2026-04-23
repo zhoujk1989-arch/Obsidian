@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_1-机构信息-一表通系统.md",
+                "file": "WisdomLedger/知识库/数据表/监管集市系统/数据表-机构表-l_publ_org_bra-监管集市系统.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "数据表-T_1_1-机构信息-一表通系统"
+              "title": "数据表-机构表-l_publ_org_bra-监管集市系统"
             }
           }
         ]
@@ -180,34 +180,34 @@
       "bases:新建数据库": false
     }
   },
-  "active": "e67cd5a56e720781",
+  "active": "ac6ce768dd04677f",
   "lastOpenFiles": [
-    "my-dev-brain/01-资料库/1104系统/2026-04-22-G01_Ⅶ-资产负债项目表附注-填报说明-原文-261版.md",
+    "my-dev-brain/05-日志/lint-2026-04-23.md",
+    "WisdomLedger/模板/报表模板.md",
+    "WisdomLedger/日志.md",
+    "WisdomLedger/说明.md",
+    "WisdomLedger/AGENTS.md",
+    "my-dev-brain/03-实体/1104-G01_II-贷款质量五级分类情况简表.md",
+    "my-dev-brain/03-实体/1104-G14_VI-大额风险暴露统计表（同业集团客户）.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-23-G14_VI-大额风险暴露统计表-填报说明-原文.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-22-G14_V-大额风险暴露统计表-填报说明-原文.md",
+    "my-dev-brain/03-实体/1104-G01_I_1-表外业务情况表.md",
     "WisdomLedger/知识库/报表/一表通系统/报表-1.1-机构信息-一表通系统.md",
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_1-机构信息-一表通系统.md",
-    "WisdomLedger/AGENTS.md",
+    "my-dev-brain/03-实体/1104系统-G14_V大额风险暴露统计表.md",
+    "my-dev-brain/01-资料库/1104系统/2024-11-28-G14_V填报说明-mk-1128-原文.md",
+    "my-dev-brain/03-实体/1104-G14_IV-非同业集团客户及经济依存客户大额风险暴露情况表.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-22-G14_IV-非同业集团客户及经济依存客户大额风险暴露情况表-填报说明-原文.md",
+    "my-dev-brain/03-实体/1104-G14_II-大额风险暴露统计表（客户情况）.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-22-G14_II-大额风险暴露统计表-填报说明-原文.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-22-G01_IX-存贷款月日均情况表-填报说明-原文-11.9版.md",
+    "my-dev-brain/01-资料库/1104系统/2026-04-22-G01_Ⅶ-资产负债项目表附注-填报说明-原文-261版.md",
     "WisdomLedger/模板/数据表模板.md",
-    "WisdomLedger/模板/报表模板.md",
     "WisdomLedger/模板/来源模板.md",
     "WisdomLedger/模板/码值模板.md",
     "WisdomLedger/模板/血缘模板.md",
     "WisdomLedger/知识库/概念/概念-监管报表知识库.md",
     "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
-    "WisdomLedger/索引.md",
-    "WisdomLedger/知识库/概念/概念-业务口径.md",
-    "WisdomLedger/知识库/概念/概念-系统边界.md",
-    "WisdomLedger/知识库/概念/概念-外部来源关联.md",
-    "WisdomLedger/说明.md",
-    "WisdomLedger/原始材料/码值/监管集市系统/README.md",
-    "my-dev-brain/02-主题/监管报送体系.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-22-G01_Ⅵ-托管业务情况表-填报说明-原文-261版.md",
-    "WisdomLedger/知识库/数据表/监管集市系统/数据表-机构表-l_publ_org_bra-监管集市系统.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-22-G01_V-主要资产负债项目分币种情况表-填报说明-原文-251版.md",
-    "概念-码值集合-C0004-企业规模.md",
-    "my-dev-brain/05-日志/1104-temp/G01_IX（11.9）.md",
-    "WisdomLedger/知识库/来源/监管集市系统/来源-监管集市系统-码值字典.md",
-    "WisdomLedger/知识库/码值/监管集市系统/A0002-存款账户类型.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-22-G01_IV-资产负债项目表附注-填报说明-原文-251版.md",
     "未命名.canvas",
     "my-dev-brain/05-日志/1104-temp",
     "my-dev-brain/01-资料库/1104系统报表监管类",
