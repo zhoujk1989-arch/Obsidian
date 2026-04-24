@@ -11,10 +11,14 @@
             "id": "30d82f9d217b38ed",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "my-dev-brain/06-项目/监管系统知识整理.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "监管系统知识整理"
             }
           }
         ]
@@ -178,6 +182,14 @@
   },
   "active": "30d82f9d217b38ed",
   "lastOpenFiles": [
+    "my-dev-brain/04-综合/监管系统-报表清单.md",
+    "my-dev-brain/04-综合/一表通系统-报表关系.md",
+    "my-dev-brain/04-综合/1104系统-报表关系.md",
+    "my-dev-brain/04-综合/监管系统知识库-组织方案.md",
+    "my-dev-brain/04-综合/待确认清单.md",
+    "my-dev-brain/02-主题/监管报送体系.md",
+    "my-dev-brain/03-实体/一表通-6.5-银团贷款协议.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-24-表6.5-银团贷款协议-数据字典-原文.md",
     "my-dev-brain/03-实体/一表通-6.4-互联网贷款协议.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-24-表6.4-互联网贷款协议-数据字典-原文.md",
     "my-dev-brain/05-日志/lint-2026-04-24.md",
@@ -196,14 +208,6 @@
     "my-dev-brain/01-资料库/一表通系统/2026-04-24-表5.5-代销保险产品业务-数据字典-原文.md",
     "my-dev-brain/03-实体/一表通-5.3-债券产品业务.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-24-表5.3-债券产品业务-数据字典-原文.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-24-表5.1-产品业务基本信息-数据字典-原文.md",
-    "WisdomLedger/知识库/数据表/监管集市系统/数据表-机构表-l_publ_org_bra-监管集市系统.md",
-    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_1-机构信息-一表通系统.md",
-    "WisdomLedger/知识库/报表/一表通系统/报表-1.1-机构信息-一表通系统.md",
-    "my-dev-brain/03-实体/1104-G01_I_1-表外业务情况表.md",
-    "my-dev-brain/03-实体/一表通-5.1-产品业务基本信息.md",
-    "my-dev-brain/CLAUDE.md",
-    "my-dev-brain/01-资料库/1104系统/2026-04-20-S63_Ⅲ-各控股类型企业融资情况表-填报说明-原文.md",
     "未命名.canvas",
     "my-dev-brain/01-资料库/一表通系统",
     "my-dev-brain/01-资料库/一表通",
