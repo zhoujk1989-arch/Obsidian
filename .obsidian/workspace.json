@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "my-dev-brain/04-综合/1104系统-报表关系.md",
+                "file": "my-dev-brain/01-资料库/一表通系统/README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1104系统-报表关系"
+              "title": "README"
             }
           }
         ]
@@ -182,6 +182,18 @@
   },
   "active": "30d82f9d217b38ed",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/1104系统.md",
+    "my-dev-brain/04-综合/一表通系统-报表关系.md",
+    "my-dev-brain/04-综合/1104系统-报表关系.md",
+    "my-dev-brain/04-综合/一表通系统-数据域关系.md",
+    "my-dev-brain/04-综合/监管系统-报表清单.md",
+    "my-dev-brain/90-模板/综合模板.md",
+    "my-dev-brain/90-模板/资料模板.md",
+    "my-dev-brain/90-模板/规则模板.md",
+    "my-dev-brain/90-模板/报表模板.md",
+    "my-dev-brain/90-模板/实体模板.md",
+    "my-dev-brain/90-模板/梦境模板.md",
+    "my-dev-brain/90-模板/系统实体模板.md",
     "my-dev-brain/03-实体/一表通-8.8-投资情况.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-25-表8.8-投资情况-数据字典-原文.md",
     "my-dev-brain/03-实体/一表通-8.7-同业存量情况.md",
@@ -196,18 +208,6 @@
     "my-dev-brain/05-日志/lint-2026-04-25.md",
     "my-dev-brain/03-实体/一表通-8.3-垫款状态.md",
     "my-dev-brain/01-资料库/2026-04-25-表8.3-垫款状态-资料.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-25-表8.3-垫款状态-数据字典-原文.md",
-    "my-dev-brain/03-实体/一表通-8.2-信用证状态.md",
-    "my-dev-brain/01-资料库/2026-04-25-表8.2-信用证状态-资料.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-25-表8.2-信用证状态-数据字典-原文.md",
-    "my-dev-brain/03-实体/一表通-8.1-贷款借据.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-25-表8.1-贷款借据-数据字典-原文.md",
-    "my-dev-brain/03-实体/一表通-7.12-融资交易.md",
-    "my-dev-brain/01-资料库/2026-04-25-表7.12-融资交易-资料.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-25-表7.12-融资交易-数据字典-原文.md",
-    "my-dev-brain/task-summary_20260425-0818.md",
-    "my-dev-brain/03-实体/一表通-7.11-理财及代销产品交易.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-25-表7.11-理财及代销产品交易-数据字典-原文.md",
     "未命名.canvas",
     "my-dev-brain/01-资料库/一表通系统",
     "my-dev-brain/01-资料库/一表通",
