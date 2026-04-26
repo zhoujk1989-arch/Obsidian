@@ -5,7 +5,7 @@
   "showAttachments": false,
   "hideUnresolved": false,
   "showOrphans": true,
-  "collapse-color-groups": true,
+  "collapse-color-groups": false,
   "colorGroups": [
     {
       "query": "path:WisdomLedger/知识库/码值  ",
@@ -34,6 +34,27 @@
         "a": 1,
         "rgb": 5431378
       }
+    },
+    {
+      "query": "path:my-dev-brain/90-模板  ",
+      "color": {
+        "a": 1,
+        "rgb": 6084269
+      }
+    },
+    {
+      "query": "path:my-dev-brain/06-项目  ",
+      "color": {
+        "a": 1,
+        "rgb": 6073814
+      }
+    },
+    {
+      "query": "path:my-dev-brain/04-综合  ",
+      "color": {
+        "a": 1,
+        "rgb": 6053078
+      }
     }
   ],
   "collapse-display": true,
@@ -46,6 +67,6 @@
   "repelStrength": 9.359375,
   "linkStrength": 1,
   "linkDistance": 225,
-  "scale": 0.36783833776246816,
+  "scale": 0.7503849617507042,
   "close": true
 }
