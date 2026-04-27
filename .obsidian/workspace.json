@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "my-dev-brain/01-资料库/一表通系统/2026-04-24-4.2-科目信息-数据字典-原文.md",
+                "file": "my-dev-brain/AGENTS.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-04-24-4.2-科目信息-数据字典-原文"
+              "title": "AGENTS"
             }
           }
         ]
@@ -182,7 +182,21 @@
   },
   "active": "0bb9cb439f88e405",
   "lastOpenFiles": [
+    "my-dev-brain/CLAUDE.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文.md",
+    "未命名.canvas",
+    "未命名 2.canvas",
+    "1.2机构关系.md",
+    "my-dev-brain/90-模板/原文模板-监管.md",
+    "my-dev-brain/90-模板/系统实体模板.md",
     "my-dev-brain/90-模板/监管报表页模板.md",
+    "my-dev-brain/90-模板/项目模板.md",
+    "my-dev-brain/90-模板/监管系统页模板.md",
+    "my-dev-brain/03-实体/1104-S74-数字金融情况表.md",
+    "my-dev-brain/04-综合/一表通系统-报表关系.md",
+    "my-dev-brain/04-综合/监管业务场景-报送映射.md",
+    "my-dev-brain/04-综合/监管系统知识库-组织方案.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-24-4.2-科目信息-数据字典-原文.md",
     "my-dev-brain/02-主题/流动资金贷款与固定资产贷款-监管报送.md",
     "my-dev-brain/03-实体/1104-G14_III-大额风险暴露统计表（非同业单一客户）.md",
     "my-dev-brain/03-实体/EAST5.0系统.md",
@@ -196,23 +210,10 @@
     "my-dev-brain/02-主题/绿色金融.md",
     "my-dev-brain/02-主题/科技金融.md",
     "my-dev-brain/02-主题/睡眠卡-睡眠户口径.md",
-    "my-dev-brain/02-主题/汇率风险管理.md",
-    "my-dev-brain/02-主题/普惠金融.md",
-    "my-dev-brain/02-主题/文化产业-贷款口径.md",
-    "my-dev-brain/02-主题/押品管理.md",
-    "my-dev-brain/02-主题/战略性新兴产业.md",
-    "my-dev-brain/02-主题/应收账款口径管理.md",
-    "my-dev-brain/02-主题/市场风险计量.md",
-    "my-dev-brain/02-主题/存贷比监管.md",
-    "my-dev-brain/02-主题/存贷款期限结构.md",
-    "my-dev-brain/02-主题/存贷款分品种统计.md",
-    "my-dev-brain/02-主题/大额风险暴露-监管框架.md",
-    "my-dev-brain/02-主题/关联方认定规则.md",
     "my-dev-brain/03-实体/1104-S63-*",
     "03-实体",
     "02-主题",
     "my-dev-brain/01-资料库/EAST5.0系统",
-    "未命名.canvas",
     "my-dev-brain/01-资料库/一表通系统",
     "my-dev-brain/01-资料库/一表通",
     "my-dev-brain/01-资料库/OTDS",
