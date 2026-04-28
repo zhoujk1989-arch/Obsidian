@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/知识库/来源/EAST5.0系统/来源-EAST5.0系统-IE_001_105-机构关系表.md",
+                "file": "WisdomLedger/AGENTS.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "来源-EAST5.0系统-IE_001_105-机构关系表"
+              "title": "AGENTS"
             }
           }
         ]
@@ -182,6 +182,7 @@
   },
   "active": "00856da4dea6f9ed",
   "lastOpenFiles": [
+    "WisdomLedger/知识库/来源/EAST5.0系统/来源-EAST5.0系统-IE_001_105-机构关系表.md",
     "WisdomLedger/AGENTS.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_104-岗位信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_4-岗位信息-一表通系统.md",
@@ -212,7 +213,6 @@
     "my-dev-brain/05-日志/lint-2026-04-28.md",
     "my-dev-brain/03-实体/一表通-9.3抵质押品.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-9.3抵质押品-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-9.2投融资标的.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_101_IE_001_102_校验.sql",
