@@ -55,6 +55,20 @@
         "a": 1,
         "rgb": 6053078
       }
+    },
+    {
+      "query": "path:WisdomLedger/知识库/数据表  ",
+      "color": {
+        "a": 1,
+        "rgb": 11361494
+      }
+    },
+    {
+      "query": "path:WisdomLedger/知识库/来源  ",
+      "color": {
+        "a": 1,
+        "rgb": 14048429
+      }
     }
   ],
   "collapse-display": true,
@@ -67,6 +81,6 @@
   "repelStrength": 9.359375,
   "linkStrength": 1,
   "linkDistance": 225,
-  "scale": 1.2161436389959666,
+  "scale": 1.028939974871287,
   "close": true
 }

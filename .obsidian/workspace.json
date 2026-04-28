@@ -11,14 +11,10 @@
             "id": "0bb9cb439f88e405",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "WisdomLedger/AGENTS.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "AGENTS"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "关系图谱"
             }
           }
         ]
@@ -182,6 +178,11 @@
   },
   "active": "0bb9cb439f88e405",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/一表通-7.2信贷交易.md",
+    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-7.4-信用卡交易.md",
+    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-6.26-其他协议.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-28-7.2信贷交易-填报说明-原文.md",
+    "WisdomLedger/AGENTS.md",
     "my-dev-brain/03-实体/一表通-7.1客户存款账户交易.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-7.1客户存款账户交易-填报说明-原文.md",
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_10_2-汇率利率-一表通系统.md",
@@ -203,11 +204,6 @@
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_8_15-还款状态-一表通系统.md",
     "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-8.15-还款状态.md",
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_8_14-存款状态-一表通系统.md",
-    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-8.14-存款状态.md",
-    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_8_13-授信情况-一表通系统.md",
-    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-8.13-授信情况.md",
-    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_8_12-五级分类状态-一表通系统.md",
-    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-8.12-五级分类状态.md",
     "WisdomLedger/原始材料/表结构/一表通系统/T_10_2-汇率利率-DDL-2026-04-27.sql",
     "WisdomLedger/原始材料/表结构/一表通系统/T_10_1-公共代码-DDL-2026-04-27.sql",
     "WisdomLedger/原始材料/表结构/一表通系统/T_9_5-理财投资标的-DDL-2026-04-27.sql",
