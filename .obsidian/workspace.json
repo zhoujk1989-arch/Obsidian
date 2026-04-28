@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "d6543ea7cc38e5cf",
+        "id": "f672b95b25a92b3b",
         "type": "tabs",
         "children": [
           {
-            "id": "0bb9cb439f88e405",
+            "id": "645b198b2955eb86",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_101-机构信息表-EAST5.0系统.md",
+                "file": "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "血缘-IE_001_101-机构信息表-EAST5.0系统"
+              "title": "血缘-1.1-机构信息-一表通系统"
             }
           }
         ]
@@ -180,14 +180,22 @@
       "bases:新建数据库": false
     }
   },
-  "active": "e67cd5a56e720781",
+  "active": "645b198b2955eb86",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/一表通-8.7同业存量情况.md",
+    "WisdomLedger/知识库/报表业务口径/一表通系统/报表-1.1-机构信息-一表通系统.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.7同业存量情况-填报说明-原文.md",
+    "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_101-机构信息表-EAST5.0系统.md",
+    "PROC_EAST_IE_001_101草案.md",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_101-机构信息表-EAST5.0系统.md",
+    "PROC_EAST_IE_001_101_JGXX_草案.md",
+    "WisdomLedger/索引.md",
+    "my-dev-brain/03-实体/一表通-8.6衍生品存量情况.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.6衍生品存量情况-填报说明-原文.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_草案.sql",
     "my-dev-brain/03-实体/一表通-8.5信用卡分期状态.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.5信用卡分期状态-填报说明-原文.md",
-    "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_101-机构信息表-EAST5.0系统.md",
-    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_101-机构信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_102-员工表-EAST5.0系统.md",
     "WisdomLedger/知识库/数据表/EAST5.0系统/数据表-IE_001_101-机构信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_1-机构信息-一表通系统.md",
@@ -202,13 +210,6 @@
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.4信用卡账户状态-填报说明-原文.md",
     "my-dev-brain/03-实体/一表通-8.3垫款状态.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.3垫款状态-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-8.2信用证状态.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.2信用证状态-填报说明-原文.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.1贷款借据-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-8.1贷款借据.md",
-    "my-dev-brain/03-实体/一表通-8.16客户理财产品持有状态.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.16客户理财产品持有状态-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-8.15还款状态.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_101_IE_001_102_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/sp_east_table_002_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXX_草案.sql",
@@ -217,7 +218,6 @@
     "WisdomLedger/工作区",
     "WisdomLedger/模板/SQL开发模板.sql",
     "WisdomLedger/知识库/报表业务口径/一表通系统",
-    "WisdomLedger/知识库/报表业务口径/EAST5.0系统",
     "未命名.canvas",
     "未命名 2.canvas"
   ]
