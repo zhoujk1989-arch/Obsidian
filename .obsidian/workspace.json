@@ -11,10 +11,14 @@
             "id": "0bb9cb439f88e405",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "WisdomLedger/AGENTS.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AGENTS"
             }
           }
         ]
@@ -178,6 +182,10 @@
   },
   "active": "0bb9cb439f88e405",
   "lastOpenFiles": [
+    "my-dev-brain/03-实体/一表通-1.3员工.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-28-7.12融资交易-填报说明-原文.md",
+    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_3-员工-一表通系统.md",
+    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-1.3-员工.md",
     "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
     "WisdomLedger/说明.md",
     "WisdomLedger/日志.md",
@@ -200,10 +208,6 @@
     "my-dev-brain/01-资料库/2026-04-25-表8.3-垫款状态-资料.md",
     "my-dev-brain/01-资料库/2026-04-25-表8.2-信用证状态-资料.md",
     "my-dev-brain/01-资料库/2026-04-25-表7.12-融资交易-资料.md",
-    "my-dev-brain/03-实体/一表通-7.10内部分户账交易.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-7.10内部分户账交易-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-6.9信用卡协议.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-6.9信用卡协议-填报说明-原文.md",
     "my-dev-brain/01-资料库/一表通系统",
     "未命名.canvas",
     "未命名 2.canvas",
