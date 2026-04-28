@@ -34,7 +34,7 @@
 - 公共代码表国家地区、证件类型码值完整性待跑数验证。
 
 开发说明：
-- 本文件按 SQL 开发规范调整为直接 select + left join 风格。
+- 本草案按 SQL 开发规范调整为直接 select + left join 风格。
 - 不使用 select *；派生表只查询实际使用字段。
 - 不使用 CTE；员工主源用实际使用字段 distinct 去重，机构和代码表用派生表中的 not exists 收窄。
 */

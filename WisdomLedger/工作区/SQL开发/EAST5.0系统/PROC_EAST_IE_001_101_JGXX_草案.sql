@@ -35,7 +35,7 @@
 - 总账余额不为 0 当前沿用原 SQL 中余额类字段合计不为 0 的判断。
 
 开发说明：
-- 本文件按 SQL 开发规范调整为直接 select + left join 风格。
+- 本草案按 SQL 开发规范调整为直接 select + left join 风格。
 - 不使用 select *；派生表只查询实际使用字段。
 - 不使用 CTE；去重逻辑改为派生表中的 not exists。
 */
