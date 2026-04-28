@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "my-dev-brain/01-资料库/一表通系统/2026-04-27-1.1机构信息-填报说明-原文.md",
+                "file": "my-dev-brain/01-资料库/一表通系统/2026-04-27-1.7柜员-填报说明-原文.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-04-27-1.1机构信息-填报说明-原文"
+              "title": "2026-04-27-1.7柜员-填报说明-原文"
             }
           }
         ]
@@ -182,6 +182,15 @@
   },
   "active": "0bb9cb439f88e405",
   "lastOpenFiles": [
+    "my-dev-brain/01-资料库/一表通系统/2026-04-27-1.1机构信息-填报说明-原文.md",
+    "WisdomLedger/知识库/报表/一表通系统/报表-1.1-机构信息-一表通系统.md",
+    "my-dev-brain/90-模板/监管明细原文模板.md",
+    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-1.1-机构信息.md",
+    "my-dev-brain/90-模板/监管明细报表实体模板.md",
+    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_1-机构信息-一表通系统.md",
+    "my-dev-brain/AGENTS.md",
+    "my-dev-brain/06-项目/当前学习地图.md",
+    "my-dev-brain/01-资料库/一表通系统/2026-04-27-1.7柜员-填报说明-原文.md",
     "my-dev-brain/03-实体/一表通-1.4岗位信息.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-27-1.4岗位信息-填报说明-原文.md",
     "my-dev-brain/03-实体/一表通-1.3员工.md",
@@ -193,22 +202,13 @@
     "my-dev-brain/03-实体/一表通系统.md",
     "my-dev-brain/04-综合/README.md",
     "my-dev-brain/02-主题/科技金融.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-27-1.1机构信息-填报说明-原文.md",
     "my-dev-brain/01-资料库/一表通系统/README.md",
     "my-dev-brain/04-综合/1104系统-报表关系.md",
     "my-dev-brain/04-综合/1104系统-表间校验关系.md",
     "my-dev-brain/04-综合/EAST5.0系统-报表关系.md",
     "my-dev-brain/04-综合/1104系统-报表关系明细.md",
     "my-dev-brain/04-综合/待确认清单.md",
-    "my-dev-brain/04-综合/知识库巡检-2026-04-22.md",
-    "my-dev-brain/04-综合/知识库维护验收清单.md",
-    "my-dev-brain/04-综合/监管系统-报表清单.md",
-    "my-dev-brain/04-综合/监管系统知识库-组织方案.md",
-    "my-dev-brain/00-首页/当前工作台.md",
-    "my-dev-brain/00-首页/index.md",
-    "my-dev-brain/AGENTS.md",
     "my-dev-brain/01-资料库/一表通系统",
-    "my-dev-brain/04-综合/知识库巡检-2026-04-27.md",
     "未命名.canvas",
     "未命名 2.canvas",
     "my-dev-brain/03-实体/1104-S63-*",

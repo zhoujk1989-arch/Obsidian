@@ -3,7 +3,7 @@ type: source
 id: 来源-监管集市系统-机构表-l_publ_org_bra
 status: draft
 updated: 2026-04-23
-external_vault: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain
+external_vault: my-dev-brain
 external_paths: []
 search_keywords:
   - 监管集市
