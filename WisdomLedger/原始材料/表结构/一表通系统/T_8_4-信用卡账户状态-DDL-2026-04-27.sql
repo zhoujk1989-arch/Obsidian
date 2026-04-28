@@ -1,0 +1,55 @@
+-- =====================================================
+-- 报表：8.4信用卡账户状态
+-- 表名：T_8_4
+-- 字段数：46
+-- 生成时间：2026-04-27
+-- =====================================================
+DROP TABLE IF EXISTS `T_8_4`;
+CREATE TABLE `T_8_4` (
+  `H040001` varchar(60) DEFAULT NULL COMMENT '客户ID；原始数据格式：anc..60',
+  `H040043` varchar(24) DEFAULT NULL COMMENT '机构ID；原始数据格式：anc..24',
+  `H040003` varchar(255) DEFAULT NULL COMMENT '信用卡账号；原始数据格式：an',
+  `H040004` varchar(24) DEFAULT NULL COMMENT '核算机构ID；原始数据格式：anc..24',
+  `H040005` varchar(255) DEFAULT NULL COMMENT '当前本币授信额度；原始数据格式：20n(2)',
+  `H040006` varchar(255) DEFAULT NULL COMMENT '当前外币授信额度；原始数据格式：20n(2)',
+  `H040007` varchar(255) DEFAULT NULL COMMENT '已使用本币授信额度；原始数据格式：20n(2)',
+  `H040008` varchar(255) DEFAULT NULL COMMENT '已使用外币授信额度；原始数据格式：20n(2)',
+  `H040009` varchar(255) DEFAULT NULL COMMENT '免息应收账款；原始数据格式：20n(2)',
+  `H040010` varchar(255) DEFAULT NULL COMMENT '应收息费；原始数据格式：20n(2)',
+  `H040011` varchar(255) DEFAULT NULL COMMENT '账户余额；原始数据格式：20n(2)',
+  `H040039` varchar(255) DEFAULT NULL COMMENT '分期余额；原始数据格式：20n(2)',
+  `H040040` varchar(255) DEFAULT NULL COMMENT '溢缴款余额；原始数据格式：20n(2)',
+  `H040012` varchar(255) DEFAULT NULL COMMENT '逾期金额；原始数据格式：20n(2)',
+  `H040013` char(3) DEFAULT NULL COMMENT '币种；原始数据格式：3!a',
+  `H040015` char(2) DEFAULT NULL COMMENT '五级分类；原始数据格式：2!n',
+  `H040016` varchar(255) DEFAULT NULL COMMENT '其中本币临时额度；原始数据格式：20n(2)',
+  `H040017` varchar(255) DEFAULT NULL COMMENT '其中外币临时额度；原始数据格式：20n(2)',
+  `H040018` varchar(255) DEFAULT NULL COMMENT '冻结金额；原始数据格式：20n(2)',
+  `H040019` varchar(255) DEFAULT NULL COMMENT '当月累计交易笔数；原始数据格式：n',
+  `H040020` varchar(255) DEFAULT NULL COMMENT '当月累计透支金额；原始数据格式：20n(2)',
+  `H040021` varchar(255) DEFAULT NULL COMMENT '本月累计消费金额；原始数据格式：20n(2)',
+  `H040022` varchar(255) DEFAULT NULL COMMENT '本月累计取现转账金额；原始数据格式：20n(2)',
+  `H040023` varchar(255) DEFAULT NULL COMMENT '本月累计分期交易金额；原始数据格式：20n(2)',
+  `H040024` varchar(255) DEFAULT NULL COMMENT '本月累计收入；原始数据格式：20n(2)',
+  `H040025` varchar(255) DEFAULT NULL COMMENT '当年累计信用卡收入金额；原始数据格式：20n(2)',
+  `H040026` varchar(255) DEFAULT NULL COMMENT '已有信用卡发卡银行数；原始数据格式：n',
+  `H040027` varchar(255) DEFAULT NULL COMMENT '已有他行授信金额；原始数据格式：20n(2)',
+  `H040028` char(1) DEFAULT NULL COMMENT '催收标识；原始数据格式：1!n',
+  `H040029` varchar(60) DEFAULT NULL COMMENT '催收方式；原始数据格式：anc..60',
+  `H040030` varchar(60) DEFAULT NULL COMMENT '新增授信类型；原始数据格式：anc..60',
+  `H040031` date DEFAULT NULL COMMENT '逾期起始日期；原始数据格式：YYYY-MM-DD',
+  `H040032` date DEFAULT NULL COMMENT '最近授信评估日期；原始数据格式：YYYY-MM-DD',
+  `H040033` date DEFAULT NULL COMMENT '最近征信查询日期；原始数据格式：YYYY-MM-DD',
+  `H040034` date DEFAULT NULL COMMENT '最近新增授信日期；原始数据格式：YYYY-MM-DD',
+  `H040035` date DEFAULT NULL COMMENT '最后交易日期；原始数据格式：YYYY-MM-DD',
+  `H040037` varchar(30) DEFAULT NULL COMMENT '账户状态；原始数据格式：anc..30',
+  `H040038` varchar(255) DEFAULT NULL COMMENT '透支金额；原始数据格式：20n(2)',
+  `H040041` varchar(255) DEFAULT NULL COMMENT '逾期期数；原始数据格式：n',
+  `H040044` varchar(255) DEFAULT NULL COMMENT '本币现金支取额度；原始数据格式：20n(2)',
+  `H040045` varchar(255) DEFAULT NULL COMMENT '外币现金支取额度；原始数据格式：20n(2)',
+  `H040047` varchar(255) DEFAULT NULL COMMENT '本币授信余额；原始数据格式：20n(2)',
+  `H040048` varchar(255) DEFAULT NULL COMMENT '外币授信余额；原始数据格式：20n(2)',
+  `H040046` date DEFAULT NULL COMMENT '账户失效日期；原始数据格式：YYYY-MM-DD',
+  `H040042` varchar(600) DEFAULT NULL COMMENT '备注；原始数据格式：anc..600',
+  `H040036` date DEFAULT NULL COMMENT '采集日期；原始数据格式：YYYY-MM-DD'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='8.4信用卡账户状态';
