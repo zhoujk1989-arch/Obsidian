@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/AGENTS.md",
+                "file": "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_002_201-个人基础信息表-EAST5.0系统.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AGENTS"
+              "title": "报表-IE_002_201-个人基础信息表-EAST5.0系统"
             }
           }
         ]
@@ -182,19 +182,24 @@
   },
   "active": "00856da4dea6f9ed",
   "lastOpenFiles": [
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_002_201-个人基础信息表-EAST5.0系统.md",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_105-机构关系表-EAST5.0系统.md",
+    "WisdomLedger/索引.md",
     "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_106-股东及关联方信息表-EAST5.0系统.md",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_104-岗位信息表-EAST5.0系统.md",
+    "WisdomLedger/AGENTS.md",
+    "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_002_201-个人基础信息表-EAST5.0系统.md",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_002_201_个人基础信息表_校验.sql",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_201_草案.sql",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_106-股东及关联方信息表-EAST5.0系统.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-IE_001_106-股东及关联方信息表.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_106_股东及关联方信息表_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_106_草案.sql",
-    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_105-机构关系表-EAST5.0系统.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_105-机构关系表-EAST5.0系统.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_105_草案.sql",
     "WisdomLedger/知识库/来源/EAST5.0系统/来源-EAST5.0系统-IE_001_105-机构关系表.md",
-    "WisdomLedger/AGENTS.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_104-岗位信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_4-岗位信息-一表通系统.md",
-    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_104-岗位信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-1.6-股东及关联方信息.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_104_岗位信息表_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_104_草案.sql",
@@ -212,12 +217,7 @@
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-IE_001_103-柜员表.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_103_柜员表_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_103_草案.sql",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-7.8不良资产处置-填报说明-原文.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_103_校验.sql",
-    "my-dev-brain/03-实体/一表通-9.5理财投资标的.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-9.5理财投资标的-填报说明-原文.md",
-    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_草案.sql",
-    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_草案.sql",
     "未命名.canvas",
     "未命名 2.canvas"
   ]
