@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "6a0b0497574b6f1b",
+        "id": "40f913f11a8cf663",
         "type": "tabs",
         "children": [
           {
-            "id": "02b7cfa6d04fd9f7",
+            "id": "00856da4dea6f9ed",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/知识库/来源/EAST5.0系统/来源-EAST5.0系统-IE_001_103-柜员表.md",
+                "file": "WisdomLedger/知识库/来源/EAST5.0系统/来源-EAST5.0系统-IE_001_105-机构关系表.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "来源-EAST5.0系统-IE_001_103-柜员表"
+              "title": "来源-EAST5.0系统-IE_001_105-机构关系表"
             }
           }
         ]
@@ -180,14 +180,26 @@
       "bases:新建数据库": false
     }
   },
-  "active": "02b7cfa6d04fd9f7",
+  "active": "00856da4dea6f9ed",
   "lastOpenFiles": [
-    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-1.7-柜员.md",
+    "WisdomLedger/AGENTS.md",
+    "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_104-岗位信息表-EAST5.0系统.md",
+    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_4-岗位信息-一表通系统.md",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_104-岗位信息表-EAST5.0系统.md",
+    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-1.6-股东及关联方信息.md",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_104_岗位信息表_校验.sql",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_104_草案.sql",
+    "WisdomLedger/知识库/来源/EAST5.0系统/来源-EAST5.0系统-IE_001_103-柜员表.md",
+    "WisdomLedger/知识库/数据表/一表通系统/数据表-T_1_1-机构信息-一表通系统.md",
+    "WisdomLedger/知识库/数据表/监管集市系统/数据表-机构表-l_publ_org_bra-监管集市系统.md",
+    "WisdomLedger/知识库/数据表/EAST5.0系统/数据表-IE_001_102-员工表-EAST5.0系统.md",
+    "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_101-机构信息表-EAST5.0系统.md",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_103-柜员表-EAST5.0系统.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_103-柜员表-EAST5.0系统.md",
+    "my-dev-brain/01-资料库/EAST5.0系统/2026-04-26-IE_001_103-柜员表-数据字典-原文.md",
+    "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-1.7-柜员.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_102-员工表-EAST5.0系统.md",
     "WisdomLedger/知识库/来源/一表通系统/来源-一表通系统-2.1-单一法人基本情况.md",
-    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_103-柜员表-EAST5.0系统.md",
-    "WisdomLedger/AGENTS.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-IE_001_103-柜员表.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_103_柜员表_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_103_草案.sql",
@@ -201,23 +213,11 @@
     "my-dev-brain/03-实体/一表通-9.3抵质押品.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-9.3抵质押品-填报说明-原文.md",
     "my-dev-brain/03-实体/一表通-9.2投融资标的.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-9.2投融资标的-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-9.1投资标的关系.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-9.1投资标的关系-填报说明-原文.md",
-    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_101-机构信息表-EAST5.0系统.md",
-    "my-dev-brain/03-实体/一表通-8.9融资情况.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.9融资情况-填报说明-原文.md",
-    "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
-    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_102-员工表-EAST5.0系统.md",
-    "my-dev-brain/03-实体/一表通-8.8投资情况.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.8投资情况-填报说明-原文.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_101_IE_001_102_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/sp_east_table_002_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXX_草案.sql",
-    "WisdomLedger/工作区/SQL开发/EAST5.0系统",
-    "WisdomLedger/工作区/SQL开发",
     "未命名.canvas",
     "未命名 2.canvas"
   ]

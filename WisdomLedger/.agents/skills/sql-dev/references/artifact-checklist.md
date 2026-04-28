@@ -42,6 +42,13 @@ For knowledge-base repositories, update the correct owner page instead of duplic
 - Lineage page: table-level chain, field-level source and transformation, gaps and impact.
 - Concept/system page: reusable rules, system boundaries, shared date/code concepts.
 
+When updating data table pages, distinguish target-table processing from source-table consumption:
+
+- For the target or written table, record SQL-processed fields when the draft SQL assigns, maps, aggregates, or lands those fields.
+- For source, interface, or upstream tables read by the SQL, record downstream usage, consumed fields, related lineage, and downstream objects only.
+- Do not mark a source table field as "currently SQL processed" merely because it is used to generate another target table.
+- Treat "current SQL processing" on a data table page as SQL that generates or writes that same table unless the repository explicitly defines another meaning.
+
 ## Final Response
 
 The final response should include:
