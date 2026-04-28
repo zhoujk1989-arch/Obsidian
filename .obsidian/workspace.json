@@ -182,6 +182,9 @@
   },
   "active": "e67cd5a56e720781",
   "lastOpenFiles": [
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_草案.sql",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_草案.sql",
+    "my-dev-brain/03-实体/一表通-8.5信用卡分期状态.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.5信用卡分期状态-填报说明-原文.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_001_101-机构信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_101-机构信息表-EAST5.0系统.md",
@@ -206,8 +209,6 @@
     "my-dev-brain/03-实体/一表通-8.16客户理财产品持有状态.md",
     "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.16客户理财产品持有状态-填报说明-原文.md",
     "my-dev-brain/03-实体/一表通-8.15还款状态.md",
-    "my-dev-brain/01-资料库/一表通系统/2026-04-28-8.15还款状态-填报说明-原文.md",
-    "my-dev-brain/03-实体/一表通-8.14存款状态.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_001_101_IE_001_102_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/sp_east_table_002_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXX_草案.sql",
@@ -217,7 +218,6 @@
     "WisdomLedger/模板/SQL开发模板.sql",
     "WisdomLedger/知识库/报表业务口径/一表通系统",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统",
-    "WisdomLedger/知识库/报表业务口径",
     "未命名.canvas",
     "未命名 2.canvas"
   ]
