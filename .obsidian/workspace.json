@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/知识库/报表业务口径/一表通系统/报表-1.1-机构信息-一表通系统.md",
+                "file": "my-dev-brain/04-综合/监管业务场景-报送映射.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "报表-1.1-机构信息-一表通系统"
+              "title": "监管业务场景-报送映射"
             }
           }
         ]
@@ -182,6 +182,12 @@
   },
   "active": "00856da4dea6f9ed",
   "lastOpenFiles": [
+    "my-dev-brain/04-综合/监管系统知识库-组织方案.md",
+    "my-dev-brain/04-综合/监管系统-报表清单.md",
+    "my-dev-brain/AGENTS.md",
+    "WisdomLedger/AGENTS.md",
+    "WisdomLedger/索引.md",
+    "WisdomLedger/知识库/报表业务口径/一表通系统/报表-1.1-机构信息-一表通系统.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-IE_001_101-机构信息表.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-IE_002_203-对公客户信息表.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_001_101_JGXXB_校验.sql",
@@ -195,7 +201,6 @@
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_001_103_GYB_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_002_203_DGKHXXB_校验.sql",
     "WisdomLedger/原始材料/业务需求/EAST5.0/015_收单商户信息表.md",
-    "WisdomLedger/AGENTS.md",
     "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_002_206-关联关系表-EAST5.0系统.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_002_206-关联关系表-EAST5.0系统.md",
     "my-dev-brain/03-实体/1104-S63_Ⅲ-各控股类型企业融资情况表.md",
@@ -207,17 +212,12 @@
     "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_002_203-对公客户信息表-EAST5.0系统.md",
     "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_002_203-对公客户信息表-EAST5.0系统.md",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-EAST_IE_002_203.md",
-    "WisdomLedger/索引.md",
     "my-dev-brain/README.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/062_即期及衍生品交易信息表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/061_自营资金业务余额表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/060_自营资金交易信息表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/059_金融工具信息表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/058_汇率信息表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/057_代理代销交易信息表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/056_委托贷款信息表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/055_交易背景信息表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/054_保函与信用证表.md",
     "未命名.canvas",
     "未命名 2.canvas"
   ]
