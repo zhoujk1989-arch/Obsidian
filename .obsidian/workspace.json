@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_102-员工表-EAST5.0系统.md",
+                "file": "WisdomLedger/AGENTS.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "血缘-IE_001_102-员工表-EAST5.0系统"
+              "title": "AGENTS"
             }
           }
         ]
@@ -182,6 +182,9 @@
   },
   "active": "00856da4dea6f9ed",
   "lastOpenFiles": [
+    "WisdomLedger/工作区/SQL开发/EAST5.0/PROC_DGKHCWXXB.sql",
+    "WisdomLedger/工作区/SQL开发/EAST5.0",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_102-员工表-EAST5.0系统.md",
     "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
     "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_002_203-对公客户信息表-EAST5.0系统.md",
     "WisdomLedger/AGENTS.md",
@@ -208,8 +211,6 @@
     "WisdomLedger/原始材料/业务需求/EAST5.0/048_贷款五级形态变动表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/047_资产转让关系表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/046_信贷资产转让表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/045_资产核销表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/044_授信信息表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0",
     "WisdomLedger/原始材料/业务需求",
     "WisdomLedger/原始材料/语法参考",
@@ -217,7 +218,6 @@
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_JGXXB_草案.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_002_202_个人客户关系表_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_202_草案.sql",
-    "my-dev-brain/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_202_草案.sql",
     "未命名.canvas",
     "未命名 2.canvas"
   ]

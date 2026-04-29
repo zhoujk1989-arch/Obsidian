@@ -29,7 +29,7 @@
 | 写 SQL、补 SQL、生成 SQL、写存储过程、生成视图、加工脚本、校验 SQL | SQL/存储过程开发    | `.agents/workflows/SQL开发.md`；同时使用 `.agents/skills/sql-dev/` |
 | 只问口径、差异、字段含义、历史结论                         | 查询与必要回写       | `.agents/workflows/查询与回写.md`                                |
 | 改表、改字段、字段口径变化、血缘影响分析、下游影响分析               | 血缘影响分析        | `.agents/rules/血缘影响分析规则.md`                                 |
-| 创建或更新血缘、补上下游、跨系统表关系、SQL 来源去向维护             | 血缘双向维护        | `.agents/rules/血缘双向维护规则.md`                                 |
+| 创建或更新血缘、补上下游、跨系统表关系、SQL 来源去向维护            | 血缘双向维护        | `.agents/rules/血缘双向维护规则.md`                                 |
 | 巡检、检查、lint、死链、一致性、状态核对                    | 巡检/lint       | `.agents/workflows/巡检-lint.md`                              |
 | 页面写作、报表页/数据表页/血缘页结构                       | 页面写作规则        | `.agents/rules/页面写作规则.md`                                   |
 | 外部监管来源、`my-dev-brain`、wikilink            | 外部来源规则        | `.agents/rules/外部来源规则.md`                                   |
