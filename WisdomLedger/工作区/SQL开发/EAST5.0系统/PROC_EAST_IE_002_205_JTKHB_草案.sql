@@ -62,7 +62,7 @@
 - 排除规则（同业集团客户）的筛选字段来源未确认，当前未实现同业排除逻辑。
 */
 
-CREATE PROCEDURE `PROC_IE_002_205_JTKHB`(
+CREATE PROCEDURE `PROC_EAST_IE_002_205_JTKHB`(
     IN I_DATE VARCHAR(8)
 )
 BEGIN

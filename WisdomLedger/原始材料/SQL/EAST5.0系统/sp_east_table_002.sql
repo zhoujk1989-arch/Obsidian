@@ -105,7 +105,7 @@ BEGIN
             WHEN e.A030015 = '01' THEN '正式员工'
             WHEN e.A030015 = '02' THEN '非正式员工'
             WHEN e.A030015 = '03' THEN '非员工高管'
-            WHEN e.A030015 LIKE '00%' THEN '其他-自定义'
+            WHEN e.A030015 LIKE '00%' THEN CONCAT('其他-', SUBSTRING(e.A030015, 3))
             ELSE NULLIF(TRIM(e.A030015), '')
         END AS YGLX,
         DATE_FORMAT(e.A030028, '%Y%m%d') AS CJRQ,
@@ -136,7 +136,7 @@ BEGIN
             WHEN e.A030022 = '03' THEN '其他-待岗'
             WHEN e.A030022 = '04' THEN '离职'
             WHEN e.A030022 = '05' THEN '离岗'
-            WHEN e.A030022 LIKE '00%' THEN '其他-自定义'
+            WHEN e.A030022 LIKE '00%' THEN CONCAT('其他-', SUBSTRING(e.A030022, 3))
             ELSE NULLIF(TRIM(e.A030022), '')
         END AS YGZT,
         COALESCE(NULLIF(TRIM(e.A030017), ''), '') AS GWMC
