@@ -8,63 +8,63 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "path:WisdomLedger/知识库/码值  ",
+      "query": "path:regulatory-data-lab/知识库/码值  ",
       "color": {
         "a": 1,
         "rgb": 14701138
       }
     },
     {
-      "query": "path:my-dev-brain/01-资料库  ",
+      "query": "path:regulatory-knowledge-vault/01-资料库  ",
       "color": {
         "a": 1,
         "rgb": 14725458
       }
     },
     {
-      "query": "path:my-dev-brain/03-实体  ",
+      "query": "path:regulatory-knowledge-vault/03-实体  ",
       "color": {
         "a": 1,
         "rgb": 11657298
       }
     },
     {
-      "query": "path:my-dev-brain/02-主题  ",
+      "query": "path:regulatory-knowledge-vault/02-主题  ",
       "color": {
         "a": 1,
         "rgb": 5431378
       }
     },
     {
-      "query": "path:my-dev-brain/90-模板  ",
+      "query": "path:regulatory-knowledge-vault/90-模板  ",
       "color": {
         "a": 1,
         "rgb": 6084269
       }
     },
     {
-      "query": "path:my-dev-brain/06-项目  ",
+      "query": "path:regulatory-knowledge-vault/06-项目  ",
       "color": {
         "a": 1,
         "rgb": 6073814
       }
     },
     {
-      "query": "path:my-dev-brain/04-综合  ",
+      "query": "path:regulatory-knowledge-vault/04-综合  ",
       "color": {
         "a": 1,
         "rgb": 6053078
       }
     },
     {
-      "query": "path:WisdomLedger/知识库/数据表  ",
+      "query": "path:regulatory-data-lab/知识库/数据表  ",
       "color": {
         "a": 1,
         "rgb": 11361494
       }
     },
     {
-      "query": "path:WisdomLedger/知识库/来源  ",
+      "query": "path:regulatory-data-lab/知识库/来源  ",
       "color": {
         "a": 1,
         "rgb": 14048429
