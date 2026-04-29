@@ -11,10 +11,14 @@
             "id": "00856da4dea6f9ed",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_001_102-员工表-EAST5.0系统.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "血缘-IE_001_102-员工表-EAST5.0系统"
             }
           }
         ]
@@ -178,6 +182,15 @@
   },
   "active": "00856da4dea6f9ed",
   "lastOpenFiles": [
+    "WisdomLedger/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
+    "WisdomLedger/知识库/血缘/EAST5.0系统/血缘-IE_002_203-对公客户信息表-EAST5.0系统.md",
+    "WisdomLedger/AGENTS.md",
+    "WisdomLedger/知识库/报表业务口径/EAST5.0系统/报表-IE_002_203-对公客户信息表-EAST5.0系统.md",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/说明-EAST_IE_002_203.md",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_002_203_校验.sql",
+    "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_203_DGKHXXB_草案.sql",
+    "WisdomLedger/索引.md",
+    "my-dev-brain/README.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/062_即期及衍生品交易信息表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/061_自营资金业务余额表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/060_自营资金交易信息表.md",
@@ -197,13 +210,6 @@
     "WisdomLedger/原始材料/业务需求/EAST5.0/046_信贷资产转让表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/045_资产核销表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0/044_授信信息表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/043_表内外业务抵质押物.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/042_表内外业务担保人.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/041_表内外业务担保合同表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/040_互联网贷款合作协议表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/039_垫款登记表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/038_融资租赁业务表.md",
-    "WisdomLedger/原始材料/业务需求/EAST5.0/037_贸易融资业务表.md",
     "WisdomLedger/原始材料/业务需求/EAST5.0",
     "WisdomLedger/原始材料/业务需求",
     "WisdomLedger/原始材料/语法参考",
@@ -212,8 +218,6 @@
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/CHECK_IE_002_202_个人客户关系表_校验.sql",
     "WisdomLedger/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_202_草案.sql",
     "my-dev-brain/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_202_草案.sql",
-    "my-dev-brain/工作区/SQL开发/EAST5.0系统",
-    "my-dev-brain/工作区/SQL开发",
     "未命名.canvas",
     "未命名 2.canvas"
   ]
