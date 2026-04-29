@@ -34,7 +34,7 @@ tags:
 - `原始材料/表结构/EAST5.0系统/IE_001_102-员工表-DDL-2026-04-28.sql`
 - `原始材料/SQL/EAST5.0系统/sp_east_table_002.sql`
 - `工作区/SQL开发/EAST5.0系统/sp_east_table_002_草案.sql`
-- `工作区/SQL开发/EAST5.0系统/CHECK_IE_001_101_IE_001_102_校验.sql`
+- `工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_001_101_JGXXB_校验.sql`
 
 ## 系统范围
 

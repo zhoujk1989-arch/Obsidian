@@ -76,5 +76,5 @@ CREATE TABLE `IE_002_202` (...)
 
 ## Open Questions
 
-- SQL 草案已生成：`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_202_草案.sql`，待运行验证后归档。对应校验 SQL：`CHECK_IE_002_202_个人客户关系表_校验.sql`。
+- SQL 草案已生成：`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_202_GRRKXB_草案.sql`，待运行验证后归档。对应校验 SQL：`CHECK_EAST_IE_002_202_GRRKXB_校验.sql`。
 - 映射规则来源：《附件2："一表通"转换EAST映射规则.xls》第 136 行。

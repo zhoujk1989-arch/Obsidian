@@ -31,8 +31,8 @@ tags:
 ## 本地文件
 
 - `原始材料/表结构/EAST5.0系统/IE_001_104-岗位信息表-DDL-2026-04-28.sql`
-- `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_104_草案.sql`（SQL 草案，待验证）
-- `工作区/SQL开发/EAST5.0系统/CHECK_IE_001_104_岗位信息表_校验.sql`（校验 SQL）
+- `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_104_GXAXB_草案.sql`（SQL 草案，待验证）
+- `工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_001_104_GXAXB_校验.sql`（校验 SQL）
 
 ## 系统范围
 
@@ -83,5 +83,5 @@ CREATE TABLE `IE_001_104` (...)
 
 ## Open Questions
 
-- 当前尚未取得 `IE_001_104` 的实际装载 SQL、存储过程或接口落地脚本（已生成草案 `PROC_EAST_IE_001_104_草案.sql`，待验证）。
+- 当前尚未取得 `IE_001_104` 的实际装载 SQL、存储过程或接口落地脚本（已生成草案 `PROC_EAST_IE_001_104_GXAXB_草案.sql`，待验证）。
 - GSFZJG（归属分支机构）和 SENSITIVEFLAG（涉密标志）数据来源待确认。

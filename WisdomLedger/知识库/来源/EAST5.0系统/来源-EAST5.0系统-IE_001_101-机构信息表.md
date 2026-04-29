@@ -33,8 +33,8 @@ tags:
 
 - `原始材料/表结构/EAST5.0系统/IE_001_101-机构信息表-DDL-2026-04-28.sql`
 - `原始材料/SQL/EAST5.0系统/PROC_EAST_IE_001_101_JGXX.sql`
-- `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXX_草案.sql`
-- `工作区/SQL开发/EAST5.0系统/CHECK_IE_001_101_IE_001_102_校验.sql`
+- `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXXB_草案.sql`
+- `工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_001_101_JGXXB_校验.sql`
 
 ## 系统范围
 
@@ -73,7 +73,7 @@ tags:
 ```sql
 -- 完整 DDL 见 `原始材料/表结构/EAST5.0系统/IE_001_101-机构信息表-DDL-2026-04-28.sql`
 -- 完整装载 SQL 见 `原始材料/SQL/EAST5.0系统/PROC_EAST_IE_001_101_JGXX.sql`
--- SQL 开发草案见 `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXX_草案.sql`
+-- SQL 开发草案见 `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_101_JGXXB_草案.sql`
 CREATE TABLE `IE_001_101` (...)
 ```
 

@@ -79,7 +79,7 @@ CREATE TABLE `IE_002_203` (...)
 ## SQL 草案
 
 - 存储过程：`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_203_DGKHXXB_草案.sql`
-- 校验 SQL：`工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_002_203_校验.sql`
+- 校验 SQL：`工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_002_203_DGKHXXB_校验.sql`
 - 实现说明：`工作区/SQL开发/EAST5.0系统/说明-EAST_IE_002_203.md`
 
 ## 字段级来源摘要
