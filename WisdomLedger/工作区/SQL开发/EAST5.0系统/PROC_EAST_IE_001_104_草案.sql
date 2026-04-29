@@ -8,7 +8,7 @@
 - EAST5.0系统。
 
 目标产物：
-- MySQL 存储过程草案。
+- GBase 8a MPP 存储过程草案。
 
 依赖知识页：
 - [[来源-EAST5.0系统-IE_001_104-岗位信息表]]
@@ -38,154 +38,127 @@
 - GSFZJG（归属分支机构）、SENSITIVEFLAG（涉密标志）当前无映射来源，仍置空。
 - 一表通 T_1_4 的岗位撤销日期字段（A040010）取值为 9999-12-31 时表示有效，需确认该常量是否统一。
 - 采集日期字段在 T_1_4 中为 DATE 类型，输出为 VARCHAR(8) 格式 YYYYMMDD，需确认 EAST5.0 目标表 CJRQ 是否必须 VARCHAR(8)。
-*/
 
-DELIMITER $$
+开发说明：
+- 日期函数使用 GBase 8a 风格：TO_DATE / TO_CHAR。
+- 直接 DML + COMMIT，不写 START TRANSACTION。
+- 异常处理使用 GET DIAGNOSTICS CONDITION 1 + GBASE_ERRNO。
+*/
 
 CREATE PROCEDURE `PROC_EAST_IE_001_104`(
     IN I_DATE VARCHAR(8),
     IN I_BATCH_NO VARCHAR(64)
 )
 BEGIN
-    -- 声明变量
-    DECLARE V_DATA_DATE DATE;
-    DECLARE V_LAST_MON_DT DATE;
-    DECLARE V_DELETE_COUNT INT DEFAULT 0;
-    DECLARE V_INSERT_COUNT INT DEFAULT 0;
-    DECLARE V_PROC_NAME VARCHAR(200) DEFAULT 'PROC_EAST_IE_001_104';
-    DECLARE V_STATUS INT DEFAULT 0;
-    DECLARE V_START_DT DATETIME;
-    DECLARE V_STEP_NO INT DEFAULT 0;
-    DECLARE V_DESCB VARCHAR(200);
-    DECLARE P_SQLCDE VARCHAR(200);
-    DECLARE P_STATE VARCHAR(200);
-    DECLARE P_SQLMSG VARCHAR(2000);
+  #声明变量
+  DECLARE P_DATA_DATE      DATE;
+  DECLARE P_LAST_MON_DT    DATE;
+  DECLARE P_SQLCDE         VARCHAR(200);
+  DECLARE P_STATE          VARCHAR(200);
+  DECLARE P_SQLMSG         VARCHAR(2000);
 
-    -- 异常处理器
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-        GET DIAGNOSTICS CONDITION 1 P_SQLCDE = GBASE_ERRNO, P_SQLMSG = MESSAGE_TEXT, P_STATE = RETURNED_SQLSTATE;
-        SET V_STATUS = -1;
-        SET V_STEP_NO = V_STEP_NO + 1;
-        SET V_DESCB = '程序异常';
-        -- 日志写入占位：CALL PROC_ETL_JOB_LOG(...)
-        ROLLBACK;
-        RESIGNAL;
-    END;
+  #声明异常
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    GET DIAGNOSTICS CONDITION 1
+        P_SQLCDE = GBASE_ERRNO,
+        P_SQLMSG = MESSAGE_TEXT,
+        P_STATE  = RETURNED_SQLSTATE;
+    ROLLBACK;
+  END;
 
-    -- 事务开始
-    START TRANSACTION;
+  #变量初始化
+  SET P_DATA_DATE = TO_DATE(I_DATE, 'YYYYMMDD');
+  SET P_LAST_MON_DT = LAST_DAY(P_DATA_DATE - INTERVAL 1 MONTH);
 
-    -- 初始化日期变量
-    SET V_DATA_DATE = STR_TO_DATE(I_DATE, '%Y%m%d');
-    SET V_LAST_MON_DT = LAST_DAY(DATE_SUB(V_DATA_DATE, INTERVAL 1 MONTH));
+  #1.清除数据
+  DELETE FROM IE_001_104
+   WHERE CJRQ = I_DATE;
+  COMMIT;
 
-    -- 1. 清理区：删除目标表当期数据，保证幂等
-    SET V_START_DT = NOW();
-    SET V_STEP_NO = V_STEP_NO + 1;
-    SET V_DESCB = '删除目标表当期数据';
+  #2.插入数据
+  INSERT INTO IE_001_104 (
+      NBJGH,
+      JRXKZH,
+      GSFZJG,
+      CJRQ,
+      GWSM,
+      SENSITIVEFLAG,
+      BBZ,
+      GWMC,
+      GWZT,
+      GWZL,
+      GWBH
+  )
+  SELECT
+      # 内部机构号：从岗位信息.机构ID（A040001）截取第12位开始至最后一位
+      SUBSTR(src.A040001, 12) AS NBJGH,
 
-    DELETE FROM IE_001_104
-     WHERE CJRQ = I_DATE;
+      # 金融许可证号：通过截取后的内部机构号关联机构信息表获取
+      org.A010003 AS JRXKZH,
 
-    SET V_DELETE_COUNT = ROW_COUNT();
+      # 归属分支机构：当前无映射来源，置空
+      NULL AS GSFZJG,
 
-    -- 2. 主加工区：从一表通岗位信息映射到 EAST5.0 岗位信息
-    SET V_START_DT = NOW();
-    SET V_STEP_NO = V_STEP_NO + 1;
-    SET V_DESCB = '主加工：映射岗位信息';
+      # 采集日期：从岗位信息.采集日期（A040008）转换 YYYYMMDD 格式
+      TO_CHAR(src.A040008, 'YYYYMMDD') AS CJRQ,
 
-    INSERT INTO IE_001_104 (
-        NBJGH,
-        JRXKZH,
-        GSFZJG,
-        CJRQ,
-        GWSM,
-        SENSITIVEFLAG,
-        BBZ,
-        GWMC,
-        GWZT,
-        GWZL,
-        GWBH
-    )
-    SELECT
-        -- 内部机构号：从岗位信息.机构ID（A040001）截取第12位开始至最后一位
-        SUBSTR(src.A040001, 12) AS NBJGH,
+      # 岗位说明：直接映射
+      src.A040005 AS GWSM,
 
-        -- 金融许可证号：通过截取后的内部机构号关联机构信息表获取
-        org.A010003 AS JRXKZH,
+      # 涉密标志：当前无映射来源，置空
+      NULL AS SENSITIVEFLAG,
 
-        -- 归属分支机构：当前无映射来源，置空
-        NULL AS GSFZJG,
+      # 备注：直接映射
+      src.A040007 AS BBZ,
 
-        -- 采集日期：从岗位信息.采集日期（A040008）转换 YYYYMMDD 格式
-        DATE_FORMAT(src.A040008, '%Y%m%d') AS CJRQ,
+      # 岗位名称：直接映射
+      src.A040004 AS GWMC,
 
-        -- 岗位说明：直接映射
-        src.A040005 AS GWSM,
+      # 岗位状态：直接映射
+      src.A040006 AS GWZT,
 
-        -- 涉密标志：当前无映射来源，置空
-        NULL AS SENSITIVEFLAG,
+      # 岗位种类：直接映射
+      src.A040003 AS GWZL,
 
-        -- 备注：直接映射
-        src.A040007 AS BBZ,
+      # 岗位编号：直接映射
+      src.A040002 AS GWBH
 
-        -- 岗位名称：直接映射
-        src.A040004 AS GWMC,
+  FROM (
+      # 主源：一表通岗位信息表
+      # 过滤条件：岗位撤销日期等于当月 或 9999-12-31（视为有效/终态）
+      SELECT
+          t.A040001,
+          t.A040002,
+          t.A040003,
+          t.A040004,
+          t.A040005,
+          t.A040006,
+          t.A040007,
+          t.A040008,
+          t.A040010
+      FROM T_1_4 t
+      WHERE t.A040010 = TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')
+         OR t.A040010 = '9999-12-31'
+  ) src
+  LEFT JOIN (
+      # 机构信息子查询：通过内部机构号关联取金融许可证号
+      # 注意：SUBSTR(A040001, 12) 截取后与 A010002 关联
+      SELECT
+          t.A010002,
+          t.A010003
+      FROM T_1_1 t
+      WHERE t.A010020 = TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')
+        AND NOT EXISTS (
+            SELECT 1
+            FROM T_1_1 t_min
+            WHERE t_min.A010020 = TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')
+              AND t_min.A010002 = t.A010002
+              AND t_min.A010001 < t.A010001
+        )
+  ) org
+    ON SUBSTR(src.A040001, 12) = org.A010002;
 
-        -- 岗位状态：直接映射
-        src.A040006 AS GWZT,
+  COMMIT;
 
-        -- 岗位种类：直接映射
-        src.A040003 AS GWZL,
-
-        -- 岗位编号：直接映射
-        src.A040002 AS GWBH
-
-    FROM (
-        -- 主源：一表通岗位信息表
-        -- 过滤条件：岗位撤销日期等于当月 或 9999-12-31（视为有效/终态）
-        SELECT
-            t.A040001,
-            t.A040002,
-            t.A040003,
-            t.A040004,
-            t.A040005,
-            t.A040006,
-            t.A040007,
-            t.A040008,
-            t.A040010
-        FROM T_1_4 t
-        WHERE t.A040010 = DATE_FORMAT(V_DATA_DATE, '%Y-%m-%d')
-           OR t.A040010 = '9999-12-31'
-    ) src
-    LEFT JOIN (
-        -- 机构信息子查询：通过内部机构号关联取金融许可证号
-        -- 注意：SUBSTR(A040001, 12) 截取后与 A010002 关联
-        SELECT
-            t.A010002,
-            t.A010003
-        FROM T_1_1 t
-        WHERE t.A010020 = V_DATA_DATE
-          AND NOT EXISTS (
-              SELECT 1
-              FROM T_1_1 t_min
-              WHERE t_min.A010020 = V_DATA_DATE
-                AND t_min.A010002 = t.A010002
-                AND t_min.A010001 < t.A010001
-          )
-    ) org
-      ON SUBSTR(src.A040001, 12) = org.A010002;
-
-    SET V_INSERT_COUNT = ROW_COUNT();
-
-    -- 3. 提交事务
-    COMMIT;
-
-    -- 日志写入占位（生产环境）：
-    -- CALL PROC_ETL_JOB_LOG(V_DATA_DATE, V_PROC_NAME, V_STATUS, V_START_DT, NOW(), NULL, NULL,
-    --     CONCAT('删除', V_DELETE_COUNT, '行, 插入', V_INSERT_COUNT, '行'), V_STEP_NO, '过程结束执行');
-
-END$$
-
-DELIMITER ;
+END;
