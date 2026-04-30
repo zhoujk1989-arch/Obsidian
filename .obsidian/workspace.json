@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "40f913f11a8cf663",
+        "id": "5604f470ecfde70f",
         "type": "tabs",
         "children": [
           {
-            "id": "00856da4dea6f9ed",
+            "id": "52f1b44115ec8dbf",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "regulatory-knowledge-vault/04-综合/监管系统-报表清单.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "监管系统-报表清单"
             }
           }
         ]
@@ -176,9 +180,15 @@
       "bases:新建数据库": false
     }
   },
-  "active": "00856da4dea6f9ed",
+  "active": "52f1b44115ec8dbf",
   "lastOpenFiles": [
+    "regulatory-data-lab/模板/来源模板.md",
+    "03-实体",
+    "regulatory-knowledge-vault/04-综合/一表通系统-报表关系.md",
     "regulatory-knowledge-vault/04-综合/监管业务场景-报送映射.md",
+    "regulatory-knowledge-vault/04-综合/监管系统-报表清单.md",
+    "regulatory-data-lab/索引.md",
+    "my-dev-brain/04-综合/监管业务场景-报送映射.md",
     "regulatory-knowledge-vault/04-综合/梦境/README.md",
     "regulatory-knowledge-vault/04-综合/梦境/2026-04-07-梦境.md",
     "regulatory-knowledge-vault/04-综合/梦境/2026-04-08-梦境.md",
@@ -199,11 +209,6 @@
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.1贷款借据-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.16客户理财产品持有状态-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.15还款状态-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.14存款状态-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.13授信情况-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.12五级分类状态-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.11表外业务手续费及收益-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.10理财产品状态-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-27-6.23信贷资产转让协议-填报说明-原文",
     "regulatory-knowledge-vault/04-综合/梦境",
     "regulatory-knowledge-vault/01-资料库/一表通系统",
@@ -213,7 +218,6 @@
     "regulatory-knowledge-vault/06-项目",
     "regulatory-knowledge-vault/04-综合",
     "regulatory-knowledge-vault/02-主题",
-    "regulatory-knowledge-vault/00-首页",
     "未命名.canvas",
     "未命名 2.canvas"
   ]

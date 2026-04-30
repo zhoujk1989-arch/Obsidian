@@ -4,7 +4,7 @@ id: 来源-EAST5.0系统-IE_004_412_INC-对公信贷分户账明细记录
 status: draft
 updated: 2026-04-28
 external_vault: regulatory-knowledge-vault
-external_paths:[]
+external_paths: []
 search_keywords:
   - IE_004_412_INC
   - 对公信贷分户账明细记录

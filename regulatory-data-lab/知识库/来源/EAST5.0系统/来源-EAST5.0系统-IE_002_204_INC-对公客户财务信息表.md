@@ -4,7 +4,7 @@ id: 来源-EAST5.0系统-IE_002_204_INC-对公客户财务信息表
 status: draft
 updated: 2026-04-28
 external_vault: regulatory-knowledge-vault
-external_paths:[]
+external_paths: []
 search_keywords:
   - IE_002_204_INC
   - 对公客户财务信息表
