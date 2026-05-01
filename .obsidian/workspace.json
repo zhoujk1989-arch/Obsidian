@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "regulatory-knowledge-vault/AGENTS.md",
+                "file": "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.8投资情况-填报说明-原文.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AGENTS"
+              "title": "2026-04-28-8.8投资情况-填报说明-原文"
             }
           }
         ]
@@ -182,6 +182,11 @@
   },
   "active": "52f1b44115ec8dbf",
   "lastOpenFiles": [
+    "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_DWDKFS_单位贷款发生额信息.md",
+    "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-01-JS_201_DWDKFS_单位贷款发生额信息-原文.md",
+    "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_CLDWDK_存量单位贷款信息.md",
+    "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-01-JS_201_CLDWDK_存量单位贷款信息-原文.md",
+    "regulatory-knowledge-vault/AGENTS.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/README.md",
     "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_CLTYJD_存量同业借贷信息.md",
     "regulatory-knowledge-vault/04-综合/金融基础数据系统-报表关系.md",
@@ -205,11 +210,6 @@
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-9.2投融资标的-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-9.1投资标的关系-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.9融资情况-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.8投资情况-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.7同业存量情况-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.6衍生品存量情况-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.5信用卡分期状态-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.4信用卡账户状态-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-27-6.23信贷资产转让协议-填报说明-原文",
     "regulatory-knowledge-vault/04-综合/梦境",
     "regulatory-knowledge-vault/01-资料库/一表通系统",
