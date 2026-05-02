@@ -11,10 +11,14 @@
             "id": "52f1b44115ec8dbf",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "regulatory-knowledge-vault/04-综合/金融基础数据系统-报表关系.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "金融基础数据系统-报表关系"
             }
           }
         ]
@@ -178,6 +182,22 @@
   },
   "active": "52f1b44115ec8dbf",
   "lastOpenFiles": [
+    "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_DBWXX_担保物信息.md",
+    "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-02-JS_201_DBWXX_担保物信息-原文.md",
+    "regulatory-data-lab/原始材料/表结构/金融基础数据系统/10_DBHTXX_担保合同信息.md",
+    "regulatory-data-lab/知识库/数据表/金融基础数据系统/数据表-JS_201_DBHTXX.md",
+    "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_CLZXEP_存量专项贷款二批报文信息.md",
+    "regulatory-data-lab/知识库/报表业务口径/金融基础数据系统/报表-JS_201_担保合同信息.md",
+    "regulatory-data-lab/知识库/来源/金融基础数据系统/来源-金融基础数据采集规范V2.1-担保合同信息.md",
+    "regulatory-data-lab/知识库/概念/概念-系统-金融基础数据系统.md",
+    "regulatory-data-lab/原始材料/表结构/金融基础数据系统",
+    "regulatory-data-lab/知识库/血缘/金融基础数据系统",
+    "regulatory-data-lab/知识库/数据表/金融基础数据系统",
+    "regulatory-data-lab/知识库/报表业务口径/金融基础数据系统",
+    "regulatory-data-lab/知识库/来源/金融基础数据系统",
+    "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-02-JS_201_CLZXEP_存量专项贷款二批报文信息-原文.md",
+    "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_CLZXYP_存量专项贷款一批报文信息.md",
+    "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-02-JS_201_CLZXYP_存量专项贷款一批报文信息-原文.md",
     "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_GRDKFS_个人贷款发生额信息.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-02-JS_201_GRDKFS_个人贷款发生额信息-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-8.8投资情况-填报说明-原文.md",
@@ -195,25 +215,9 @@
     "regulatory-knowledge-vault/04-综合/监管系统-报表清单.md",
     "regulatory-data-lab/模板/来源模板.md",
     "03-实体",
-    "regulatory-knowledge-vault/04-综合/一表通系统-报表关系.md",
-    "regulatory-knowledge-vault/04-综合/监管业务场景-报送映射.md",
-    "regulatory-data-lab/索引.md",
-    "my-dev-brain/04-综合/监管业务场景-报送映射.md",
-    "regulatory-knowledge-vault/04-综合/梦境/README.md",
-    "regulatory-knowledge-vault/04-综合/梦境/2026-04-07-梦境.md",
-    "regulatory-knowledge-vault/04-综合/梦境/2026-04-08-梦境.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/README.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-9.5理财投资标的-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-9.3抵质押品-填报说明-原文.md",
-    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-28-9.4商业单据-填报说明-原文.md",
     "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-27-6.23信贷资产转让协议-填报说明-原文",
     "regulatory-knowledge-vault/04-综合/梦境",
     "regulatory-knowledge-vault/01-资料库/一表通系统",
-    "regulatory-knowledge-vault/01-资料库/EAST5.0系统",
-    "regulatory-knowledge-vault/01-资料库/1104系统",
-    "regulatory-knowledge-vault/90-模板",
-    "regulatory-knowledge-vault/06-项目",
-    "regulatory-knowledge-vault/04-综合",
     "未命名.canvas",
     "未命名 2.canvas"
   ]
