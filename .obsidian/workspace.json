@@ -11,14 +11,10 @@
             "id": "52f1b44115ec8dbf",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "regulatory-knowledge-vault/04-综合/金融基础数据系统-报表关系.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "金融基础数据系统-报表关系"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "关系图谱"
             }
           }
         ]
@@ -182,6 +178,8 @@
   },
   "active": "52f1b44115ec8dbf",
   "lastOpenFiles": [
+    "regulatory-knowledge-vault/AGENTS.md",
+    "regulatory-knowledge-vault/04-综合/金融基础数据系统-报表关系.md",
     "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_DBWXX_担保物信息.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-02-JS_201_DBWXX_担保物信息-原文.md",
     "regulatory-data-lab/原始材料/表结构/金融基础数据系统/10_DBHTXX_担保合同信息.md",
@@ -205,10 +203,8 @@
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-01-JS_201_DWDKFS_单位贷款发生额信息-原文.md",
     "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_CLDWDK_存量单位贷款信息.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-05-01-JS_201_CLDWDK_存量单位贷款信息-原文.md",
-    "regulatory-knowledge-vault/AGENTS.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/README.md",
     "regulatory-knowledge-vault/03-实体/金融基础数据系统-JS_201_CLTYJD_存量同业借贷信息.md",
-    "regulatory-knowledge-vault/04-综合/金融基础数据系统-报表关系.md",
     "regulatory-knowledge-vault/03-实体/金融基础数据系统.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统/2026-04-30-JS_201_CLTYJD_存量同业借贷信息-原文.md",
     "regulatory-knowledge-vault/01-资料库/金融基础数据系统",
