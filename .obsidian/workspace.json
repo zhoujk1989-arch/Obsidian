@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "regulatory-knowledge-vault/04-综合/监管系统知识库-组织方案.md",
+                "file": "regulatory-knowledge-vault/03-实体/一表通-8.6衍生品存量情况.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "监管系统知识库-组织方案"
+              "title": "一表通-8.6衍生品存量情况"
             }
           }
         ]
@@ -182,9 +182,19 @@
   },
   "active": "20d0e46b2e4bf066",
   "lastOpenFiles": [
-    "regulatory-knowledge-vault/04-综合/监管业务场景-报送映射.md",
-    "regulatory-knowledge-vault/04-综合/监管系统知识库-组织方案.md",
+    "regulatory-knowledge-vault/03-实体/一表通-8.4信用卡账户状态.md",
+    "regulatory-knowledge-vault/03-实体/一表通-8.6衍生品存量情况.md",
+    "regulatory-knowledge-vault/03-实体/一表通-4.4分户账变动情况.md",
+    "regulatory-knowledge-vault/03-实体/一表通-4.3分户账信息.md",
     "regulatory-knowledge-vault/04-综合/监管系统-报表清单.md",
+    "regulatory-knowledge-vault/03-实体/一表通系统.md",
+    "regulatory-knowledge-vault/03-实体/反洗钱系统.md",
+    "regulatory-knowledge-vault/03-实体/大集中系统.md",
+    "regulatory-knowledge-vault/03-实体/1104系统.md",
+    "regulatory-knowledge-vault/04-综合/待确认清单.md",
+    "regulatory-knowledge-vault/02-主题/数据校验规则.md",
+    "regulatory-knowledge-vault/04-综合/监管系统知识库-组织方案.md",
+    "regulatory-knowledge-vault/04-综合/监管业务场景-报送映射.md",
     "regulatory-knowledge-vault/04-综合/1104系统-报表目录.md",
     "regulatory-knowledge-vault/04-综合/一表通系统-报表目录.md",
     "regulatory-knowledge-vault/90-模板/报表目录页模板.md",
@@ -197,17 +207,7 @@
     "regulatory-knowledge-vault/90-模板/规则模板.md",
     "regulatory-knowledge-vault/90-模板/梦境模板.md",
     "regulatory-knowledge-vault/90-模板/报表模板.md",
-    "regulatory-knowledge-vault/03-实体/一表通系统.md",
-    "regulatory-knowledge-vault/04-综合/待确认清单.md",
     "regulatory-knowledge-vault/04-综合/知识库巡检-2026-04-07.md",
-    "regulatory-knowledge-vault/04-综合/一表通系统-报表关系.md",
-    "regulatory-knowledge-vault/04-综合/金融基础数据系统-报表关系.md",
-    "regulatory-knowledge-vault/04-综合/EAST5.0系统-报表关系.md",
-    "regulatory-knowledge-vault/04-综合/1104系统-表间校验关系.md",
-    "regulatory-knowledge-vault/04-综合/知识库维护验收清单.md",
-    "regulatory-knowledge-vault/01-资料库/2026-04-25-表8.2-信用证状态-资料.md",
-    "regulatory-knowledge-vault/01-资料库/2026-04-25-表7.12-融资交易-资料.md",
-    "regulatory-knowledge-vault/01-资料库/2026-04-25-表8.3-垫款状态-资料.md",
     "regulatory-data-lab/原始材料/表结构/金融基础数据系统",
     "regulatory-data-lab/知识库/血缘/金融基础数据系统",
     "regulatory-data-lab/知识库/数据表/金融基础数据系统",
