@@ -2,7 +2,7 @@
 type: report
 id: 报表-IE_002_204_INC-对公客户财务信息表-EAST5.0系统
 status: draft
-updated: 2026-04-29
+updated: 2026-05-04
 tags:
   - regulatory
   - report
