@@ -2,7 +2,7 @@
 type: table
 id: 数据表-IE_004_408_INC-内部分户账明细记录-EAST5.0系统
 status: draft
-updated: 2026-05-04
+updated: 2026-05-05
 tags:
   - regulatory
   - table
@@ -145,10 +145,11 @@ tags:
 
 | 上游对象 | 上游字段/范围 | 处理方式 | 证据/血缘页 | 确认状态 |
 | --- | --- | --- | --- | --- |
-| `T_7_10` | G100001~G100030（31 字段） | 主源，字段映射、码值/日期转换、WHERE 过滤 | [[血缘-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]；`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 待验证（2026-05-05 重构） |
-| `IE_004_407` | NBJGH/JRXKZH/YHJGMC/ZHMC | LEFT JOIN enrich | [[血缘-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]；`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 待验证（2026-05-05 重构） |
-| `IE_004_402` | KJKMMC（×2 别名：dim_mx/dim_dfk） | LEFT JOIN enrich ×2 | [[血缘-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]；`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 待验证（2026-05-05 重构） |
+| `T_7_10` | G100001~G100030（31 字段） | 主源，字段映射、码值/日期转换、WHERE 过滤 `G100028 = V_DATA_DATE` | [[血缘-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]；`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 待验证（2026-05-05 重构） |
+| `IE_004_407` | NBJGH/JRXKZH/YHJGMC/ZHMC | LEFT JOIN ON `src.G100002 = acct.NBFHZZH` | [[血缘-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]；`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 待验证（2026-05-05 重构） |
+| `IE_004_402` | KJKMMC（×2 别名：dim_mx/dim_dfk） | LEFT JOIN ON `src.G100007 = dim_mx.KJKMBH` + `src.G100023 = dim_dfk.KJKMBH` | [[血缘-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]；`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 待验证（2026-05-05 重构） |
 
-- 2026-05-05 重构要点：消除 3 个 JOIN TODO，补齐 5 个码值 CASE（JYLX/JYQD/JYJDBZ/CBMBZ/XZBZ），补齐日期格式转换，WHERE 过滤 `G100028 = V_DATA_DATE`。
+- 2026-05-05 重构要点：依据《023_内部分户账明细记录.md》逐项校准 32 个字段映射；消除 3 个 JOIN TODO，补齐 5 个码值 CASE（JYLX 15 分支/JYQD 8 分支+通配/JYJDBZ 4 分支/CBMBZ 2 分支/XZBZ 3 分支），补齐日期格式转换，WHERE 过滤 `G100028 = V_DATA_DATE`，柜员号 `'自动'`→NULL 处理。
 - 报表业务口径页：[[报表-IE_004_408_INC-内部分户账明细记录-EAST5.0系统]]
 - 业务需求：`原始材料/业务需求/EAST5.0/023_内部分户账明细记录.md`
+- 校验 SQL：`工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_004_408_INC_NBFHZMX_校验.sql`（21 项校验）

@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_002_203-对公客户信息表
 status: draft
-updated: 2026-04-29
+updated: 2026-05-05
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_002_203-对公客户信息表]]"
@@ -80,7 +80,7 @@ CREATE TABLE `IE_002_203` (...)
 
 - 存储过程：`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_002_203_DGKHXXB_草案.sql`
 - 校验 SQL：`工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_002_203_DGKHXXB_校验.sql`
-- 实现说明：`工作区/SQL开发/EAST5.0系统/说明-EAST_IE_002_203.md`
+- 实现说明：`工作区/SQL开发/EAST5.0系统/说明-IE_002_203-对公客户信息表.md`
 
 ## 字段级来源摘要
 

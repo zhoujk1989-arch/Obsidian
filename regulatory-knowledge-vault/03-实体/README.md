@@ -1,5 +1,5 @@
 ---
-type: 主题
+type: 实体
 entity_type: 索引
 keywords: [索引, 导航, 实体汇总]
 ---

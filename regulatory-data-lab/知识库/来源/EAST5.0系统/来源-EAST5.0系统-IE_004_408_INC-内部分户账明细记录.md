@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_004_408_INC-内部分户账明细记录
 status: draft
-updated: 2026-04-28
+updated: 2026-05-05
 external_vault: regulatory-knowledge-vault
 external_paths: []
 search_keywords:
@@ -45,7 +45,7 @@ tags:
 
 - `IE_004_408_INC` 的业务名称为 `内部分户账明细记录`，本地建表注释为"内部分户账明细记录"。
 - DDL 当前包含 `35` 个字段，字段注释中标注 `PK` 的核心标识为：`JYXLH`, `HXJYRQ`, `HXJYSJ`, `CJRQ`, `NBFHZZH`。
-- 2026-05-05 已生成 GBase 存储过程草案（`PROC_EAST_IE_408_INC_NBFHZMX_草案.sql`），消除了 JOIN TODO 和码值 CASE 占位，32 个业务需求字段全部闭环（3 个缺口字段置 NULL）。
+- 2026-05-05 已生成 GBase 存储过程草案（`PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql`），依据《023_内部分户账明细记录.md》逐项校准 32 个字段映射；消除 3 个 JOIN TODO，补齐 5 个码值 CASE，WHERE 过滤 `G100028 = V_DATA_DATE`，32 个业务需求字段全部闭环（3 个缺口字段置 NULL）。
 - 字段级血缘已更新为设计血缘（依据 SQL 草案），尚未运行验证，状态保持 `draft`。
 
 ## 共享知识更新检查
@@ -73,6 +73,6 @@ CREATE TABLE `IE_004_408_INC` (...)
 
 ## Open Questions
 
-- `IE_004_408_INC` 的实际装载 SQL 已生成 GBase 存储过程草案（2026-05-05 重构），但尚未运行验证。
+- `IE_004_408_INC` 的实际装载 SQL 已生成 GBase 存储过程草案（2026-05-05 重构），已逐项对齐《023_内部分户账明细记录.md》32 个字段映射，但尚未运行验证。
 - 缺口字段 GSFZJG/SENSITIVEFLAG/DFKHLB 无映射来源，需需求方确认。
 - WHERE 过滤仅有采集日期条件，终态纳入和排除条件待需求方确认。

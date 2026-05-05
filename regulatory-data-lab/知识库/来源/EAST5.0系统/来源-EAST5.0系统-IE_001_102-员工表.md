@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_001_102-员工表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-05
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_001_102-员工表]]"
@@ -26,15 +26,14 @@ tags:
 - 本来源包记录 `IE_001_102` `员工表` 的本地 EAST5.0 表结构 DDL 和从一表通取数的装载 SQL。
 - 本地 DDL 来自用户提供的 `eastttt.xlsx` 自动生成建表脚本，生成时间为 `2026-04-28 03:38:32`。
 - 本地装载 SQL 来自用户提供的《员工表 - MySQL 存储过程开发需求文档》，已落地为 `sp_east_table_002`。
-- 本次已按 SQL 开发规范同步调整本地装载 SQL，并保留同内容工作区草案：保留原业务逻辑，改为直接 `select` + `left join`，并仅查询实际使用字段。
+- 本次已按 SQL 开发规范同步调整本地装载 SQL；工作区现存草案为 `PROC_EAST_IE_001_102_YSB_草案.sql`。
 - 本页只承载证据包、外部路径和关键发现；完整字段口径维护在 [[数据表-IE_001_102-员工表-EAST5.0系统]]。
 
 ## 本地文件
 
 - `原始材料/表结构/EAST5.0系统/IE_001_102-员工表-DDL-2026-04-28.sql`
 - `原始材料/SQL/EAST5.0系统/sp_east_table_002.sql`
-- `工作区/SQL开发/EAST5.0系统/sp_east_table_002_草案.sql`
-- `工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_001_101_JGXXB_校验.sql`
+- `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_YSB_草案.sql`
 
 ## 系统范围
 
@@ -73,7 +72,7 @@ tags:
 ```sql
 -- 完整 DDL 见 `原始材料/表结构/EAST5.0系统/IE_001_102-员工表-DDL-2026-04-28.sql`
 -- 完整装载 SQL 见 `原始材料/SQL/EAST5.0系统/sp_east_table_002.sql`
--- SQL 开发草案见 `工作区/SQL开发/EAST5.0系统/sp_east_table_002_草案.sql`
+-- SQL 开发草案见 `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_001_102_YSB_草案.sql`
 CREATE TABLE `IE_001_102` (...)
 ```
 

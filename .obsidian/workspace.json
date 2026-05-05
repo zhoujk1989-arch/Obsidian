@@ -180,8 +180,10 @@
       "bases:新建数据库": false
     }
   },
-  "active": "b312a73a79349a41",
+  "active": "e67cd5a56e720781",
   "lastOpenFiles": [
+    "regulatory-knowledge-vault/04-综合/知识库巡检-2026-05-05.md",
+    "regulatory-knowledge-vault/01-资料库/一表通系统/2026-04-27-6.23信贷资产转让协议-填报说明-原文.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_004_406_INC-对公存款分户账明细记录-EAST5.0系统.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_004_407-内部分户账-EAST5.0系统.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_004_404_INC-个人存款分户账明细记录-EAST5.0系统.md",
@@ -206,8 +208,6 @@
     "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_010_1004-自营资金业务余额表-EAST5.0系统.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_010_1003_INC-自营资金交易信息表-EAST5.0系统.md",
     "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_010_1003_INC-自营资金交易信息表-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_010_1002-金融工具信息表-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_010_1002-金融工具信息表-EAST5.0系统.md",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_010_1005_INC_JQJYSPJYXXB_校验.sql",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_010_1005_INC_JQJYSPJYXXB_草案.sql",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_010_1004_ZYZJYWYEB_校验.sql",

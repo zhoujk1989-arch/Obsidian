@@ -1,5 +1,5 @@
 ---
-type: 报表
+type: 实体
 entity_type: 报表
 id: 金融基础数据系统-JS_202_TYCKFS_同业存款发生额信息
 status: draft
