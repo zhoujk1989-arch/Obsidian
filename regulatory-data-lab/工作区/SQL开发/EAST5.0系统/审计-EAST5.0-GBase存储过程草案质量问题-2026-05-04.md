@@ -32,7 +32,8 @@
 | `IE_004_406_INC` | `DGCKFHZMX` | `PROC_EAST_IE_004_406_INC_DGCKFHZMX_草案.sql` | 不合格 | 1 | 1 | 12 | 7 | 1 个 JOIN 未实现；过滤条件未实现；12 个字段/转换待确认；7 个 NULL 赋值 |
 | | | | | | | | | | **2026-05-05 重新校准**：33 个业务需求字段全部映射正确，4 个"待确认"源字段已通过 JOIN 表确认可追溯；3 个 NULL 赋值（SENSITIVEFLAG、GSFZJG、DFKHLB）为 DDL 存在但业务需求未给来源的字段，符合处置原则。审计计数（12/7）存在高估。
 | `IE_004_407` | `NBFHZ` | `PROC_EAST_IE_004_407_NBFHZ_草案.sql` | 已消除JOIN/WHERE阻塞，仍需复核 | 0 | 0 | 0 | 2 | 2 个 NULL 赋值（GSFZJG、SENSITIVEFLAG），符合审计处置原则；其余字段/转换已补齐 |
-| `IE_004_408_INC` | `NBFHZMX` | `PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 不合格 | 1 | 1 | 15 | 10 | 1 个 JOIN 未实现；过滤条件未实现；15 个字段/转换待确认；10 个 NULL 赋值 |
+| `IE_004_408_INC` | `NBFHZMX` | `PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql` | 已消除JOIN/WHERE阻塞，仍需复核 | 0 | 0 | 0 | 3 | 3 个 NULL 赋值（GSFZJG、SENSITIVEFLAG、DFKHLB），符合审计处置原则；其余字段/转换已补齐 |
+| | | | | | | | | **2026-05-05 重新校准**：32 个业务需求字段全部映射正确，3 个 LEFT JOIN 已实现（IE_004_407 + IE_004_402×2）；5 个码值 CASE 已补齐（JYLX 15 分支/JYQD 8 分支+通配/JYJDBZ 4 分支/CBMBZ 2 分支/XZBZ 3 分支）；3 个 NULL 赋值（GSFZJG、SENSITIVEFLAG、DFKHLB）为 DDL 存在但业务需求未给来源的字段，符合处置原则。
 | `IE_004_409` | `GRXDFHZ` | `PROC_EAST_IE_004_409_GRXDFHZ_草案.sql` | 不合格 | 5 | 1 | 5 | 3 | 5 个 JOIN 未实现；过滤条件未实现；5 个字段/转换待确认；3 个 NULL 赋值 |
 | `IE_004_410_INC` | `GRXDFHZMX` | `PROC_EAST_IE_004_410_INC_GRXDFHZMX_草案.sql` | 不合格 | 2 | 1 | 13 | 7 | 2 个 JOIN 未实现；过滤条件未实现；13 个字段/转换待确认；7 个 NULL 赋值 |
 | `IE_004_411` | `DGXDFHZ` | `PROC_EAST_IE_004_411_DGXDFHZ_草案.sql` | 不合格 | 5 | 1 | 5 | 3 | 5 个 JOIN 未实现；过滤条件未实现；5 个字段/转换待确认；3 个 NULL 赋值 |

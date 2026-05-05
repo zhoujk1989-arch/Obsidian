@@ -9,7 +9,7 @@ SELECT COUNT(*) AS target_count
   FROM IE_004_408_INC
  WHERE CJRQ = ?;
 
--- 2. 主键/核心键重复检查（依据 DDL 注释中的 PK 字段）
+-- 2. 主键/核心键重复检查（依据 DDL 注释中的 PK 字段：JYXLH, HXJYRQ, HXJYSJ, CJRQ, NBFHZZH）
 SELECT JYXLH, HXJYRQ, HXJYSJ, CJRQ, NBFHZZH, COUNT(*) AS dup_cnt
   FROM IE_004_408_INC
  WHERE CJRQ = ?
@@ -28,5 +28,110 @@ SELECT CJRQ, COUNT(*) AS cnt
  WHERE CJRQ IS NULL OR LENGTH(CJRQ) <> 8
  GROUP BY CJRQ;
 
--- 5. 字段映射抽样回溯
--- TODO: 按存储过程中的来源表和业务键抽样核对源字段、目标字段和码值转换。
+-- 5. 核心交易日期格式检查（应为 YYYYMMDD 8 位数字）
+SELECT HXJYRQ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE HXJYRQ IS NULL OR LENGTH(HXJYRQ) <> 8
+ GROUP BY HXJYRQ;
+
+-- 6. 核心交易时间格式检查（应为 HHMMSS 6 位数字）
+SELECT HXJYSJ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE HXJYSJ IS NULL OR LENGTH(HXJYSJ) <> 6
+ GROUP BY HXJYSJ;
+
+-- 7. 进账日期格式检查（应为 YYYYMMDD 8 位或 NULL）
+SELECT JZRQ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE JZRQ IS NOT NULL AND (LENGTH(JZRQ) <> 8)
+ GROUP BY JZRQ;
+
+-- 8. 销账日期格式检查（应为 YYYYMMDD 8 位或 NULL）
+SELECT XZRQ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE XZRQ IS NOT NULL AND (LENGTH(XZRQ) <> 8)
+ GROUP BY XZRQ;
+
+-- 9. 交易类型码值检查（应为 15 种枚举之一）
+SELECT JYLX, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE JYLX NOT IN ('转账','取现','存现','消费','代发','代扣','代缴','结息',
+                    '批量交易','贷款发放','贷款还本','贷款还息','银证业务',
+                    '投资理财','其他')
+   AND JYLX IS NOT NULL
+ GROUP BY JYLX;
+
+-- 10. 交易借贷标志码值检查（应为 借/贷/借贷并列/空）
+SELECT JYJDBZ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE JYJDBZ NOT IN ('借','贷','借贷并列','')
+   AND JYJDBZ IS NOT NULL
+ GROUP BY JYJDBZ;
+
+-- 11. 冲补抹标志码值检查（应为 正常/冲补抹）
+SELECT CBMBZ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE CBMBZ NOT IN ('正常','冲补抹')
+   AND CBMBZ IS NOT NULL
+ GROUP BY CBMBZ;
+
+-- 12. 现转标志码值检查（应为 现/转/空）
+SELECT XZBZ, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE XZBZ NOT IN ('现','转','')
+   AND XZBZ IS NOT NULL
+ GROUP BY XZBZ;
+
+-- 13. 交易渠道码值检查（应为 8 种枚举 + 通配变体）
+SELECT JYQD, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE JYQD NOT IN ('柜面','ATM','VTM','POS','网银','手机银行','第三方支付','银联交易','其他')
+   AND JYQD IS NOT NULL
+ GROUP BY JYQD;
+
+-- 14. 交易金额非负检查
+SELECT COUNT(*) AS neg_amount_count
+  FROM IE_004_408_INC
+ WHERE JYJE IS NOT NULL AND JYJE < 0;
+
+-- 15. 借方余额/贷方余额非负检查
+SELECT COUNT(*) AS neg_balance_count
+  FROM IE_004_408_INC
+ WHERE JFYE IS NOT NULL AND JFYE < 0
+    OR DFYE IS NOT NULL AND DFYE < 0;
+
+-- 16. 内部机构号来源检查（应来自 IE_004_407，非空时验证长度）
+SELECT NBJGH, COUNT(*) AS cnt
+  FROM IE_004_408_INC
+ WHERE NBJGH IS NOT NULL AND LENGTH(NBJGH) > 30
+ GROUP BY NBJGH;
+
+-- 17. 缺口字段检查（GSFZJG, SENSITIVEFLAG, DFKHLB 应全部为 NULL）
+SELECT
+    SUM(CASE WHEN GSFZJG IS NOT NULL THEN 1 ELSE 0 END) AS gsfzjg_non_null,
+    SUM(CASE WHEN SENSITIVEFLAG IS NOT NULL THEN 1 ELSE 0 END) AS sensitive_non_null,
+    SUM(CASE WHEN DFKHLB IS NOT NULL THEN 1 ELSE 0 END) AS dfkhlb_non_null
+  FROM IE_004_408_INC
+ WHERE CJRQ = ?;
+
+-- 18. 源表 T_7_10 覆盖检查（目标表行数不应超过源表当日行数）
+SELECT
+    (SELECT COUNT(*) FROM IE_004_408_INC WHERE CJRQ = ?) AS target_rows,
+    (SELECT COUNT(*) FROM T_7_10 WHERE G100028 = ?) AS source_rows;
+
+-- 19. 对方科目编号与内部科目对照表关联缺失检查
+SELECT COUNT(*) AS dim_missing_cnt
+  FROM IE_004_408_INC t
+  LEFT JOIN IE_004_402 dim ON t.DFKMBH = dim.KJKMBH
+ WHERE t.DFKMBH IS NOT NULL AND dim.KJKMBH IS NULL;
+
+-- 20. 明细科目编号与内部科目对照表关联缺失检查
+SELECT COUNT(*) AS mx_dim_missing_cnt
+  FROM IE_004_408_INC t
+  LEFT JOIN IE_004_402 dim ON t.MXKMBH = dim.KJKMBH
+ WHERE t.MXKMBH IS NOT NULL AND dim.KJKMBH IS NULL;
+
+-- 21. 字段映射抽样回溯
+-- TODO: 按存储过程中的来源表和业务键（JYXLH + HXJYRQ + HXJYSJ + CJRQ + NBFHZZH）
+-- 抽样核对源字段、目标字段和码值转换。
+-- 建议：SELECT * FROM IE_004_408_INC WHERE CJRQ = ? ORDER BY RAND() LIMIT 10;

@@ -59,10 +59,11 @@ tags:
 
 ## 技术实现摘要
 
-- SQL 草案：`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql`
-- 校验 SQL：`工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_004_408_INC_NBFHZMX_校验.sql`
-- 主要处理：按采集日期重跑或增量边界过滤，关联一表通来源表，完成直接映射、日期格式转换、码值转换、金额类型转换和备注处理。
-- 当前限制：自动生成草案中复杂关联键、终态纳入和部分 CASE 码值转换待人工补齐，不能视作生产已验证口径。
+- SQL 草案：`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_004_408_INC_NBFHZMX_草案.sql`（2026-05-05 重构）
+- 校验 SQL：`工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_004_408_INC_NBFHZMX_校验.sql`（21 项校验）
+- 主要处理：按采集日期重跑（DELETE + INSERT），LEFT JOIN IE_004_407（4 字段 enrich）和 IE_004_402（×2 科目名称 enrich），完成 32 字段映射、5 个码值 CASE 转换、日期格式转换、金额类型转换。
+- 2026-05-05 重构：消除 3 个 JOIN TODO，补齐 WHERE 过滤 `G100028 = V_DATA_DATE`，补齐 5 个码值 CASE（JYLX 15 分支/JYQD 8 分支+通配/JYJDBZ 4 分支/CBMBZ 2 分支/XZBZ 3 分支）。
+- 当前限制：WHERE 过滤仅有采集日期条件，需求文档未给出终态纳入和排除条件；缺口字段 GSFZJG/SENSITIVEFLAG/DFKHLB 无映射来源。
 
 ## 明细类字段清单与业务口径摘要
 
@@ -119,7 +120,8 @@ tags:
 ## Open Questions
 
 - GBase 草案尚未执行语法校验和跑数校验。
-- 复杂 JOIN 条件、终态纳入、增量边界和部分码值 CASE 需要人工复核。
+- WHERE 过滤仅有采集日期条件，终态纳入和排除条件待需求方确认。
+- 缺口字段 GSFZJG/SENSITIVEFLAG/DFKHLB 无映射来源，SQL 中置 NULL。
 - 外部监管实体页和填报说明 wikilink 待补。
 
 ## 本地 DDL 字段缺口（2026-05-04）
