@@ -2,7 +2,7 @@
 type: report
 id: 报表-IE_004_406_INC-对公存款分户账明细记录-EAST5.0系统
 status: draft
-updated: 2026-05-04
+updated: 2026-05-05
 tags:
   - regulatory
   - report

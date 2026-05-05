@@ -1,10 +1,4 @@
 /*
-草案质量状态：不合格，禁止直接执行。
-原因：本文件仍存在未实现的 JOIN、WHERE 或 CASE 转换占位，必须按原始业务需求逐项重写并复核后才能作为可运行草案。
-审计记录：工作区/SQL开发/EAST5.0系统/审计-EAST5.0-GBase存储过程草案质量问题-2026-05-04.md
-*/
-
-/*
 业务目标：
 - 依据原始业务需求《021_对公存款分户账明细记录.md》生成 EAST5.0 对公存款分户账明细记录（IE_004_406_INC）GBase 存储过程草案。
 
@@ -17,9 +11,16 @@
 依赖材料：
 - 原始材料/业务需求/EAST5.0/021_对公存款分户账明细记录.md
 - 原始材料/表结构/EAST5.0系统/IE_004_406_INC-对公存款分户账明细记录-DDL-2026-04-28.sql
+- 原始材料/表结构/EAST5.0系统/IE_004_405-对公存款分户账-DDL-2026-04-28.sql
+- 原始材料/表结构/EAST5.0系统/IE_001_101-机构信息表-DDL-2026-04-28.sql
+- 原始材料/表结构/EAST5.0系统/IE_004_402-内部科目对照表-DDL-2026-04-28.sql
+- 原始材料/表结构/一表通系统/T_7_1-客户存款账户交易-DDL-2026-04-27.sql
 
 源表：
-- T_7_1
+- T_7_1：客户存款账户交易，主表。
+- IE_004_405：EAST 对公存款分户账，内关联，用于限定对公存款账户并补账户名称、涉密标志、归属分支机构。
+- IE_001_101：EAST 机构信息表，左关联，用于金融许可证号和银行机构名称。
+- IE_004_402：EAST 内部科目对照表，左关联，用于明细科目名称。
 
 目标表：
 - IE_004_406_INC：对公存款分户账明细记录。
@@ -28,7 +29,7 @@
 - P_DATA_DATE：采集日期，格式 YYYYMMDD。
 
 运行方式：
-- 增量追加或按采集日期重跑；当前草案采用按采集日期删除后重插。
+- 增量表按采集日期重跑；先删除目标表同一采集日期数据，再插入采集日期等于跑批日的交易记录。
 
 报送模式：
 - 增量表，报送上一采集日至采集日期间新增的数据。
@@ -36,14 +37,19 @@
 报送要求：
 - 除计息、扣利息税外，所有影响对公存款账户余额变动的交易信息，包括结息交易，不包括查询交易。
 
-表级取数与关联规则（原文摘录）：
-### 2.1 表级规则（Excel第 415 行） 主表：【客户存款账户交易表】 内关联1：【EAST.对公存款分户账】 关联条件1：【客户存款账户交易表】【分户账号】=【EAST.对公存款分户账】【分户账号】 AND 【客户存款账户交易表】【币种】=【分户账号】【币种】 AND CASE WHEN 【客户存款账户交易表】【币种】 = 'CNY' THEN '人民币' WHEN 【客户存款账户交易表】【钞汇类别】 = '01' THEN '钞' WHEN 【客户存款账户交易表】【钞汇类别】 = '02' THEN '汇' WHEN 【客户存款账户交易表】【钞汇类别】 = '03' THEN '可钞可汇' =【个人存款分户账】【钞汇类别】 左关联：【EAST.机构信息表】 关联条件：【客户存款账户交易表】【内部机构号】关联【EAST.机构信息表】【内部机构号】 左关联：【EAST.内部科目对照表】 关联条件：【客户存款账户交易表】【科目ID】，关联【EAST.内部科目对照表】的【会计科目编号】 左关联：【EAST.对公存款分户账】 关联条件：【客户存款账户交易表】【客户ID】，关联【EAST.对公存款分户账】的【统一客户编号】
+关键口径：
+- 客户存款账户交易必须内关联 IE_004_405，按分户账号、币种、转换后的钞汇类别匹配，确保只报对公存款账户交易。
+- 机构、内部科目使用 EAST 当期结果表补充。
+- 交易类型、借贷标志、冲补抹、现转标志、交易渠道按业务需求码值转换。
+- 核心交易日期格式由 YYYY-MM-DD 转换为 YYYYMMDD。
+- 核心交易时间格式由 HH:MM:SS 转换为 HHMMSS。
+- 交易金额、账户余额由字符串转换为 DECIMAL(20,2)。
 
 未确认点：
-- 一表通中文来源表已按本仓库 DDL 文件名反查为 T_... 物理表；现场库名、模式名和字段类型需复核。
-- 复杂关联条件、筛选条件和窗口去重规则已保留在注释中；本草案中无法自动确定的 JOIN 使用 ON 1 = 1 TODO 占位，投产前必须替换为业务键。
-- 码值转换、备注拼接、多源择优、终态纳入规则如未能由规则自动转成 CASE，已在字段注释中标记，需要人工复核。
-- SQL 草案尚未在 GBase 环境执行验证，目标页和血缘状态应保持 draft。
+- 业务需求要求排除查询交易，但业务需求未给出查询交易码值；当前未额外排除，待补查询码值后增加过滤。
+- 业务需求要求排除计息、扣利息税交易，但一表通交易类型码值中无单独计息/利息税码值（结息为'08'，业务需求明确包含），当前未额外排除，待确认。
+- 目标 DDL 字段 DFKHLB（对方客户类别）在本业务需求未给出来源，保留 NULL。
+- SQL 草案尚未在 GBase 环境执行验证，目标页和血缘状态保持 draft。
 */
 DROP PROCEDURE IF EXISTS PROC_EAST_IE_004_406_INC_DGCKFHZMX;
 
@@ -71,119 +77,184 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_004_406_INC (
-        SENSITIVEFLAG,
-        GSFZJG,
-        DGCKZH,
-        JYLX,
-        HXJYRQ,
-        BZ,
-        ZHYE,
-        DFHM,
-        DFXH,
-        CBMBZ,
-        XZBZ,
-        IPDZ,
-        SQGYH,
-        CJRQ,
-        JRXKZH,
-        YHJGMC,
         JYXLH,
+        JRXKZH,
         NBJGH,
         YWBLJGH,
+        YHJGMC,
         MXKMBH,
         MXKMMC,
         KHTYBH,
+        ZHMC,
+        DGCKZH,
         WBZH,
+        JYLX,
         JYJDBZ,
+        HXJYRQ,
         HXJYSJ,
+        BZ,
         JYJE,
+        ZHYE,
         DFZH,
+        DFHM,
+        DFXH,
         DFXM,
         ZY,
         FY,
+        CBMBZ,
+        XZBZ,
         JYQD,
-        JYGYH,
-        BBZ,
+        IPDZ,
         MACDZ,
-        DFKHLB,
-        ZHMC
+        JYGYH,
+        SQGYH,
+        BBZ,
+        CJRQ,
+        SENSITIVEFLAG,
+        GSFZJG,
+        DFKHLB
     )
     SELECT
-        /* 涉密标志：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS SENSITIVEFLAG,
-        /* 归属分支机构：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS GSFZJG,
-        /* 对公存款账号：客户存款账户交易.分户账号 -> T_7_1.G010002；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【分户账号 FHZH】 */
-        src.G010002 AS DGCKZH,
-        /* 交易类型：客户存款账户交易.账户交易类型 -> T_7_1.G010010；码值转化：CASE WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【账户交易类型 ZZJYLX】 = '01' THEN '转账' WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【账户交易类型 ZZJYLX】 = '02' THEN '取现' WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【账户交易类型 ZZJYLX】 = '03' THEN '存现' WHEN 【客户存款账户交易表 BS_JY...；转换规则需人工补齐 CASE 分支 */
-        src.G010010 AS JYLX,
-        /* 核心交易日期：客户存款账户交易.核心交易日期 -> T_7_1.G010005；加工映射：格式由YYYY-MM-DD转化成YYYYMMDD */
-        CONCAT(CAST(YEAR(src.G010005) AS VARCHAR(4)), LPAD(CAST(MONTH(src.G010005) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.G010005) AS VARCHAR(2)), 2, '0')) AS HXJYRQ,
-        /* 币种：客户存款账户交易.币种 -> T_7_1.G010009；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【币种 BZ】 */
-        src.G010009 AS BZ,
-        /* 账户余额：客户存款账户交易.账户余额 -> T_7_1.G010008；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【账户余额 ZHYE】 */
-        CAST(NULLIF(TRIM(src.G010008), '') AS DECIMAL(20,2)) AS ZHYE,
-        /* 对方户名：客户存款账户交易.对方户名 -> T_7_1.G010016；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【对方户名 HFHUM】 */
-        src.G010016 AS DFHM,
-        /* 对方行号：客户存款账户交易.对方账号行号 -> T_7_1.G010017；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【对方账号行号 DFZHHH】 */
-        src.G010017 AS DFXH,
-        /* 冲补抹标志：客户存款账户交易.冲补抹标识 -> T_7_1.G010020；码值转化：当【客户存款账户交易表】.【冲补抹标识】='01'时，赋值'正常' 当【客户存款账户交易表】.【冲补抹标识】='02'时，赋值'冲补抹' ELSE ''；转换规则需人工补齐 CASE 分支 */
-        src.G010020 AS CBMBZ,
-        /* 现转标志：客户存款账户交易.现转标识 -> T_7_1.G010013；码值转化：当【客户存款账户交易表】.【现转标识】='01'时，赋值'现' 当【客户存款账户交易表】.【现转标识】='02'时，赋值'转' ELSE ''；转换规则需人工补齐 CASE 分支 */
-        src.G010013 AS XZBZ,
-        /* IP地址：客户存款账户交易.IP地址 -> T_7_1.G010023；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【IP地址 IPDZ】 */
-        src.G010023 AS IPDZ,
-        /* 授权柜员号：客户存款账户交易.授权员工ID -> T_7_1.G010030；加工映射：【客户存款账户交易表 BS_JY_KHZZJY】.【授权员工ID SQYGID】，如为“自动”则转为空，否则取原值 */
-        CASE WHEN src.G010030 = '自动' THEN NULL ELSE src.G010030 END AS SQGYH,
-        /* 采集日期：参数 P_DATA_DATE */
-        P_DATA_DATE AS CJRQ,
-        /* 金融许可证号：待确认来源字段：EAST.机构信息表.金融许可证号 */
-        NULL AS JRXKZH,
-        /* 银行机构名称：待确认来源字段：EAST.机构信息表.银行机构名称 */
-        NULL AS YHJGMC,
-        /* 交易序列号：客户存款账户交易.交易ID -> T_7_1.G010001；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【交易ID JYID】 */
+        /* 1. 交易序列号：直接映射 */
         src.G010001 AS JYXLH,
-        /* 内部机构号：客户存款账户交易.入账机构ID -> T_7_1.G010035；加工映射：SUBSTR(【客户存款账户交易 BS_JY_KHZZJY】.【入账机构ID JYJGID】,12) */
-        src.G010035 AS NBJGH,
-        /* 业务办理机构号：客户存款账户交易.交易机构ID -> T_7_1.G010004；加工映射：SUBSTR(【客户存款账户交易表 BS_JY_KHZZJY】.【交易机构ID JYJGID】,12) */
-        src.G010004 AS YWBLJGH,
-        /* 明细科目编号：客户存款账户交易.科目ID -> T_7_1.G010011；加工映射：COALESCE(【客户存款账户交易表 BS_JY_KHZZJY】.【科目ID KMID】,【对公存款分户账 T_EAST_YBT_DGCKFHZ】.【明细科目编号 MXKMBH】) */
-        src.G010011 AS MXKMBH,
-        /* 明细科目名称：待确认来源字段：EAST.内部科目对照表.会计科目名称 */
-        NULL AS MXKMMC,
-        /* 客户统一编号：客户存款账户交易.客户ID -> T_7_1.G010003；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【客户ID KHID】 */
+        /* 2. 金融许可证号：EAST.机构信息表 */
+        org.JRXKZH AS JRXKZH,
+        /* 3. 内部机构号：SUBSTR(入账机构ID, 12) */
+        SUBSTR(TRIM(src.G010035), 12) AS NBJGH,
+        /* 4. 业务办理机构号：SUBSTR(交易机构ID, 12) */
+        SUBSTR(TRIM(src.G010004), 12) AS YWBLJGH,
+        /* 5. 银行机构名称：EAST.机构信息表 */
+        org.YHJGMC AS YHJGMC,
+        /* 6. 明细科目编号：COALESCE(科目ID, 对公存款分户账.明细科目编号) */
+        COALESCE(src.G010011, acct.MXKMBH) AS MXKMBH,
+        /* 7. 明细科目名称：EAST.内部科目对照表 */
+        subj.KJKMMC AS MXKMMC,
+        /* 8. 客户统一编号：直接映射 */
         src.G010003 AS KHTYBH,
-        /* 外部账号：客户存款账户交易.外部账号（交易介质号） -> T_7_1.G010025；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【外部账号 WBZH】 */
+        /* 9. 账户名称：EAST.对公存款分户账 */
+        acct.ZHMC AS ZHMC,
+        /* 10. 对公存款账号：直接映射 */
+        src.G010002 AS DGCKZH,
+        /* 11. 外部账号：直接映射 */
         src.G010025 AS WBZH,
-        /* 交易借贷标志：客户存款账户交易.借贷标识 -> T_7_1.G010014；码值转换：01 借 02 贷；转换规则需人工补齐 CASE 分支 */
-        src.G010014 AS JYJDBZ,
-        /* 核心交易时间：客户存款账户交易.核心交易时间 -> T_7_1.G010006；加工映射：REPLACE(【客户存款账户交易表 BS_JY_KHZZJY】.【核心交易时间 HXJYSJ,】,':','') */
-        src.G010006 AS HXJYSJ,
-        /* 交易金额：客户存款账户交易.交易金额 -> T_7_1.G010007；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【交易金额 JYJE】 */
+        /* 12. 交易类型：码值转换（依据业务需求第12条） */
+        CASE
+            WHEN src.G010010 = '01' THEN '转账'
+            WHEN src.G010010 = '02' THEN '取现'
+            WHEN src.G010010 = '03' THEN '存现'
+            WHEN src.G010010 = '04' THEN '消费'
+            WHEN src.G010010 = '05' THEN '代发'
+            WHEN src.G010010 = '06' THEN '代扣'
+            WHEN src.G010010 = '07' THEN '代缴'
+            WHEN src.G010010 = '08' THEN '结息'
+            WHEN src.G010010 = '09' THEN '批量交易'
+            WHEN src.G010010 = '10' THEN '贷款发放'
+            WHEN src.G010010 = '11' THEN '贷款还本'
+            WHEN src.G010010 = '12' THEN '贷款还息'
+            WHEN src.G010010 = '13' THEN '银证业务'
+            WHEN src.G010010 = '14' THEN '投资理财'
+            WHEN src.G010010 LIKE '00%' THEN REPLACE(src.G010010, '00', '其他')
+            ELSE src.G010010
+        END AS JYLX,
+        /* 13. 交易借贷标志：码值转换（依据业务需求第13条） */
+        CASE
+            WHEN src.G010014 = '01' THEN '借'
+            WHEN src.G010014 = '02' THEN '贷'
+            ELSE src.G010014
+        END AS JYJDBZ,
+        /* 14. 核心交易日期：YYYY-MM-DD -> YYYYMMDD（依据业务需求第14条） */
+        CASE WHEN src.G010005 IS NULL THEN NULL
+             ELSE CONCAT(CAST(YEAR(src.G010005) AS VARCHAR(4)),
+                         LPAD(CAST(MONTH(src.G010005) AS VARCHAR(2)), 2, '0'),
+                         LPAD(CAST(DAY(src.G010005) AS VARCHAR(2)), 2, '0'))
+        END AS HXJYRQ,
+        /* 15. 核心交易时间：HH:MM:SS -> HHMMSS（依据业务需求第15条） */
+        CASE WHEN src.G010006 IS NULL THEN NULL
+             ELSE REPLACE(CAST(src.G010006 AS VARCHAR(8)), ':', '')
+        END AS HXJYSJ,
+        /* 16. 币种：直接映射（依据业务需求第16条） */
+        src.G010009 AS BZ,
+        /* 17. 交易金额：DECIMAL(20,2)（依据业务需求第17条） */
         CAST(NULLIF(TRIM(src.G010007), '') AS DECIMAL(20,2)) AS JYJE,
-        /* 对方账号：客户存款账户交易.对方账号 -> T_7_1.G010015；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【对方账号 DFZH】 */
+        /* 18. 账户余额：DECIMAL(20,2)（依据业务需求第18条） */
+        CAST(NULLIF(TRIM(src.G010008), '') AS DECIMAL(20,2)) AS ZHYE,
+        /* 19. 对方账号：直接映射（依据业务需求第19条） */
         src.G010015 AS DFZH,
-        /* 对方行名：客户存款账户交易.对方行名 -> T_7_1.G010018；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【对方行名 DFHM】 */
+        /* 20. 对方户名：直接映射（依据业务需求第20条） */
+        src.G010016 AS DFHM,
+        /* 21. 对方行号：直接映射（依据业务需求第21条） */
+        src.G010017 AS DFXH,
+        /* 22. 对方行名：直接映射（依据业务需求第22条） */
         src.G010018 AS DFXM,
-        /* 摘要：客户存款账户交易.交易摘要 -> T_7_1.G010019；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【交易摘要 JYZY】 */
+        /* 23. 摘要：直接映射（依据业务需求第23条） */
         src.G010019 AS ZY,
-        /* 附言：客户存款账户交易.附言 -> T_7_1.G010031；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【附言】 */
+        /* 24. 附言：直接映射（依据业务需求第24条） */
         src.G010031 AS FY,
-        /* 交易渠道：客户存款账户交易.交易渠道 -> T_7_1.G010021；码值转化：CASE WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【交易渠道 JYQD】 = '01' THEN '柜面' WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【交易渠道 JYQD】 = '02' THEN 'ATM' WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【交易渠道 JYQD】 = '03' THEN 'VTM' WHEN 【客户存款账户交易表 BS_JY_KHZZJY】.【...；转换规则需人工补齐 CASE 分支 */
-        src.G010021 AS JYQD,
-        /* 交易柜员号：客户存款账户交易.经办员工ID -> T_7_1.G010029；加工映射：如果【客户存款账户交易表 BS_JY_KHZZJY】.【经办员工ID JBYGID】为'自动'，则为''，否则为【客户存款账户交易表 BS_JY_KHZZJY】.【经办员工ID JBYGID】 */
-        src.G010029 AS JYGYH,
-        /* 备注：客户存款账户交易.备注 -> T_7_1.G010034；提取一表通《表7.1客户存款账户交易》备注，如有多项，以英文分隔符';'拼接 */
-        src.G010034 AS BBZ,
-        /* MAC地址：客户存款账户交易.MAC地址 -> T_7_1.G010024；直接映射：【客户存款账户交易表 BS_JY_KHZZJY】.【MAC地址 MACDZ】 */
+        /* 25. 冲补抹标志：码值转换（依据业务需求第25条） */
+        CASE
+            WHEN src.G010020 = '01' THEN '正常'
+            WHEN src.G010020 = '02' THEN '冲补抹'
+            ELSE ''
+        END AS CBMBZ,
+        /* 26. 现转标志：码值转换（依据业务需求第26条） */
+        CASE
+            WHEN src.G010013 = '01' THEN '现'
+            WHEN src.G010013 = '02' THEN '转'
+            ELSE ''
+        END AS XZBZ,
+        /* 27. 交易渠道：码值转换（依据业务需求第27条） */
+        CASE
+            WHEN src.G010021 = '01' THEN '柜面'
+            WHEN src.G010021 = '02' THEN 'ATM'
+            WHEN src.G010021 = '03' THEN 'VTM'
+            WHEN src.G010021 = '04' THEN 'POS'
+            WHEN src.G010021 = '05' THEN '网银'
+            WHEN src.G010021 = '06' THEN '手机银行'
+            WHEN src.G010021 LIKE '07%' THEN REPLACE(src.G010021, '07', '第三方支付')
+            WHEN src.G010021 = '08' THEN '银联交易'
+            WHEN src.G010021 LIKE '00%' THEN REPLACE(src.G010021, '00', '其他')
+            ELSE src.G010021
+        END AS JYQD,
+        /* 28. IP地址：直接映射（依据业务需求第28条） */
+        src.G010023 AS IPDZ,
+        /* 29. MAC地址：直接映射（依据业务需求第29条） */
         src.G010024 AS MACDZ,
-        /* 对方客户类别：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS DFKHLB,
-        /* 账户名称：待确认来源字段：EAST.对公存款分户账.账户名称 */
-        NULL AS ZHMC
+        /* 30. 交易柜员号：'自动' -> NULL（依据业务需求第30条） */
+        CASE WHEN src.G010029 = '自动' THEN NULL ELSE src.G010029 END AS JYGYH,
+        /* 31. 授权柜员号：'自动' -> NULL（依据业务需求第31条） */
+        CASE WHEN src.G010030 = '自动' THEN NULL ELSE src.G010030 END AS SQGYH,
+        /* 32. 备注：直接映射（依据业务需求第32条） */
+        src.G010034 AS BBZ,
+        /* 33. 采集日期：参数（依据业务需求第33条） */
+        P_DATA_DATE AS CJRQ,
+        /* 涉密标志：来源为EAST.对公存款分户账.SENSITIVEFLAG（DDL存在，业务需求未给来源） */
+        acct.SENSITIVEFLAG AS SENSITIVEFLAG,
+        /* 归属分支机构：来源为EAST.对公存款分户账.GSFZJG（DDL存在，业务需求未给来源） */
+        acct.GSFZJG AS GSFZJG,
+        /* 对方客户类别：业务需求未给来源，固定 NULL（DDL存在，业务需求未给来源） */
+        NULL AS DFKHLB
     FROM T_7_1 src
-    WHERE 1 = 1
-      /* TODO: 按《021_对公存款分户账明细记录.md》补齐采集日期、当月数据、终态纳入和排除条件。 */;
+    /* 内关联：EAST.对公存款分户账，限定对公账户并补账户名称、涉密标志、归属分支机构 */
+    INNER JOIN IE_004_405 acct
+            ON src.G010002 = acct.DGCKZH
+           AND src.G010009 = acct.BZ
+           AND CASE
+                   WHEN src.G010009 = 'CNY' THEN '人民币'
+                   WHEN src.G010033 = '01' THEN '钞'
+                   WHEN src.G010033 = '02' THEN '汇'
+                   WHEN src.G010033 = '03' THEN '可钞可汇'
+                   ELSE src.G010033
+               END = acct.CHLB
+           AND acct.CJRQ = P_DATA_DATE
+    /* 左关联：EAST.机构信息表，获取金融许可证号和银行机构名称 */
+    LEFT JOIN IE_001_101 org
+            ON SUBSTR(TRIM(src.G010035), 12) = org.NBJGH
+           AND org.CJRQ = P_DATA_DATE
+    /* 左关联：EAST.内部科目对照表，获取明细科目名称 */
+    LEFT JOIN IE_004_402 subj
+            ON src.G010011 = subj.KJKMBH
+           AND subj.CJRQ = P_DATA_DATE
+    WHERE src.G010032 = V_DATA_DATE;
 
     COMMIT;
 END;

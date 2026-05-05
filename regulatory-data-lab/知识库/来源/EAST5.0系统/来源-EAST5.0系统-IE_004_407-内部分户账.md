@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_004_407-内部分户账
 status: draft
-updated: 2026-04-28
+updated: 2026-05-05
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_004_407-内部分户账]]"
@@ -46,9 +46,16 @@ tags:
 
 ## Key Findings
 
-- `IE_004_407` 的业务名称为 `内部分户账`，本地建表注释为“内部分户账”。
+- `IE_004_407` 的业务名称为 `内部分户账`，本地建表注释为"内部分户账"。
 - DDL 当前包含 `21` 个字段，字段注释中标注 `PK` 的核心标识为：`NBFHZZH`, `BZ`, `CJRQ`。
 - 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- 2026-05-05 已按《022_内部分户账.md》重构 GBase 存储过程草案 `PROC_EAST_IE_004_407_NBFHZ_草案.sql`：
+  - 消除了 3 个 `ON 1=1` JOIN TODO（T_1_1 按内部机构号关联、T_4_2 按科目ID关联）。
+  - 实现了 WHERE 过滤：分户账类型='03'、采集日期、终态纳入规则。
+  - 补齐了 4 个码值 CASE 转换（账户状态、计息方式、计息标志、借贷标志）。
+  - 利率字段由 T_4_3.D030017（内部账利率）映射，非 NULL。
+  - 备注使用 CONCAT_WS 拼接三表备注。
+  - 缺口字段 GSFZJG/SENSITIVEFLAG 在 SQL 中置 NULL，符合审计处置原则。
 
 ## 共享知识更新检查
 
@@ -75,4 +82,5 @@ CREATE TABLE `IE_004_407` (...)
 
 ## Open Questions
 
-- 当前尚未取得 `IE_004_407` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 存储过程草案已生成（`PROC_EAST_IE_004_407_NBFHZ_草案.sql`），待 GBase 执行验证。
+- 外部监管实体页和填报说明 wikilink 待补。
