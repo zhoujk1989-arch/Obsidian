@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_004_410_INC-个人信贷分户账明细记录
 status: draft
-updated: 2026-04-28
+updated: 2026-05-05
 external_vault: regulatory-knowledge-vault
 external_paths: []
 search_keywords:
@@ -43,9 +43,18 @@ tags:
 
 ## Key Findings
 
-- `IE_004_410_INC` 的业务名称为 `个人信贷分户账明细记录`，本地建表注释为“个人信贷分户账明细记录”。
+- `IE_004_410_INC` 的业务名称为 `个人信贷分户账明细记录`，本地建表注释为"个人信贷分户账明细记录"。
 - DDL 当前包含 `39` 个字段，字段注释中标注 `PK` 的核心标识为：`CJRQ`, `JYXLH`, `DKFHZH`, `XDJJH`, `HXJYSJ`, `ZJHM`, `HXJYRQ`。
 - 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+
+## 2026-05-05 校准更新
+
+- 已依据《025_个人信贷分户账明细记录.md》完成存储过程草案重写：
+  - 3 个 JOIN 已实现（IE_004_409 分户账/T_1_1 机构信息/IE_002_201 个人基础信息表）
+  - 7 个码值 CASE 已补齐（JYLX/JYJDBZ/JYQD/CBMBZ/XZBZ/HXJYSJ/CJRQ）
+  - WHERE 过滤 `src.G020030 = V_DATA_DATE` 已实现
+  - `ZHMC`、`ZJLB`、`ZJHM` 来源已补齐为 `IE_002_201`（个人基础信息表）
+  - 4 个 NULL 赋值（DFKHLB、DBRKHLB、SENSITIVEFLAG、GSFZJG）符合处置原则
 
 ## 共享知识更新检查
 

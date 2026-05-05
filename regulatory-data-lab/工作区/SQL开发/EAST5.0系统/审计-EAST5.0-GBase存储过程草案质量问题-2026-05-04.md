@@ -37,6 +37,7 @@
 | `IE_004_409` | `GRXDFHZ` | `PROC_EAST_IE_004_409_GRXDFHZ_草案.sql` | 已消除JOIN/WHERE阻塞，仍需复核 | 0 | 0 | 0 | 2 | 2 个 NULL 赋值（GSFZJG、SENSITIVEFLAG），符合审计处置原则；其余字段/转换已补齐 |
 | | | | | | | | | **2026-05-05 重新校准**：依据《024_个人信贷分户账.md》逐项校准 22 个字段映射；4 个 LEFT JOIN 已实现（T_4_3 分户账号/T_8_1 借据ID/T_6_2 协议ID/T_1_1 机构ID）；2 个码值 CASE 已补齐（账户状态 6 分支/贷款状态 6 分支）；WHERE 过滤实现 4 场景纳入规则（上月末未终结/当月末未终结/当月新发放/跨月新发放）+ 采集日期过滤；到期日期 DQRQ 已映射 T_6_27.F270018；备注 BBZ 已实现四表拼接；贷款金额/余额按分户账号聚合。
 | `IE_004_410_INC` | `GRXDFHZMX` | `PROC_EAST_IE_004_410_INC_GRXDFHZMX_草案.sql` | 不合格 | 2 | 1 | 13 | 7 | 2 个 JOIN 未实现；过滤条件未实现；13 个字段/转换待确认；7 个 NULL 赋值 |
+| | | | | | | | | **2026-05-05 重新校准**：依据《025_个人信贷分户账明细记录.md》逐项校准 39 个字段映射；3 个 JOIN 已实现（IE_004_409 分户账/T_1_1 机构信息/IE_002_201 个人基础信息表）；7 个码值 CASE 已补齐（JYLX 4分支+通配/JYJDBZ 2分支/JYQD 8分支+通配/CBMBZ 2分支/XZBZ 2分支/HXJYSJ 格式转换/CJRQ 格式转换）；WHERE 过滤 `src.G020030 = V_DATA_DATE`；4 个 NULL 赋值（DFKHLB、DBRKHLB、SENSITIVEFLAG、GSFZJG）为 DDL 存在但业务需求未给来源的字段，符合处置原则。
 | `IE_004_411` | `DGXDFHZ` | `PROC_EAST_IE_004_411_DGXDFHZ_草案.sql` | 不合格 | 5 | 1 | 5 | 3 | 5 个 JOIN 未实现；过滤条件未实现；5 个字段/转换待确认；3 个 NULL 赋值 |
 | `IE_004_412_INC` | `DGXDFHZMX` | `PROC_EAST_IE_004_412_INC_DGXDFHZMX_草案.sql` | 不合格 | 2 | 1 | 10 | 4 | 2 个 JOIN 未实现；过滤条件未实现；10 个字段/转换待确认；4 个 NULL 赋值 |
 | `IE_005_501` | `XDHTB` | `PROC_EAST_IE_005_501_XDHTB_草案.sql` | 不合格 | 2 | 1 | 6 | 4 | 2 个 JOIN 未实现；过滤条件未实现；6 个字段/转换待确认；4 个 NULL 赋值 |
