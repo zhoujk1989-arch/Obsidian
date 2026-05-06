@@ -41,6 +41,7 @@
 | `IE_004_411` | `DGXDFHZ` | `PROC_EAST_IE_004_411_DGXDFHZ_草案.sql` | 不合格 | 5 | 1 | 5 | 3 | 5 个 JOIN 未实现；过滤条件未实现；5 个字段/转换待确认；3 个 NULL 赋值 |
 | `IE_004_412_INC` | `DGXDFHZMX` | `PROC_EAST_IE_004_412_INC_DGXDFHZMX_草案.sql` | 不合格 | 2 | 1 | 10 | 4 | 2 个 JOIN 未实现；过滤条件未实现；10 个字段/转换待确认；4 个 NULL 赋值 |
 | `IE_005_501` | `XDHTB` | `PROC_EAST_IE_005_501_XDHTB_草案.sql` | 不合格 | 2 | 1 | 6 | 4 | 2 个 JOIN 未实现；过滤条件未实现；6 个字段/转换待确认；4 个 NULL 赋值 |
+| | | | | | | | | **2026-05-06 重构校准**：依据《028_信贷合同表.md》逐项校准 18 个字段映射；2 个 LEFT JOIN 已实现（T_1_1 机构信息）；3 个码值 CASE 已补齐（XDYWZL 18 分支/HTZT 6 分支/DBLX 8 分支）；3 个日期格式转换已补齐（HTDQRQ/HTQSRQ/CJRQ）；WHERE 过滤实现 `s1.F020063 = V_DATA_DATE`；3 个 NULL 赋值（GSFZJG/SENSITIVEFLAG/KHLB）为 DDL 存在但业务需求未给来源的字段，符合处置原则；KHMC 暂无 DDL 占位 NULL。
 | `IE_005_502` | `HLWDKHTFJB` | `PROC_EAST_IE_005_502_HLWDKHTFJB_草案.sql` | 不合格 | 3 | 1 | 3 | 2 | 3 个 JOIN 未实现；过滤条件未实现；3 个字段/转换待确认；2 个 NULL 赋值 |
 | `IE_005_503` | `GRXDYWJJB` | `PROC_EAST_IE_005_503_GRXDYWJJB_草案.sql` | 不合格 | 9 | 1 | 19 | 10 | 9 个 JOIN 未实现；过滤条件未实现；19 个字段/转换待确认；10 个 NULL 赋值 |
 | `IE_005_504` | `DGXDYWJJB` | `PROC_EAST_IE_005_504_DGXDYWJJB_草案.sql` | 不合格 | 10 | 1 | 15 | 8 | 10 个 JOIN 未实现；过滤条件未实现；15 个字段/转换待确认；8 个 NULL 赋值 |
