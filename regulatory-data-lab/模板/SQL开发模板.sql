@@ -63,8 +63,16 @@ left join dim_table dim
       and dim.data_date = ${biz_date}
 where main.data_date = ${biz_date};
 
-/* 5. 校验区
-   交付时建议另存为 CHECK_<需求名>_校验.sql；简单场景可保留在同文件末尾。
+/* 5. 表级取数与关联规则（原文摘录）：
+   详细列出每个表的角色、关联方式、关联条件、过滤条件等。
+   例如：
+   主表：业务表1（main_table）
+    内关联：维度表1（dim_table1）
+     关联条件：main_table.dim_id = dim_table1.dim_id
+     过滤条件：dim_table1.effective_date <= ${biz_date} AND dim_table1.expire_date > ${biz_date}
+    左关联：维度表2（dim_table2）
+     关联条件：main_table.dim_id = dim_table2.dim_id
+     过滤条件：dim_table2.status = 'active'
 */
 -- 行数检查：
 -- select count(*) as target_count
