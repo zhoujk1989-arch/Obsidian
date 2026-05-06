@@ -11,10 +11,14 @@
             "id": "b312a73a79349a41",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "regulatory-knowledge-vault/04-综合/待确认清单.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "待确认清单"
             }
           }
         ]
