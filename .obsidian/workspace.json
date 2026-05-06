@@ -178,6 +178,7 @@
   },
   "active": "b312a73a79349a41",
   "lastOpenFiles": [
+    "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/说明-IE_005_504-对公信贷业务借据表.md",
     "regulatory-data-lab/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
     "regulatory-data-lab/知识库/报表业务口径/一表通系统/报表-1.1-机构信息-一表通系统.md",
     "regulatory-data-lab/知识库/概念/概念-系统-一表通系统.md",
@@ -203,7 +204,6 @@
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/审计-EAST5.0-GBase存储过程草案质量问题-2026-05-04.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-EAST5.0系统-一表通依赖关系总览.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_010_1005_INC-即期及衍生品交易信息表-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_010_1005_INC-即期及衍生品交易信息表-EAST5.0系统.md",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_010_1005_INC_JQJYSPJYXXB_校验.sql",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_010_1005_INC_JQJYSPJYXXB_草案.sql",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_010_1004_ZYZJYWYEB_校验.sql",
