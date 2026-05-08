@@ -169,7 +169,7 @@ BEGIN
             WHEN '03' THEN '销户'
             WHEN '04' THEN '冻结'
             WHEN '05' THEN '止付'
-            WHEN '00' THEN REPLACE(src.D030013, '00', '其他')
+            WHEN '00' THEN CONCAT('其他-', REPLACE(src.D030013, '00', ''))
             ELSE src.D030013
         END AS ZHZT,
 
@@ -216,7 +216,7 @@ BEGIN
             WHEN '03' THEN '转让'
             WHEN '04' THEN '结清'
             WHEN '05' THEN '逾期'
-            WHEN '00' THEN REPLACE(s2.H010019, '00', '其他')
+            WHEN '00' THEN CONCAT('其他-', REPLACE(s2.H010019, '00', ''))
             ELSE s2.H010019
         END AS DKZT,
 

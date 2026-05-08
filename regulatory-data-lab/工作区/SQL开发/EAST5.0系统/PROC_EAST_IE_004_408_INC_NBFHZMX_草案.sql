@@ -131,9 +131,9 @@ BEGIN
             WHEN TRIM(src.G100019) = '04' THEN 'POS'
             WHEN TRIM(src.G100019) = '05' THEN '网银'
             WHEN TRIM(src.G100019) = '06' THEN '手机银行'
-            WHEN TRIM(src.G100019) LIKE '07%' THEN REPLACE(TRIM(src.G100019), '07', '第三方支付')
+            WHEN TRIM(src.G100019) LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(TRIM(src.G100019), '07', ''))
             WHEN TRIM(src.G100019) = '08' THEN '银联交易'
-            WHEN TRIM(src.G100019) LIKE '00%' THEN REPLACE(TRIM(src.G100019), '00', '其他')
+            WHEN TRIM(src.G100019) LIKE '00%' THEN CONCAT('其他-', REPLACE(TRIM(src.G100019), '00', ''))
             ELSE TRIM(src.G100019)
         END AS JYQD,
 
@@ -183,7 +183,7 @@ BEGIN
             WHEN TRIM(src.G100006) = '12' THEN '贷款还息'
             WHEN TRIM(src.G100006) = '13' THEN '银证业务'
             WHEN TRIM(src.G100006) = '14' THEN '投资理财'
-            WHEN TRIM(src.G100006) LIKE '00%' THEN REPLACE(TRIM(src.G100006), '00', '其他')
+            WHEN TRIM(src.G100006) LIKE '00%' THEN CONCAT('其他-', REPLACE(TRIM(src.G100006), '00', ''))
             ELSE TRIM(src.G100006)
         END AS JYLX,
 

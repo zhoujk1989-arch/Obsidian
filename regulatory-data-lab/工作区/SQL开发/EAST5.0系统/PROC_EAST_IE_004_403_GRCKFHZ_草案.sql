@@ -106,7 +106,7 @@ BEGIN
             WHEN COALESCE(st.H140014, acct.D030013) = '03' THEN '销户'
             WHEN COALESCE(st.H140014, acct.D030013) = '04' THEN '冻结'
             WHEN COALESCE(st.H140014, acct.D030013) = '05' THEN '止付'
-            WHEN COALESCE(st.H140014, acct.D030013) LIKE '00%' THEN REPLACE(COALESCE(st.H140014, acct.D030013), '00', '其他')
+            WHEN COALESCE(st.H140014, acct.D030013) LIKE '00%' THEN CONCAT('其他-', REPLACE(COALESCE(st.H140014, acct.D030013), '00', ''))
             ELSE COALESCE(st.H140014, acct.D030013)
         END AS ZHZT,
         /* 上次动户日期：空值转 99991231 */
@@ -158,7 +158,7 @@ BEGIN
             WHEN src.F010023 = '01' THEN '钞'
             WHEN src.F010023 = '02' THEN '汇'
             WHEN src.F010023 = '03' THEN '可钞可汇'
-            WHEN src.F010023 LIKE '00%' THEN REPLACE(src.F010023, '00', '其他')
+            WHEN src.F010023 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.F010023, '00', ''))
             ELSE src.F010023
         END AS CHLB,
         /* 存款余额 */

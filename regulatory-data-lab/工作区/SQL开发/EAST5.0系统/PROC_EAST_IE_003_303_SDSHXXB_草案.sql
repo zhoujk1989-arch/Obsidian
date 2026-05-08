@@ -131,7 +131,7 @@ BEGIN
             WHEN src.B070010 = '02' THEN '本行对公结算账户'
             WHEN src.B070010 = '03' THEN '他行卡'
             WHEN src.B070010 = '04' THEN '他行对公结算账户'
-            WHEN src.B070010 LIKE '00%' THEN REPLACE(src.B070010, '00', '其他')
+            WHEN src.B070010 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.B070010, '00', ''))
             ELSE src.B070010
         END AS QSZHLX,
         /* 清算账户名称：收单商户信息.清算账户名称 */

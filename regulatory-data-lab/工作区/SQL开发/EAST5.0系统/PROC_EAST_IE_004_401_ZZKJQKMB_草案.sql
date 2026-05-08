@@ -125,7 +125,7 @@ BEGIN
             WHEN src.D010011 = '03' THEN '季报'
             WHEN src.D010011 = '04' THEN '半年报'
             WHEN src.D010011 = '05' THEN '年报'
-            WHEN src.D010011 LIKE '00%' THEN REPLACE(src.D010011, '00', '其他')
+            WHEN src.D010011 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.D010011, '00', ''))
             ELSE src.D010011
         END AS BSZQ,
         /* 涉密标志：业务需求未提供来源 */

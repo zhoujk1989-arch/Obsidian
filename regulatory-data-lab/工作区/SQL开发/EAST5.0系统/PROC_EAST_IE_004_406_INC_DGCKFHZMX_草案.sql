@@ -153,7 +153,7 @@ BEGIN
             WHEN src.G010010 = '12' THEN '贷款还息'
             WHEN src.G010010 = '13' THEN '银证业务'
             WHEN src.G010010 = '14' THEN '投资理财'
-            WHEN src.G010010 LIKE '00%' THEN REPLACE(src.G010010, '00', '其他')
+            WHEN src.G010010 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010010, '00', ''))
             ELSE src.G010010
         END AS JYLX,
         /* 13. 交易借贷标志：码值转换（依据业务需求第13条） */
@@ -210,9 +210,9 @@ BEGIN
             WHEN src.G010021 = '04' THEN 'POS'
             WHEN src.G010021 = '05' THEN '网银'
             WHEN src.G010021 = '06' THEN '手机银行'
-            WHEN src.G010021 LIKE '07%' THEN REPLACE(src.G010021, '07', '第三方支付')
+            WHEN src.G010021 LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(src.G010021, '07', ''))
             WHEN src.G010021 = '08' THEN '银联交易'
-            WHEN src.G010021 LIKE '00%' THEN REPLACE(src.G010021, '00', '其他')
+            WHEN src.G010021 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010021, '00', ''))
             ELSE src.G010021
         END AS JYQD,
         /* 28. IP地址：直接映射（依据业务需求第28条） */

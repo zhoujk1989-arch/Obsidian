@@ -130,7 +130,7 @@ BEGIN
             WHEN src.G010010 = '12' THEN '贷款还息'
             WHEN src.G010010 = '13' THEN '银证业务'
             WHEN src.G010010 = '14' THEN '投资理财'
-            WHEN src.G010010 LIKE '00%' THEN REPLACE(src.G010010, '00', '其他')
+            WHEN src.G010010 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010010, '00', ''))
             ELSE src.G010010
         END AS JYLX,
         /* 涉密标志：业务需求未提供来源 */
@@ -215,9 +215,9 @@ BEGIN
             WHEN src.G010021 = '04' THEN 'POS'
             WHEN src.G010021 = '05' THEN '网银'
             WHEN src.G010021 = '06' THEN '手机银行'
-            WHEN src.G010021 LIKE '07%' THEN REPLACE(src.G010021, '07', '第三方支付')
+            WHEN src.G010021 LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(src.G010021, '07', ''))
             WHEN src.G010021 = '08' THEN '银联交易'
-            WHEN src.G010021 LIKE '00%' THEN REPLACE(src.G010021, '00', '其他')
+            WHEN src.G010021 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010021, '00', ''))
             ELSE src.G010021
         END AS JYQD,
         /* IP地址 */
@@ -247,7 +247,7 @@ BEGIN
                    WHEN src.G010033 = '01' THEN '钞'
                    WHEN src.G010033 = '02' THEN '汇'
                    WHEN src.G010033 = '03' THEN '可钞可汇'
-                   WHEN src.G010033 LIKE '00%' THEN REPLACE(src.G010033, '00', '其他')
+                   WHEN src.G010033 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010033, '00', ''))
                    ELSE src.G010033
                END = acct.CHLB
            AND acct.CJRQ = P_DATA_DATE

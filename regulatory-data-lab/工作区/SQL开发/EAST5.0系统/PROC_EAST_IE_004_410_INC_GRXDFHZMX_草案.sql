@@ -204,7 +204,17 @@ BEGIN
         /* 25. 归属分支机构：DDL 存在，业务需求未给来源，置 NULL */
         NULL AS GSFZJG,
 
-        /* 26. 交易渠道：信贷交易.交易渠道 -> T_7_2.G020024；代码转化 */
+        /* 交易渠道：信贷交易.交易渠道 -> T_7_2.G020024；代码转化：
+           '01'[柜面] -> '柜面'
+           '02'[ATM(自动柜员机)] -> 'ATM'
+           '03'[VTM（远程视频柜员机）] -> 'VTM'
+           '04'[POS（销售终端）] -> 'POS'
+           '05'[网银] -> '网银'
+           '06'[手机银行] -> '手机银行'
+           '07-XX'[第三方支付] -> '第三方支付-XX'
+           '08'[银联交易] -> '银联交易'
+           '00-XX'[其他] -> '其他-XX'
+           ELSE 原值 */
         CASE TRIM(src.G020024)
             WHEN '01' THEN '柜面'
             WHEN '02' THEN 'ATM'
@@ -212,9 +222,9 @@ BEGIN
             WHEN '04' THEN 'POS'
             WHEN '05' THEN '网银'
             WHEN '06' THEN '手机银行'
-            WHEN '07' THEN '第三方支付'
             WHEN '08' THEN '银联交易'
-            WHEN '00' THEN REPLACE(TRIM(src.G020024), '00', '其他')
+            WHEN src.G020024 LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(src.G020024, '07', ''))
+            WHEN src.G020024 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G020024, '00', ''))
             ELSE src.G020024
         END AS JYQD,
 
@@ -261,7 +271,7 @@ BEGIN
             WHEN '02' THEN '贷款还本'
             WHEN '03' THEN '贷款还本'
             WHEN '04' THEN '贷款还息'
-            WHEN '00' THEN REPLACE(TRIM(src.G020012), '00', '其他')
+            WHEN '00' THEN CONCAT('其他-', REPLACE(TRIM(src.G020012), '00', ''))
             ELSE src.G020012
         END AS JYLX,
 

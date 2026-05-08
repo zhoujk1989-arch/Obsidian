@@ -122,7 +122,7 @@ BEGIN
             WHEN src.F280012 = '04' THEN '冻结'
             WHEN src.F280012 = '05' THEN '睡眠'
             WHEN src.F280012 = '06' THEN '挂失'
-            WHEN src.F280012 LIKE '00%' THEN REPLACE(src.F280012, '00', '其他')
+            WHEN src.F280012 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.F280012, '00', ''))
             ELSE src.F280012
         END AS CZZT,
         /* 涉密标志：业务需求未提供来源 */
@@ -140,7 +140,7 @@ BEGIN
             WHEN src.F280006 = '05' THEN '大额定期存单'
             WHEN src.F280006 = '06' THEN '一本通'
             WHEN src.F280006 = '07' THEN '普通存折'
-            WHEN src.F280006 LIKE '00%' THEN REPLACE(src.F280006, '00', '其他')
+            WHEN src.F280006 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.F280006, '00', ''))
             ELSE src.F280006
         END AS CZLX,
         /* 启用日期：YYYY-MM-DD 转 YYYYMMDD */
