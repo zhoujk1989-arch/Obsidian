@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_005_512-垫款登记表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-08
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_005_512-垫款登记表]]"
@@ -76,3 +76,5 @@ CREATE TABLE `IE_005_512` (...)
 ## Open Questions
 
 - 当前尚未取得 `IE_005_512` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-08 已按《039_垫款登记表.md》重构校准 GBase 存储过程草案，消除了 JOIN TODO、补齐了码值 CASE 和 WHERE 过滤，但仍待 GBase 跑数验证。
+- 终态纳入规则（"结清/转让/核销次月可不再报送"）和表级规则（"通过信贷借据号关联对公信贷业务借据表筛选范围"）的具体实现逻辑待需求方确认。

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "regulatory-knowledge-vault/04-综合/待确认清单.md",
+                "file": "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_005_502-互联网贷款合同附加表-EAST5.0系统.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "待确认清单"
+              "title": "报表-IE_005_502-互联网贷款合同附加表-EAST5.0系统"
             }
           }
         ]
@@ -182,6 +182,14 @@
   },
   "active": "b312a73a79349a41",
   "lastOpenFiles": [
+    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_005_503-个人信贷业务借据表-EAST5.0系统.md",
+    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_004_410_INC-个人信贷分户账明细记录-EAST5.0系统.md",
+    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_004_407-内部分户账-EAST5.0系统.md",
+    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_004_408_INC-内部分户账明细记录-EAST5.0系统.md",
+    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_004_405-对公存款分户账-EAST5.0系统.md",
+    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_004_402-内部科目对照表-EAST5.0系统.md",
+    "regulatory-data-lab/原始材料/业务需求/EAST5.0/021_对公存款分户账明细记录.md",
+    "regulatory-knowledge-vault/04-综合/待确认清单.md",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/说明-IE_005_504-对公信贷业务借据表.md",
     "regulatory-data-lab/知识库/血缘/一表通系统/血缘-1.1-机构信息-一表通系统.md",
     "regulatory-data-lab/知识库/报表业务口径/一表通系统/报表-1.1-机构信息-一表通系统.md",
@@ -200,14 +208,6 @@
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_002_206-关联关系表-EAST5.0系统.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_004_412_INC-对公信贷分户账明细记录-EAST5.0系统.md",
     "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_002_204_INC-对公客户财务信息表-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_002_205-集团客户表-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_004_401-总账会计全科目表-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_004_403-个人存款分户账-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_006_603-表内外业务抵质押物-EAST5.0系统.md",
-    "regulatory-data-lab/知识库/报表业务口径/EAST5.0系统/报表-IE_002_206-关联关系表-EAST5.0系统.md",
-    "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/审计-EAST5.0-GBase存储过程草案质量问题-2026-05-04.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-EAST5.0系统-一表通依赖关系总览.md",
-    "regulatory-data-lab/知识库/血缘/EAST5.0系统/血缘-IE_010_1005_INC-即期及衍生品交易信息表-EAST5.0系统.md",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_010_1005_INC_JQJYSPJYXXB_校验.sql",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_010_1005_INC_JQJYSPJYXXB_草案.sql",
     "regulatory-data-lab/工作区/SQL开发/EAST5.0系统/CHECK_EAST_IE_010_1004_ZYZJYWYEB_校验.sql",

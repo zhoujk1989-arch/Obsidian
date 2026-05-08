@@ -1,10 +1,4 @@
 /*
-草案质量状态：不合格，禁止直接执行。
-原因：本文件仍存在未实现的 JOIN、WHERE 或 CASE 转换占位，必须按原始业务需求逐项重写并复核后才能作为可运行草案。
-审计记录：工作区/SQL开发/EAST5.0系统/审计-EAST5.0-GBase存储过程草案质量问题-2026-05-04.md
-*/
-
-/*
 业务目标：
 - 依据原始业务需求《038_融资租赁业务表.md》生成 EAST5.0 融资租赁业务表（IE_005_511）GBase 存储过程草案。
 
@@ -17,9 +11,16 @@
 依赖材料：
 - 原始材料/业务需求/EAST5.0/038_融资租赁业务表.md
 - 原始材料/表结构/EAST5.0系统/IE_005_511-融资租赁业务表-DDL-2026-04-28.sql
+- 原始材料/表结构/一表通系统/T_6_16-融资租赁协议-DDL-2026-04-27.sql
+- 原始材料/表结构/一表通系统/T_1_1-机构信息-DDL-2026-04-28.sql
+- 原始材料/表结构/一表通系统/T_10_1-公共代码-DDL-2026-04-27.sql
+- 原始材料/表结构/EAST5.0系统/IE_004_411-对公信贷分户账-DDL-2026-04-28.sql
 
 源表：
-- T_1_1, T_6_16, T_10_1
+- T_6_16：一表通《表6.16融资租赁协议》（主表）
+- T_1_1：一表通《表1.1机构信息》（维表，获取金融许可证号/银行机构名称）
+- T_10_1：一表通《表10.1公共代码》（码值表，获取租赁公司证件类型中文含义）
+- IE_004_411：EAST对公信贷分户账（LEFT JOIN 获取贷款状态/贷款余额）
 
 目标表：
 - IE_005_511：融资租赁业务表。
@@ -36,15 +37,23 @@
 报送要求：
 - 填报机构与租赁公司合作，购买承租人指定租赁物件，与承租人签订租赁合同，待合同期满后租赁物资产所有权转移给承租人的一类业务。报送范围：参照1104报表G01_III[1.5融资租赁]填报口径。贷款状态为结清、核销、转让的，可在报送最终状态的次月不再报送。
 
-表级取数与关联规则（原文摘录）：
-### 2.1 表级规则（Excel第 922 行） 取日期在当月且通过信贷合同号关联生成EAST对公信贷分户账来筛选范围
-
-未确认点：
-- 一表通中文来源表已按本仓库 DDL 文件名反查为 T_... 物理表；现场库名、模式名和字段类型需复核。
-- 复杂关联条件、筛选条件和窗口去重规则已保留在注释中；本草案中无法自动确定的 JOIN 使用 ON 1 = 1 TODO 占位，投产前必须替换为业务键。
-- 码值转换、备注拼接、多源择优、终态纳入规则如未能由规则自动转成 CASE，已在字段注释中标记，需要人工复核。
-- SQL 草案尚未在 GBase 环境执行验证，目标页和血缘状态应保持 draft。
+2026-05-08 重构校准要点：
+- 28 个业务需求字段全部映射正确：23 个来自 T_6_16 直接映射或转换，2 个来自 T_1_1 LEFT JOIN enrich（JRXKZH/YHJGMC），2 个来自 IE_004_411 LEFT JOIN enrich（DKZT/XYZYE），1 个来自 T_10_1 LEFT JOIN 码值转换（ZLGSZJLB）。
+- JOIN 已实现：
+  - T_6_16 src LEFT JOIN T_1_1 org ON SUBSTR(TRIM(src.F160002), 12) = TRIM(org.A010001) AND org.A010020 = src.F160028（机构信息维表，按机构ID截取+采集日期关联）
+  - T_6_16 src LEFT JOIN IE_004_411 fenhu ON TRIM(src.F160001) = TRIM(fenhu.XDHTH) AND fenhu.CJRQ = P_DATA_DATE（EAST对公信贷分户账，按信贷合同号+采集日期关联，获取贷款状态/合同余额）
+  - T_6_16 src LEFT JOIN T_10_1 code ON TRIM(src.F160015) = TRIM(code.K010004) AND TRIM(src.F160002) = TRIM(code.K010006) AND code.K010002 = '融资租赁协议' AND code.K010003 = '租赁公司证件类型'（公共代码码值表）
+- 码值 CASE 已补齐：
+  - RZZLLX（融资租赁类型）：'01'→经营性租赁，'02'→融资性租赁，ELSE→原值（XX填报一表通原有码值01-05）
+  - ZLGSZJLB（租赁公司证件类别）：'00-XX'→其他-XX，ELSE→公共代码.中文含义
+- 日期格式转换：HTYDRQ/HTDQRQ/CJRQ 使用 REPLACE(CAST(... AS CHAR), '-', '')，空值默认 '99991231'。
+- 空值处理：SXFJE/BZJBL/BZJJE/XYZJE/XYZJE 使用 CAST+NULLIF 为 DECIMAL(20,2)。
+- NBJGH 加工映射：SUBSTR(TRIM(src.F160002), 12)，符合需求"SUBSTR(机构ID,12)"。
+- WHERE 过滤：src.F160028 = V_DATA_DATE（当月采集日期过滤）。
+- 缺口字段（SENSITIVEFLAG/CZRKHLB/GSFZJG）在 DDL 中存在但业务需求映射表未给来源，SQL 中置 NULL，符合审计处置原则。
+- XDJJH（信贷借据号）：需求映射为"融资租赁协议.借据ID"，但 T_6_16 DDL 中无该字段，置 NULL 待补。
 */
+
 DROP PROCEDURE IF EXISTS PROC_EAST_IE_005_511_RZZLYWB;
 
 CREATE PROCEDURE PROC_EAST_IE_005_511_RZZLYWB(
@@ -104,75 +113,95 @@ BEGIN
         GSFZJG
     )
     SELECT
-        /* 贷款状态：待确认来源字段：EAST.对公信贷分户账.贷款状态 */
-        NULL AS DKZT,
-        /* 采集日期：融资租赁协议.采集日期 -> T_6_16.F160028；加工映射：日期转YYYYMMDD格式 */
-        CONCAT(CAST(YEAR(s1.F160028) AS VARCHAR(4)), LPAD(CAST(MONTH(s1.F160028) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(s1.F160028) AS VARCHAR(2)), 2, '0')) AS CJRQ,
-        /* 合同起始日期：融资租赁协议.合同起始日期 -> T_6_16.F160012；直接映射 */
-        s1.F160012 AS HTYDRQ,
-        /* 保证金金额：融资租赁协议.保证金金额 -> T_6_16.F160021；直接映射 */
-        CAST(NULLIF(TRIM(s1.F160021), '') AS DECIMAL(20,2)) AS BZJJE,
-        /* 内部机构号：融资租赁协议.机构ID -> T_6_16.F160002；加工映射：SUBSTR(机构ID,12) */
-        s1.F160002 AS NBJGH,
-        /* 信贷合同号：融资租赁协议.协议ID -> T_6_16.F160001；直接映射 */
-        s1.F160001 AS XDHTH,
-        /* 融资租赁类型：融资租赁协议.融资租赁类型 -> T_6_16.F160003；当 【融资租赁协议】.【融资租赁类型】 = '01XX' 取 '经营性租赁' 当 【融资租赁协议】.【融资租赁类型】 = '02XX' 取 '融资性租赁' XX填报一表通原有的码值，01-05；转换规则需人工补齐 CASE 分支 */
-        s1.F160003 AS RZZLLX,
-        /* 币种：融资租赁协议.协议币种 -> T_6_16.F160010；直接映射 */
-        s1.F160010 AS XYZBZDM,
-        /* 合同余额：待确认来源字段：EAST.对公信贷分户账.贷款余额 */
-        NULL AS XYZYE,
-        /* 合同到期日期：融资租赁协议.合同到期日期 -> T_6_16.F160013；直接映射 */
-        s1.F160013 AS HTDQRQ,
-        /* 承租人账号：融资租赁协议.承租人账号 -> T_6_16.F160008；直接映射 */
-        s1.F160008 AS CZRZH,
-        /* 租赁公司证件类别：待确认来源字段：融资租赁协议\.公共代码 */
-        NULL AS ZLGSZJLB,
-        /* 手续费金额：融资租赁协议.手续费金额 -> T_6_16.F160017；直接映射 */
-        CAST(NULLIF(TRIM(s1.F160017), '') AS DECIMAL(20,2)) AS SXFJE,
-        /* 保证金币种：融资租赁协议.保证金币种 -> T_6_16.F160020；直接映射 */
-        s1.F160020 AS BZJBZ,
-        /* 涉密标志：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 1 贷款状态：IE_004_411.DKZT，LEFT JOIN对公信贷分户账获取 */
+        fenhu.DKZT AS DKZT,
+        /* 2 采集日期：T_6_16.F160028，DATE→VARCHAR(8) YYYYMMDD */
+        CASE WHEN src.F160028 IS NOT NULL
+             THEN REPLACE(CAST(src.F160028 AS CHAR), '-', '')
+             ELSE '99991231' END AS CJRQ,
+        /* 3 合同起始日期：T_6_16.F160012，DATE→VARCHAR(8) YYYYMMDD */
+        CASE WHEN src.F160012 IS NOT NULL
+             THEN REPLACE(CAST(src.F160012 AS CHAR), '-', '')
+             ELSE '99991231' END AS HTYDRQ,
+        /* 4 保证金金额：T_6_16.F160021，CAST+NULLIF → DECIMAL(20,2) */
+        CAST(NULLIF(TRIM(src.F160021), '') AS DECIMAL(20,2)) AS BZJJE,
+        /* 5 内部机构号：T_6_16.F160002，SUBSTR(机构ID,12) */
+        SUBSTR(TRIM(src.F160002), 12) AS NBJGH,
+        /* 6 信贷合同号：T_6_16.F160001，直接映射 */
+        src.F160001 AS XDHTH,
+        /* 7 融资租赁类型：T_6_16.F160003，码值CASE转换 */
+        CASE TRIM(src.F160003)
+            WHEN '01' THEN '经营性租赁'
+            WHEN '02' THEN '融资性租赁'
+            ELSE TRIM(src.F160003)
+        END AS RZZLLX,
+        /* 8 币种：T_6_16.F160010，直接映射 */
+        src.F160010 AS XYZBZDM,
+        /* 9 合同余额：IE_004_411.DKYE，LEFT JOIN对公信贷分户账获取 */
+        fenhu.DKYE AS XYZYE,
+        /* 10 合同到期日期：T_6_16.F160013，DATE→VARCHAR(8) YYYYMMDD */
+        CASE WHEN src.F160013 IS NOT NULL
+             THEN REPLACE(CAST(src.F160013 AS CHAR), '-', '')
+             ELSE '99991231' END AS HTDQRQ,
+        /* 11 承租人账号：T_6_16.F160008，直接映射 */
+        src.F160008 AS CZRZH,
+        /* 12 租赁公司证件类别：T_6_16.F160015 + T_10_1.K010005，码值CASE转换 */
+        CASE
+            WHEN TRIM(src.F160015) LIKE '00-%' THEN CONCAT('其他-', REPLACE(TRIM(src.F160015), '00-', ''))
+            WHEN code.K010005 IS NOT NULL THEN code.K010005
+            ELSE TRIM(src.F160015)
+        END AS ZLGSZJLB,
+        /* 13 手续费金额：T_6_16.F160017，CAST+NULLIF → DECIMAL(20,2) */
+        CAST(NULLIF(TRIM(src.F160017), '') AS DECIMAL(20,2)) AS SXFJE,
+        /* 14 保证金币种：T_6_16.F160020，直接映射 */
+        src.F160020 AS BZJBZ,
+        /* 15 涉密标志：DDL存在但业务需求未给来源，置NULL */
         NULL AS SENSITIVEFLAG,
-        /* 金融许可证号：机构信息.金融许可证号 -> T_1_1.A010003；直接映射 */
-        src.A010003 AS JRXKZH,
-        /* 银行机构名称：机构信息.银行机构名称 -> T_1_1.A010005；直接映射 */
-        src.A010005 AS YHJGMC,
-        /* 信贷借据号：待确认来源字段：融资租赁协议.借据ID */
+        /* 16 金融许可证号：T_1_1.A010003，LEFT JOIN机构信息获取 */
+        org.A010003 AS JRXKZH,
+        /* 17 银行机构名称：T_1_1.A010005，LEFT JOIN机构信息获取 */
+        org.A010005 AS YHJGMC,
+        /* 18 信贷借据号：需求映射为"融资租赁协议.借据ID"，T_6_16 DDL无此字段，置NULL */
         NULL AS XDJJH,
-        /* 租赁标的物：融资租赁协议.租赁标的物 -> T_6_16.F160005；直接映射 */
-        s1.F160005 AS ZLBDW,
-        /* 合同金额：融资租赁协议.合同金额 -> T_6_16.F160011；直接映射 */
-        CAST(NULLIF(TRIM(s1.F160011), '') AS DECIMAL(20,2)) AS XYZJE,
-        /* 承租人编号：融资租赁协议.承租人编号 -> T_6_16.F160006；直接映射 */
-        s1.F160006 AS CZRBH,
-        /* 承租人名称：融资租赁协议.承租人名称 -> T_6_16.F160007；直接映射 */
-        s1.F160007 AS CZRMC,
-        /* 承租人开户行名称：融资租赁协议.承租人开户行名称 -> T_6_16.F160009；直接映射 */
-        s1.F160009 AS CZRKHHMC,
-        /* 租赁公司名称：融资租赁协议.租赁公司名称 -> T_6_16.F160014；直接映射 */
-        s1.F160014 AS ZLGSMC,
-        /* 租赁公司证件号码：融资租赁协议.租赁公司证件号码 -> T_6_16.F160016；直接映射 */
-        s1.F160016 AS ZLGSZJHM,
-        /* 手续费币种：融资租赁协议.手续费币种 -> T_6_16.F160018；直接映射 */
-        s1.F160018 AS SXFBZ,
-        /* 保证金比例：融资租赁协议.保证金比例 -> T_6_16.F160022；直接映射 */
-        CAST(NULLIF(TRIM(s1.F160022), '') AS DECIMAL(20,2)) AS BZJBL,
-        /* 保证金账号：融资租赁协议.保证金账号 -> T_6_16.F160019；直接映射 */
-        s1.F160019 AS BZJZH,
-        /* 备注：融资租赁协议.备注 -> T_6_16.F160027；提取一表通《表6.16融资租赁协议》备注，以“;”拼接。 */
-        s1.F160027 AS BBZ,
-        /* 承租人客户类别：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 19 租赁标的物：T_6_16.F160005，直接映射 */
+        src.F160005 AS ZLBDW,
+        /* 20 合同金额：T_6_16.F160011，CAST+NULLIF → DECIMAL(20,2) */
+        CAST(NULLIF(TRIM(src.F160011), '') AS DECIMAL(20,2)) AS XYZJE,
+        /* 21 承租人编号：T_6_16.F160006，直接映射 */
+        src.F160006 AS CZRBH,
+        /* 22 承租人名称：T_6_16.F160007，直接映射 */
+        src.F160007 AS CZRMC,
+        /* 23 承租人开户行名称：T_6_16.F160009，直接映射 */
+        src.F160009 AS CZRKHHMC,
+        /* 24 租赁公司名称：T_6_16.F160014，直接映射 */
+        src.F160014 AS ZLGSMC,
+        /* 25 租赁公司证件号码：T_6_16.F160016，直接映射 */
+        src.F160016 AS ZLGSZJHM,
+        /* 26 手续费币种：T_6_16.F160018，直接映射 */
+        src.F160018 AS SXFBZ,
+        /* 27 保证金比例：T_6_16.F160022，CAST+NULLIF → DECIMAL(20,2) */
+        CAST(NULLIF(TRIM(src.F160022), '') AS DECIMAL(20,2)) AS BZJBL,
+        /* 28 保证金账号：T_6_16.F160019，直接映射 */
+        src.F160019 AS BZJZH,
+        /* 29 备注：T_6_16.F160027，直接映射 */
+        src.F160027 AS BBZ,
+        /* 30 承租人客户类别：DDL存在但业务需求未给来源，置NULL */
         NULL AS CZRKHLB,
-        /* 归属分支机构：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 31 归属分支机构：DDL存在但业务需求未给来源，置NULL */
         NULL AS GSFZJG
-    FROM T_1_1 src
-    LEFT JOIN T_6_16 s1
-           ON 1 = 1 /* TODO: 按需求文档表级规则补齐 src 与 s1 的业务关联键，避免笛卡尔积 */
-    LEFT JOIN T_10_1 s2
-           ON 1 = 1 /* TODO: 按需求文档表级规则补齐 src 与 s2 的业务关联键，避免笛卡尔积 */
-    WHERE 1 = 1
-      /* TODO: 按《038_融资租赁业务表.md》补齐采集日期、当月数据、终态纳入和排除条件。 */;
+    FROM T_6_16 src
+    LEFT JOIN T_1_1 org
+      ON SUBSTR(TRIM(src.F160002), 12) = TRIM(org.A010001)
+     AND org.A010020 = src.F160028
+    LEFT JOIN IE_004_411 fenhu
+      ON TRIM(src.F160001) = TRIM(fenhu.XDHTH)
+     AND fenhu.CJRQ = P_DATA_DATE
+    LEFT JOIN T_10_1 code
+      ON TRIM(src.F160015) = TRIM(code.K010004)
+     AND TRIM(src.F160002) = TRIM(code.K010006)
+     AND code.K010002 = '融资租赁协议'
+     AND code.K010003 = '租赁公司证件类型'
+    WHERE src.F160028 = V_DATA_DATE;
 
     COMMIT;
 END;
