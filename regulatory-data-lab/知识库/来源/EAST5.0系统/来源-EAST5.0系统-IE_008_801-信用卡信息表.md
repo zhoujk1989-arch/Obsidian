@@ -1,8 +1,8 @@
 ---
 type: source
 id: 来源-EAST5.0系统-IE_008_801-信用卡信息表
-status: draft
-updated: 2026-04-28
+|status: draft
+|updated: 2026-05-10
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_008_801-信用卡信息表]]"
@@ -46,9 +46,11 @@ tags:
 
 ## Key Findings
 
-- `IE_008_801` 的业务名称为 `信用卡信息表`，本地建表注释为“信用卡信息表”。
+- `IE_008_801` 的业务名称为 `信用卡信息表`，本地建表注释为"信用卡信息表"。
 - DDL 当前包含 `47` 个字段，字段注释中标注 `PK` 的核心标识为：`XYKZH`, `KH`, `CJRQ`。
 - 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- 2026-05-10 重构校准完成：SQL 草案已实现 44/47 字段映射，3 个缺口字段（SENSITIVEFLAG/KHLB/GSFZJG）暂置 NULL。
+- 关键修复：T_1_1/T_2_1/T_2_5 的 LEFT JOIN 补齐采集日期过滤，避免复合主键导致重复行。
 
 ## 共享知识更新检查
 
@@ -76,3 +78,5 @@ CREATE TABLE `IE_008_801` (...)
 ## Open Questions
 
 - 当前尚未取得 `IE_008_801` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- SQL 草案已按业务需求逐字段重构校准完毕，待 GBase 环境语法校验和跑数验证。
+- 3 个缺口字段（SENSITIVEFLAG/KHLB/GSFZJG）业务需求映射表未给来源，需确认是否允许置空或由其他规则补值。

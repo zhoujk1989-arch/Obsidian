@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_010_1005_INC-即期及衍生品交易信息表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-10
 external_vault: regulatory-knowledge-vault
 external_paths: []
 search_keywords:
@@ -43,9 +43,10 @@ tags:
 
 ## Key Findings
 
-- `IE_010_1005_INC` 的业务名称为 `即期及衍生品交易信息表`，本地建表注释为“即期及衍生品交易信息表”。
+- `IE_010_1005_INC` 的业务名称为 `即期及衍生品交易信息表`，本地建表注释为"即期及衍生品交易信息表"。
 - DDL 当前包含 `42` 个字段，字段注释中标注 `PK` 的核心标识为：待确认。
 - 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- 2026-05-10：SQL 草案已完成全面校准，补齐所有 JOIN、WHERE、CASE 占位，状态更新为"已校准待验证"。
 
 ## 共享知识更新检查
 
@@ -73,3 +74,4 @@ CREATE TABLE `IE_010_1005_INC` (...)
 ## Open Questions
 
 - 当前尚未取得 `IE_010_1005_INC` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-10：SQL 草案已完成校准，补齐所有占位，需在 GBase 环境执行语法校验和跑数验证。

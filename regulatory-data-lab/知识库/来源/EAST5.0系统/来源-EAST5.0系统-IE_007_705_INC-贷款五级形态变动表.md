@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_007_705_INC-贷款五级形态变动表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-09
 external_vault: regulatory-knowledge-vault
 external_paths: []
 search_keywords:
@@ -43,9 +43,11 @@ tags:
 
 ## Key Findings
 
-- `IE_007_705_INC` 的业务名称为 `贷款五级形态变动表`，本地建表注释为“贷款五级形态变动表”。
+- `IE_007_705_INC` 的业务名称为 `贷款五级形态变动表`，本地建表注释为"贷款五级形态变动表"。
 - DDL 当前包含 `18` 个字段，字段注释中标注 `PK` 的核心标识为：`XDJJH`, `CJRQ`, `TZRQ`。
-- 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- SQL 草案已完成重构校准（2026-05-09），源表为 T_8_12（五级分类状态），关联7张表完成全部18个字段映射。
+- 修复项：移除 WHERE 1=1 占位、T_1_1 LEFT JOIN 补齐采集日期过滤。
+- 缺口字段 GSFZJG/KHLB/SENSITIVEFLAG 来源已从 EAST 关联表确认补齐。
 
 ## 共享知识更新检查
 
@@ -72,4 +74,7 @@ CREATE TABLE `IE_007_705_INC` (...)
 
 ## Open Questions
 
-- 当前尚未取得 `IE_007_705_INC` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- SQL 草案已完成重构校准，但尚未在 GBase 环境执行语法校验和跑数验证。
+- T_8_12 和 T_1_1 的 SUBSTR(机构ID, 12) 截取逻辑需要在 GBase 环境验证是否与数据实际存储格式匹配。
+- 缺口字段 GSFZJG/KHLB/SENSITIVEFLAG 的取值规则需要业务确认。
+- DATE_FORMAT 在 GBase 8a 的兼容性待跑数验证。

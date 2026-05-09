@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_008_803-信用卡授信情况表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-10
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_008_803-信用卡授信情况表]]"
@@ -46,9 +46,10 @@ tags:
 
 ## Key Findings
 
-- `IE_008_803` 的业务名称为 `信用卡授信情况表`，本地建表注释为“信用卡授信情况表”。
+- `IE_008_803` 的业务名称为 `信用卡授信情况表`，本地建表注释为"信用卡授信情况表"。
 - DDL 当前包含 `42` 个字段，字段注释中标注 `PK` 的核心标识为：`CJRQ`, `KHTYBH`, `XYKZH`。
-- 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- 2026-05-10 第2轮重构校准：补齐 JOIN 采集日期过滤、码值转换（ZHZT/XZSXLX 的'00-XX'通配、CSFS 全程码值映射）、DQSXYE NULL 保护、3个日期字段 NULL 保护。
+- 缺口字段 KHLB/GSFZJG/SENSITIVEFLAG 仍置 NULL，待确认来源。
 
 ## 共享知识更新检查
 
@@ -71,8 +72,11 @@ CREATE TABLE `IE_008_803` (...)
 ## Linked Pages
 
 - 数据表页：[[数据表-IE_008_803-信用卡授信情况表-EAST5.0系统]]
-- 血缘页：待补（血缘-IE_008_803-信用卡授信情况表-EAST5.0系统）
+- 血缘页：[[血缘-IE_008_803-信用卡授信情况表-EAST5.0系统]]（已更新）
+- 报表业务口径页：[[报表-IE_008_803-信用卡授信情况表-EAST5.0系统]]
 
 ## Open Questions
 
-- 当前尚未取得 `IE_008_803` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 3个缺口字段（KHLB/GSFZJG/SENSITIVEFLAG）在业务需求中无来源映射，投产前需确认是否允许空值。
+- CSFS/CSBZ 的跨日遍历聚合逻辑是否需在当前存储过程中实现，或由前置ETL预处理。
+- 外部监管实体页 wikilink 待补。

@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_009_905_INC-代理代销交易信息表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-10
 external_vault: regulatory-knowledge-vault
 external_paths: []
 search_keywords:
@@ -43,9 +43,10 @@ tags:
 
 ## Key Findings
 
-- `IE_009_905_INC` 的业务名称为 `代理代销交易信息表`，本地建表注释为“代理代销交易信息表”。
+- `IE_009_905_INC` 的业务名称为 `代理代销交易信息表`，本地建表注释为"代理代销交易信息表"。
 - DDL 当前包含 `30` 个字段，字段注释中标注 `PK` 的核心标识为：`CJRQ`, `JYBH`。
-- 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- SQL 草案已完成重构校准，按业务需求逐字段映射，补齐了所有占位 NULL（FXJGQSHM、DXCPMC、KHMC、BBZ、CJRQ 等），修复了主表顺序（T_7_11 为主表），补全了 JOIN 条件和码值 CASE 转换。
+- 三个缺口字段（SENSITIVEFLAG、GSFZJG、KHLB）仍无来源，暂置 NULL。
 
 ## 共享知识更新检查
 
@@ -68,8 +69,9 @@ CREATE TABLE `IE_009_905_INC` (...)
 ## Linked Pages
 
 - 数据表页：[[数据表-IE_009_905_INC-代理代销交易信息表-EAST5.0系统]]
-- 血缘页：待补（血缘-IE_009_905_INC-代理代销交易信息表-EAST5.0系统）
+- 血缘页：[[血缘-IE_009_905_INC-代理代销交易信息表-EAST5.0系统]]
 
 ## Open Questions
 
-- 当前尚未取得 `IE_009_905_INC` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- SQL 草案已按业务需求补齐，待 GBase 环境执行验证。
+- 三个缺口字段（SENSITIVEFLAG、GSFZJG、KHLB）的业务来源仍待确认。

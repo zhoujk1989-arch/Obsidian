@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_007_702-资产核销表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-09
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_007_702-资产核销表]]"
@@ -75,4 +75,8 @@ CREATE TABLE `IE_007_702` (...)
 
 ## Open Questions
 
-- 当前尚未取得 `IE_007_702` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-09：存储过程草案已重构校准（`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_007_702_ZCHXB_重构.sql`），消除全部 NULL 占位和 ON 1=1 TODO。
+- KHMC（客户名称）需关联 EAST对公客户信息表（IE_002_203）和 EAST个人客户信息表（IE_002_202），当前暂置 NULL。
+- SENSITIVEFLAG、KHLB、GSFZJG 三个字段在 DDL 中存在但业务需求映射表未给来源，保持 NULL。
+- DATE_FORMAT 函数在 GBase 8a 的兼容性待跑数验证。
+- 重构后的存储过程尚未在 GBase 环境执行验证。

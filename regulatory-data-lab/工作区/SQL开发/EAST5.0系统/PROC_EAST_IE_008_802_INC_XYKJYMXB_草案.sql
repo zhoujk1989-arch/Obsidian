@@ -1,10 +1,10 @@
 /*
-草案质量状态：不合格，禁止直接执行。
-原因：本文件仍存在未实现的 JOIN、WHERE 或 CASE 转换占位，必须按原始业务需求逐项重写并复核后才能作为可运行草案。
+草案质量状态：已重构校准，可供复核。禁止直接在生产环境执行。
+原因：本文件已按原始业务需求《050_信用卡交易明细表.md》逐字段校准并消除所有占位，但尚未在 GBase 环境执行语法校验和跑数验证。
 审计记录：工作区/SQL开发/EAST5.0系统/审计-EAST5.0-GBase存储过程草案质量问题-2026-05-04.md
-*/
+重构校准日期：2026-05-09
+重构校准人：Hermes Agent
 
-/*
 业务目标：
 - 依据原始业务需求《050_信用卡交易明细表.md》生成 EAST5.0 信用卡交易明细表（IE_008_802_INC）GBase 存储过程草案。
 
@@ -19,7 +19,11 @@
 - 原始材料/表结构/EAST5.0系统/IE_008_802_INC-信用卡交易明细表-DDL-2026-04-28.sql
 
 源表：
-- T_7_4, T_6_9, T_1_1
+- T_7_4（信用卡交易）
+- T_6_9（信用卡协议）
+- T_1_1（机构信息）
+- IE_002_201（个人基础信息表，EAST5.0）
+- IE_002_203（对公客户信息表，EAST5.0）
 
 目标表：
 - IE_008_802_INC：信用卡交易明细表。
@@ -39,11 +43,41 @@
 表级取数与关联规则（原文摘录）：
 ### 2.1 表级规则（Excel第 1182 行） 直接映射
 
-未确认点：
-- 一表通中文来源表已按本仓库 DDL 文件名反查为 T_... 物理表；现场库名、模式名和字段类型需复核。
-- 复杂关联条件、筛选条件和窗口去重规则已保留在注释中；本草案中无法自动确定的 JOIN 使用 ON 1 = 1 TODO 占位，投产前必须替换为业务键。
-- 码值转换、备注拼接、多源择优、终态纳入规则如未能由规则自动转成 CASE，已在字段注释中标记，需要人工复核。
-- SQL 草案尚未在 GBase 环境执行验证，目标页和血缘状态应保持 draft。
+重构校准说明（2026-05-09）：
+1. JOIN 条件已补齐：
+   - T_7_4(src) LEFT JOIN T_6_9(s1) ON src.G040002 = s1.F090007（卡号关联卡号）
+   - T_7_4(src) LEFT JOIN T_1_1(s2) ON SUBSTR(TRIM(s1.F090002), 12) = TRIM(s2.A010002) AND s2.A010020 = V_DATA_DATE（机构信息维表，SUBSTR 截取第12位为内部机构号）
+   - T_7_4(src) LEFT JOIN IE_002_201(s3) ON TRIM(src.G040004) = TRIM(s3.KHTYBH) AND s3.CJRQ = P_DATA_DATE（个人基础信息表，获取个人客户姓名/证件）
+   - T_7_4(src) LEFT JOIN IE_002_203(s4) ON TRIM(src.G040004) = TRIM(s4.KHTYBH) AND s4.CJRQ = P_DATA_DATE（对公客户信息表，获取对公客户名称/证件）
+2. WHERE 条件已补齐：
+   - src.G040033 >= DATE_SUB(V_DATA_DATE, INTERVAL 1 DAY)（增量数据，上一采集日至采集日期间）
+   - s1.F090029 IS NULL OR s1.F090029 <> '已核销'（排除已核销卡）
+3. 6 个码值 CASE 转换已补齐：
+   - XSXXJYBZ：'01'→'线上'，'02'→'线下'，ELSE→原值
+   - KPJYLX：'01'→'消费交易'，'02'→'现金交易'，'03'→'还款交易'，'04'→'转账交易'，00-XX→'其他-XX'，ELSE→原值
+   - JYJDBZ：'01'→'借'，'02'→'贷'，ELSE→原值
+   - TQJQBZ：'1'→'是'，'0'→'否'，ELSE→原值
+   - JYQD：'01'→'柜面'，'02'→'ATM'，'03'→'VTM'，'04'→'POS'，'05'→'网银'，'06'→'手机银行'，LEFT(...,3)='07-'→'第三方支付-XX'，'08'→'银联交易'，LEFT(...,3)='00-'→'其他-XX'，ELSE→原值
+   - FQFKBZ：分期业务ID非空→'是'，ELSE→'否'
+4. 日期格式转换已补齐：
+   - HXJYRQ：DATE_FORMAT(src.G040007, '%Y%m%d')（DATE→YYYYMMDD）
+   - HXJYSJ：REPLACE(CAST(src.G040008 AS CHAR), ':', '')（HH:MM:SS→HHMMSS）
+   - JYZDRQ：DATE_FORMAT(src.G040036, '%Y%m%d')（DATE→YYYYMMDD）
+   - ZCHKRQ：DATE_FORMAT(src.G040037, '%Y%m%d')（DATE→YYYYMMDD）
+   - CJRQ：直接赋参数 P_DATA_DATE
+5. 金额字段处理：
+   - SXFJE：CAST(NULLIF(TRIM(src.G040014), '') AS DECIMAL(20,2))
+   - ZHYE：CAST(NULLIF(TRIM(src.G040011), '') AS DECIMAL(20,2))
+   - JYJE：CAST(NULLIF(TRIM(src.G040010), '') AS DECIMAL(20,2))
+6. 客户名称/证件字段补齐：
+   - KHMC：COALESCE(s4.KHMC, s3.KHXM)（优先对公客户名称，回退个人客户姓名）
+   - ZJLB：COALESCE(s4.ZJLB, s3.ZJLB)（优先对公证件类别，回退个人证件类别）
+   - ZJHM：COALESCE(s4.ZJHM, s3.ZJHM)（优先对公证件号码，回退个人证件号码）
+7. 机构相关字段补齐：
+   - JRXKZH：s2.A010003（金融许可证号，通过机构关联获取）
+   - YHJGMC：s2.A010005（银行机构名称，通过机构关联获取）
+   - NBJGH：SUBSTR(TRIM(s1.F090002), 12)（内部机构号，从信用卡协议机构ID第12位截取）
+8. 缺口字段（4个）：SENSITIVEFLAG/DFKHLB/GSFZJG/KHLB 在业务需求映射表中无来源，置 NULL。
 */
 DROP PROCEDURE IF EXISTS PROC_EAST_IE_008_802_INC_XYKJYMXB;
 
@@ -120,44 +154,59 @@ BEGIN
         /* 商户名称：信用卡交易.商户名称 -> T_7_4.G040023；直接映射 */
         src.G040023 AS SHMC,
         /* 线上线下交易标志：信用卡交易.线上线下交易标识 -> T_7_4.G040024；加工映射：'01'转为'线上'，'02'转为'线下' */
-        src.G040024 AS XSXXJYBZ,
-        /* 手续费金额：信用卡交易.手续费金额 -> T_7_4.G040014；直接映射 */
+        CASE TRIM(src.G040024)
+            WHEN '01' THEN '线上'
+            WHEN '02' THEN '线下'
+            ELSE TRIM(src.G040024)
+        END AS XSXXJYBZ,
+        /* 手续费金额：信用卡交易.手续费金额 -> T_7_4.G040014；直接映射，CAST为DECIMAL */
         CAST(NULLIF(TRIM(src.G040014), '') AS DECIMAL(20,2)) AS SXFJE,
-        /* 交易账单日期：信用卡交易.交易账单日期 -> T_7_4.G040036；直接映射 */
-        src.G040036 AS JYZDRQ,
-        /* 证件类别：待确认来源字段：一表通转出的EAST对公客户信息表\.个人基础信息表 */
-        NULL AS ZJLB,
-        /* 卡片交易类型：信用卡交易.交易类型 -> T_7_4.G040009；加工映射：'01'转成'消费交易'，'02'转成'现金交易'，'03'转成'还款交易，'04'转成'转账交易'，'00-XX'转成'其他-XX' */
-        src.G040009 AS KPJYLX,
-        /* 涉密标志：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 交易账单日期：信用卡交易.交易账单日期 -> T_7_4.G040036；直接映射，DATE转YYYYMMDD */
+        DATE_FORMAT(src.G040036, '%Y%m%d') AS JYZDRQ,
+        /* 证件类别：优先对公客户信息表.证件类别，回退个人基础信息表.证件类别 */
+        COALESCE(s4.ZJLB, s3.ZJLB) AS ZJLB,
+        /* 卡片交易类型：信用卡交易.交易类型 -> T_7_4.G040009；加工映射：'01'转成'消费交易'，'02'转成'现金交易'，'03'转成'还款交易'，'04'转成'转账交易'，'00-XX'转成'其他-XX' */
+        CASE TRIM(src.G040009)
+            WHEN '01' THEN '消费交易'
+            WHEN '02' THEN '现金交易'
+            WHEN '03' THEN '还款交易'
+            WHEN '04' THEN '转账交易'
+            WHEN LEFT(TRIM(src.G040009), 3) = '00-' THEN CONCAT('其他-', SUBSTR(TRIM(src.G040009), 4))
+            ELSE TRIM(src.G040009)
+        END AS KPJYLX,
+        /* 涉密标志：DDL存在但业务需求映射表未给来源，置NULL */
         NULL AS SENSITIVEFLAG,
-        /* 核心交易日期：信用卡交易.核心交易日期 -> T_7_4.G040007；加工映射：数据格式转成yyyymmdd */
-        CONCAT(CAST(YEAR(src.G040007) AS VARCHAR(4)), LPAD(CAST(MONTH(src.G040007) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.G040007) AS VARCHAR(2)), 2, '0')) AS HXJYRQ,
+        /* 核心交易日期：信用卡交易.核心交易日期 -> T_7_4.G040007；加工映射：DATE转yyyymmdd */
+        DATE_FORMAT(src.G040007, '%Y%m%d') AS HXJYRQ,
         /* 币种：信用卡交易.币种 -> T_7_4.G040015；直接映射 */
         src.G040015 AS BZ,
-        /* 金融许可证号：机构信息.金融许可证号 -> T_1_1.A010003；加工映射：用【信用卡交易】.【卡号】关联【信用卡协议】.【卡号】取【信用卡协议】.【机构id】，从第12位开始截取【信用卡协议】的【机构id】，关联【机构信息】的【内部机构号】取【金融许可证号】 */
-        SUBSTR(TRIM(s2.A010003), 12) AS JRXKZH,
+        /* 金融许可证号：机构信息.金融许可证号 -> T_1_1.A010003；加工映射：用卡号关联信用卡协议取机构ID（截取第12位为内部机构号），关联机构信息取金融许可证号 */
+        s2.A010003 AS JRXKZH,
         /* 明细科目名称：信用卡交易.科目名称 -> T_7_4.G040013；直接映射 */
         src.G040013 AS MXKMMC,
         /* 交易序列号：信用卡交易.交易ID -> T_7_4.G040001；直接映射 */
         src.G040001 AS JYXLH,
-        /* 银行机构名称：机构信息.银行机构名称 -> T_1_1.A010005；加工映射：用【信用卡交易】.【卡号】关联【信用卡协议】.【卡号】取【信用卡协议】.【机构id】，从第12位开始截取【信用卡协议】的【机构id】，关联【机构信息】的【内部机构号】取【银行机构名称】 */
-        SUBSTR(TRIM(s2.A010005), 12) AS YHJGMC,
+        /* 银行机构名称：机构信息.银行机构名称 -> T_1_1.A010005；加工映射：同JRXKZH关联路径 */
+        s2.A010005 AS YHJGMC,
         /* 客户统一编号：信用卡交易.客户ID -> T_7_4.G040004；直接映射 */
         src.G040004 AS KHTYBH,
-        /* 客户名称：待确认来源字段：一表通转出的EAST对公客户信息表\.个人基础信息表 */
-        NULL AS KHMC,
-        /* 证件号码：待确认来源字段：一表通转出的EAST对公客户信息表\.个人基础信息表 */
-        NULL AS ZJHM,
+        /* 客户名称：优先对公客户信息表.客户名称，回退个人基础信息表.客户姓名 */
+        COALESCE(s4.KHMC, s3.KHXM) AS KHMC,
+        /* 证件号码：优先对公客户信息表.证件号码，回退个人基础信息表.证件号码 */
+        COALESCE(s4.ZJHM, s3.ZJHM) AS ZJHM,
         /* 信用卡账号：信用卡交易.分户账号 -> T_7_4.G040003；直接映射 */
         src.G040003 AS XYKZH,
         /* 卡号：信用卡交易.卡号 -> T_7_4.G040002；直接映射 */
         src.G040002 AS KH,
         /* 交易借贷标志：信用卡交易.借贷标识 -> T_7_4.G040021；加工映射：'01'转为'借'，'02'转为'贷' */
-        src.G040021 AS JYJDBZ,
+        CASE TRIM(src.G040021)
+            WHEN '01' THEN '借'
+            WHEN '02' THEN '贷'
+            ELSE TRIM(src.G040021)
+        END AS JYJDBZ,
         /* 核心交易时间：信用卡交易.核心交易时间 -> T_7_4.G040008；加工映射：删除":"，将数据格式转成HHMMSS */
-        src.G040008 AS HXJYSJ,
-        /* 账户余额：信用卡交易.账户余额 -> T_7_4.G040011；直接映射 */
+        REPLACE(CAST(src.G040008 AS CHAR), ':', '') AS HXJYSJ,
+        /* 账户余额：信用卡交易.账户余额 -> T_7_4.G040011；直接映射，CAST为DECIMAL */
         CAST(NULLIF(TRIM(src.G040011), '') AS DECIMAL(20,2)) AS ZHYE,
         /* 对方账号：信用卡交易.对方账号 -> T_7_4.G040017；直接映射 */
         src.G040017 AS DFZH,
@@ -171,41 +220,64 @@ BEGIN
         src.G040031 AS ZY,
         /* 手续费币种：信用卡交易.手续费币种 -> T_7_4.G040016；直接映射 */
         src.G040016 AS SXFBZ,
-        /* 最迟还款日期：信用卡交易.最迟还款日期 -> T_7_4.G040037；直接映射 */
-        src.G040037 AS ZCHKRQ,
+        /* 最迟还款日期：信用卡交易.最迟还款日期 -> T_7_4.G040037；直接映射，DATE转YYYYMMDD */
+        DATE_FORMAT(src.G040037, '%Y%m%d') AS ZCHKRQ,
         /* IP地址：信用卡交易.IP地址 -> T_7_4.G040026；直接映射 */
         src.G040026 AS IPDZ,
         /* MAC地址：信用卡交易.MAC地址 -> T_7_4.G040027；直接映射 */
         src.G040027 AS MACDZ,
-        /* 采集日期：待确认来源字段：/./ */
-        NULL AS CJRQ,
-        /* 对方客户类别：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 采集日期：默认值：报告日，数据格式转成yyyymmdd */
+        P_DATA_DATE AS CJRQ,
+        /* 对方客户类别：DDL存在但业务需求映射表未给来源，置NULL */
         NULL AS DFKHLB,
         /* 提前结清标志：信用卡交易.提前结清标志 -> T_7_4.G040034；加工映射：'1'转为'是'，'0'转为'否' */
-        src.G040034 AS TQJQBZ,
-        /* 交易渠道：信用卡交易.交易渠道 -> T_7_4.G040030；加工映射：'01' 转为 '柜面'，'02' 转为 'ATM'，'03' 转为 'VTM'，'04' 转为 'POS'，'05' 转为 '网银'，'06' 转为 '手机银行'，'07-XX' 转为 '第三方支付-XX'，'08' 转为 '银联交易'，'00-XX' 转为 '其他-XX' */
-        src.G040030 AS JYQD,
+        CASE TRIM(src.G040034)
+            WHEN '1' THEN '是'
+            WHEN '0' THEN '否'
+            ELSE TRIM(src.G040034)
+        END AS TQJQBZ,
+        /* 交易渠道：信用卡交易.交易渠道 -> T_7_4.G040030；加工映射：'01'转为'柜面'，'02'转为'ATM'，'03'转为'VTM'，'04'转为'POS'，'05'转为'网银'，'06'转为'手机银行'，'07-XX'转为'第三方支付-XX'，'08'转为'银联交易'，'00-XX'转为'其他-XX' */
+        CASE TRIM(src.G040030)
+            WHEN '01' THEN '柜面'
+            WHEN '02' THEN 'ATM'
+            WHEN '03' THEN 'VTM'
+            WHEN '04' THEN 'POS'
+            WHEN '05' THEN '网银'
+            WHEN '06' THEN '手机银行'
+            WHEN '08' THEN '银联交易'
+            WHEN LEFT(TRIM(src.G040030), 3) = '07-' THEN CONCAT('第三方支付-', SUBSTR(TRIM(src.G040030), 4))
+            WHEN LEFT(TRIM(src.G040030), 3) = '00-' THEN CONCAT('其他-', SUBSTR(TRIM(src.G040030), 4))
+            ELSE TRIM(src.G040030)
+        END AS JYQD,
         /* 备注：信用卡交易.备注 -> T_7_4.G040035；直接映射 */
         src.G040035 AS BBZ,
-        /* 内部机构号：待确认来源字段：信用卡协议.机构id */
-        NULL AS NBJGH,
-        /* 归属分支机构：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 内部机构号：信用卡协议.机构id -> T_6_9.F090002；加工映射：从第12位开始截取信用卡协议的机构id */
+        SUBSTR(TRIM(s1.F090002), 12) AS NBJGH,
+        /* 归属分支机构：DDL存在但业务需求映射表未给来源，置NULL */
         NULL AS GSFZJG,
         /* 明细科目编号：信用卡交易.科目ID -> T_7_4.G040012；直接映射 */
         src.G040012 AS MXKMBH,
-        /* 客户类别：需求字段未与目标 DDL 注释精确匹配，待确认 */
+        /* 客户类别：DDL存在但业务需求映射表未给来源，置NULL */
         NULL AS KHLB,
-        /* 交易金额：信用卡交易.交易金额 -> T_7_4.G040010；直接映射 */
+        /* 交易金额：信用卡交易.交易金额 -> T_7_4.G040010；直接映射，CAST为DECIMAL */
         CAST(NULLIF(TRIM(src.G040010), '') AS DECIMAL(20,2)) AS JYJE,
-        /* 分期付款标志：信用卡交易.分期业务ID -> T_7_4.G040025；加工映射：【分期业务ID】非空转为'是'，其他转为‘否’ */
-        src.G040025 AS FQFKBZ
+        /* 分期付款标志：信用卡交易.分期业务ID -> T_7_4.G040025；加工映射：【分期业务ID】非空转为'是'，其他转为'否' */
+        CASE WHEN NULLIF(TRIM(src.G040025), '') IS NOT NULL THEN '是' ELSE '否' END AS FQFKBZ
     FROM T_7_4 src
     LEFT JOIN T_6_9 s1
-           ON 1 = 1 /* TODO: 按需求文档表级规则补齐 src 与 s1 的业务关联键，避免笛卡尔积 */
+           ON TRIM(src.G040002) = TRIM(s1.F090007)
     LEFT JOIN T_1_1 s2
-           ON 1 = 1 /* TODO: 按需求文档表级规则补齐 src 与 s2 的业务关联键，避免笛卡尔积 */
-    WHERE 1 = 1
-      /* TODO: 按《050_信用卡交易明细表.md》补齐采集日期、当月数据、终态纳入和排除条件。 */;
+           ON SUBSTR(TRIM(s1.F090002), 12) = TRIM(s2.A010002)
+          AND s2.A010020 = V_DATA_DATE
+    LEFT JOIN IE_002_201 s3
+           ON TRIM(src.G040004) = TRIM(s3.KHTYBH)
+          AND s3.CJRQ = P_DATA_DATE
+    LEFT JOIN IE_002_203 s4
+           ON TRIM(src.G040004) = TRIM(s4.KHTYBH)
+          AND s4.CJRQ = P_DATA_DATE
+    WHERE src.G040033 >= DATE_SUB(V_DATA_DATE, INTERVAL 1 DAY)
+      AND src.G040033 <= V_DATA_DATE
+      AND (s1.F090029 IS NULL OR TRIM(s1.F090029) <> '已核销');
 
     COMMIT;
 END;

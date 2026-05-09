@@ -2,7 +2,7 @@
 type: table
 id: 数据表-IE_008_802_INC-信用卡交易明细表-EAST5.0系统
 status: draft
-updated: 2026-05-04
+updated: 2026-05-09
 tags:
   - regulatory
   - table
@@ -146,17 +146,86 @@ tags:
 - 字段注释中的 `关联数据项` 只代表监管数据项关系，不等同于已闭环的 SQL 字段级血缘。
 - 隐私、脱敏、默认日期、空值允许和代码枚举规则需要结合《采集技术接口说明》和实际装载程序复核。
 
+## SQL 加工逻辑（2026-05-09 重构后）
+
+### 主表与关联（4 个 LEFT JOIN）
+
+- **主表**：`T_7_4 src`（信用卡交易）
+- **LEFT JOIN T_6_9 s1**：`TRIM(src.G040002) = TRIM(s1.F090007)`（卡号关联信用卡协议）
+  - 用途：获取机构ID(F090002)，SUBSTR 截取第12位为内部机构号(NBJGH)
+- **LEFT JOIN T_1_1 s2**：`SUBSTR(TRIM(s1.F090002), 12) = TRIM(s2.A010002) AND s2.A010020 = V_DATA_DATE`
+  - 用途：获取金融许可证号(A010003)和银行机构名称(A010005)
+- **LEFT JOIN IE_002_201 s3**：`TRIM(src.G040004) = TRIM(s3.KHTYBH) AND s3.CJRQ = P_DATA_DATE`
+  - 用途：获取个人客户姓名(KHXM)、证件类别(ZJLB)、证件号码(ZJHM)
+- **LEFT JOIN IE_002_203 s4**：`TRIM(src.G040004) = TRIM(s4.KHTYBH) AND s4.CJRQ = P_DATA_DATE`
+  - 用途：获取对公客户名称(KHMC)、证件类别(ZJLB)、证件号码(ZJHM)
+
+### WHERE 过滤条件
+
+- `src.G040033 >= DATE_SUB(V_DATA_DATE, INTERVAL 1 DAY) AND src.G040033 <= V_DATA_DATE`：增量数据，上一采集日至采集日期间
+- `s1.F090029 IS NULL OR TRIM(s1.F090029) <> '已核销'`：排除已核销卡的交易
+
+### 码值 CASE 转换（6 个）
+
+| 目标字段 | 字段名称 | 映射规则 |
+| --- | --- | --- |
+| `XSXXJYBZ` | 线上线下交易标志 | '01'→'线上'，'02'→'线下'，ELSE→原值 |
+| `KPJYLX` | 卡片交易类型 | '01'→'消费交易'，'02'→'现金交易'，'03'→'还款交易'，'04'→'转账交易'，LEFT='00-'→'其他-XX'，ELSE→原值 |
+| `JYJDBZ` | 交易借贷标志 | '01'→'借'，'02'→'贷'，ELSE→原值 |
+| `TQJQBZ` | 提前结清标志 | '1'→'是'，'0'→'否'，ELSE→原值 |
+| `JYQD` | 交易渠道 | '01'→'柜面'，'02'→'ATM'，'03'→'VTM'，'04'→'POS'，'05'→'网银'，'06'→'手机银行'，LEFT='07-'→'第三方支付-XX'，'08'→'银联交易'，LEFT='00-'→'其他-XX'，ELSE→原值 |
+| `FQFKBZ` | 分期付款标志 | 分期业务ID非空→'是'，ELSE→'否' |
+
+### 日期格式转换（5 个）
+
+| 目标字段 | 源字段类型 | 转换逻辑 |
+| --- | --- | --- |
+| `HXJYRQ` | T_7_4.G040007 (DATE) | DATE_FORMAT(G040007, '%Y%m%d') |
+| `JYZDRQ` | T_7_4.G040036 (DATE) | DATE_FORMAT(G040036, '%Y%m%d') |
+| `ZCHKRQ` | T_7_4.G040037 (DATE) | DATE_FORMAT(G040037, '%Y%m%d') |
+| `HXJYSJ` | T_7_4.G040008 (TIME) | REPLACE(CAST(G040008 AS CHAR), ':', '') → HHMMSS |
+| `CJRQ` | 参数 P_DATA_DATE | 直接赋参数值 |
+
+### 金额/数值类型转换（3 个）
+
+| 目标字段 | 源字段 | 转换逻辑 |
+| --- | --- | --- |
+| `SXFJE` | T_7_4.G040014 (varchar) | CAST(NULLIF(TRIM(...),'') AS DECIMAL(20,2)) |
+| `ZHYE` | T_7_4.G040011 (varchar) | CAST(NULLIF(TRIM(...),'') AS DECIMAL(20,2)) |
+| `JYJE` | T_7_4.G040010 (varchar) | CAST(NULLIF(TRIM(...),'') AS DECIMAL(20,2)) |
+
+### 客户信息多源合并
+
+| 目标字段 | 逻辑 |
+| --- | --- |
+| `KHMC` | COALESCE(IE_002_203.KHMC, IE_002_201.KHXM) |
+| `ZJLB` | COALESCE(IE_002_203.ZJLB, IE_002_201.ZJLB) |
+| `ZJHM` | COALESCE(IE_002_203.ZJHM, IE_002_201.ZJHM) |
+
+### 缺口字段（4 个）
+
+- `SENSITIVEFLAG`：DDL 存在但业务需求映射表未给来源，置 NULL
+- `DFKHLB`：DDL 存在但业务需求映射表未给来源，置 NULL
+- `GSFZJG`：DDL 存在但业务需求映射表未给来源，置 NULL
+- `KHLB`：DDL 存在但业务需求映射表未给来源，置 NULL
+
 ## Open Questions
 
 - `IE_008_802_INC` 的实际装载 SQL、接口生成程序或上游落地表待补。
 - 字段注释中代码类字段的完整枚举值是否与外部 EAST5.0 原文页完全一致，待逐字段复核。
 - 该表是否存在下游校验报表、质检规则或跨表一致性约束，待后续 ingest。
+- WHERE 过滤当前仅按增量日期过滤；报送要求"不包括查询交易"未实现具体交易类型码值排除，需业务确认哪些码值属于查询交易。
+- 已核销卡排除逻辑当前按卡状态='已核销'过滤，可能需精确匹配 T_6_9.F090029 的实际码值。
 
-## SQL 草案上游依赖（2026-05-04）
+## SQL 草案上游依赖（2026-05-09）
 
 | 上游对象 | 上游字段/范围 | 处理方式 | 证据/血缘页 | 确认状态 |
 | --- | --- | --- | --- | --- |
-| `T_7_4`, `T_1_1`, `T_6_9` | 见字段级血缘页 | 依据业务需求和 GBase 草案进行字段映射、关联、过滤、码值/日期转换 | [[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]；`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_008_802_INC_XYKJYMXB_草案.sql` | 待验证 |
+| `T_7_4` | G040001~G040037 | 主交易表，直接映射/码值转换/日期转换/金额CAST | [[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]；`工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_008_802_INC_XYKJYMXB_草案.sql` | 待验证 |
+| `T_6_9` | F090002(机构ID), F090007(卡号), F090029(卡状态) | LEFT JOIN ON 卡号，取机构ID截取第12位+NJGH，过滤已核销卡 | [[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]；同上 | 待验证 |
+| `T_1_1` | A010002(内部机构号), A010003(金融许可证号), A010005(银行机构名称), A010020(采集日期) | LEFT JOIN ON SUBSTR(机构ID,12)=A010002 AND A010020=V_DATA_DATE | [[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]；同上 | 待验证 |
+| `IE_002_201` (个人基础信息表) | KHTYBH(客户统一编号), KHXM(客户姓名), ZJLB(证件类别), ZJHM(证件号码), CJRQ(采集日期) | LEFT JOIN ON src.G040004=s3.KHTYBH AND s3.CJRQ=P_DATA_DATE，获取个人客户信息 | [[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]；同上 | 待验证 |
+| `IE_002_203` (对公客户信息表) | KHTYBH(客户统一编号), KHMC(客户名称), ZJLB(证件类别), ZJHM(证件号码), CJRQ(采集日期) | LEFT JOIN ON src.G040004=s4.KHTYBH AND s4.CJRQ=P_DATA_DATE，获取对公客户信息 | [[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]；同上 | 待验证 |
 
 - 报表业务口径页：[[报表-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]
 - 业务需求：`原始材料/业务需求/EAST5.0/050_信用卡交易明细表.md`

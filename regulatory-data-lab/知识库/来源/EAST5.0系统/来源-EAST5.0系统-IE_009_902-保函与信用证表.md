@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_009_902-保函与信用证表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-10
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_009_902-保函与信用证表]]"
@@ -17,6 +17,7 @@ tags:
   - regulatory
   - source
   - east5
+  - 第3轮重构校准
 ---
 
 # 来源-EAST5.0系统-IE_009_902-保函与信用证表
@@ -75,4 +76,9 @@ CREATE TABLE `IE_009_902` (...)
 
 ## Open Questions
 
-- 当前尚未取得 `IE_009_902` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-10 重构校准：完成存储过程 PROC_EAST_IE_009_902_BHYXYZB 的重写。
+- 源表修正：原草案错误使用 T_2_5/T_2_3/T_2_4（客户信息表）作为主源表，已修正为 T_6_12（保函及其他担保协议）、T_6_11（信用证协议）+ T_8_2（信用证状态）、T_6_24（贷款承诺）。
+- 四个业务类别通过 UNION ALL 合并，各按表级规则处理：保函类、信用证、其他担保类、贷款承诺。
+- 全量逻辑：DELETE+INSERT，采用 LEFT JOIN 上月数据实现"剔除上月已失效数据，卡出当月失效数据"。
+- 申请人名称/国家代码：LEFT JOIN T_2_1(对公)/T_2_5(个人)/T_2_3(同业)/T_2_4(个体工商) 并通过 COALESCE 取第一个非空值。
+- 2026-05-10（第3轮-重试）：逐字段对标源表 DDL 确认全部字段映射正确，INSERT/SELECT 列序一致，JOIN 键匹配，过滤条件正确。

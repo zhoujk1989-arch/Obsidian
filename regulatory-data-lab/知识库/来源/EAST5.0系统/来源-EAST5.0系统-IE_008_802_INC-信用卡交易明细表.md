@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_008_802_INC-信用卡交易明细表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-09
 external_vault: regulatory-knowledge-vault
 external_paths: []
 search_keywords:
@@ -43,9 +43,16 @@ tags:
 
 ## Key Findings
 
-- `IE_008_802_INC` 的业务名称为 `信用卡交易明细表`，本地建表注释为“信用卡交易明细表”。
+- `IE_008_802_INC` 的业务名称为 `信用卡交易明细表`，本地建表注释为"信用卡交易明细表"。
 - DDL 当前包含 `42` 个字段，字段注释中标注 `PK` 的核心标识为：`HXJYRQ`, `JYXLH`, `KH`, `HXJYSJ`, `CJRQ`。
-- 本次材料只有表结构与字段说明，未包含 SQL 加工、装载过程或上游取数字段，因此字段级血缘暂不闭环。
+- **2026-05-09 重构校准**：SQL 草案已按《050_信用卡交易明细表.md》逐字段校准，消除全部占位。
+  - 4 个 LEFT JOIN 已补齐：T_7_4→T_6_9（卡号关联）、T_6_9→T_1_1（机构ID截取第12位）、T_7_4→IE_002_201（个人客户）、T_7_4→IE_002_203（对公客户）
+  - WHERE 条件已补齐：增量日期过滤（上一采集日至采集日）+ 排除已核销卡
+  - 6 个码值 CASE 转换已补齐：XSXXJYBZ/KPJYLX/JYJDBZ/TQJQBZ/JYQD/FQFKBZ
+  - 5 个日期格式转换已补齐：HXJYRQ/JYZDRQ/ZCHKRQ/HXJYSJ/CJRQ
+  - 3 个金额字段 CAST 已补齐：SXFJE/ZHYE/JYJE
+  - 客户名称/证件多源合并已补齐：COALESCE(对公客户名称/证件, 个人客户姓名/证件)
+  - 4 个缺口字段（SENSITIVEFLAG/DFKHLB/GSFZJG/KHLB）置 NULL，符合审计处置原则
 
 ## 共享知识更新检查
 
@@ -62,14 +69,18 @@ tags:
 
 ```sql
 -- 完整 DDL 见 `原始材料/表结构/EAST5.0系统/IE_008_802_INC-信用卡交易明细表-DDL-2026-04-28.sql`
+-- 重构后 SQL 草案见 `工作区/SQL开发/EAST5.0系统/PROC_EAST_IE_008_802_INC_XYKJYMXB_草案.sql`
 CREATE TABLE `IE_008_802_INC` (...)
 ```
 
 ## Linked Pages
 
 - 数据表页：[[数据表-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]
-- 血缘页：待补（血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统）
+- 血缘页：[[血缘-IE_008_802_INC-信用卡交易明细表-EAST5.0系统]]
 
 ## Open Questions
 
-- 当前尚未取得 `IE_008_802_INC` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- SQL 草案尚未在 GBase 环境执行语法校验和跑数验证。
+- WHERE 过滤当前仅按增量日期过滤，报送要求中"不包括查询交易"未实现具体交易类型码值排除，需业务确认哪些码值属于查询交易。
+- 多源客户信息合并（对公 vs 个人）的 COALESCE 优先级策略需要业务方确认。
+- 已核销卡排除逻辑当前按卡状态='已核销'过滤，可能需精确匹配 T_6_9.F090029 的实际码值。

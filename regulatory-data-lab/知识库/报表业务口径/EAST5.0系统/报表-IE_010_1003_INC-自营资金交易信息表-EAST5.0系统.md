@@ -2,7 +2,7 @@
 type: report
 id: 报表-IE_010_1003_INC-自营资金交易信息表-EAST5.0系统
 status: draft
-updated: 2026-05-04
+updated: 2026-05-10
 tags:
   - regulatory
   - report
