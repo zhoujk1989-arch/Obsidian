@@ -110,22 +110,22 @@ BEGIN
         src.H030001 AS XDHTH,
 
         /* 8. DKLX 垫款类型：T_8_3.H030007 → 码值 CASE 转换
-         * 2026-05-09 重构：增加 '00'→'其他' 分支，对齐需求文档"否则置''"规则。
-         * 原草案对纯'00'未显式处理，会落入 ELSE→''，导致'00'被清空而非'其他'。
-         * '00-XX'/'00XX' 通配分支为草案扩展，需求文档仅写明'00-XX'→'其他-XX'，
-         *   需与码值原文核对后确认是否保留。
+         * 2026-05-09 修正：
+         *   XX 是银行自定义代号（变量），不是字面量。
+         *   原草案用 WHEN '00-XX' 精确匹配字面字符串，匹配不到实际数据。
+         *   改为 WHEN LEFT(...) = '00-' 模式匹配，取 '00-' 后面的部分拼接。
+         *   需求文档只写了 '00-XX' 一种通配，没有 '00XX' 分支。
          */
-        CASE TRIM(src.H030007)
-            WHEN '01' THEN '1.1承兑汇票'
-            WHEN '02' THEN '1.2融资性保函'
-            WHEN '03' THEN '1.3其他等同于贷款的授信业务'
-            WHEN '04' THEN '2.1非融资性保函'
-            WHEN '05' THEN '2.2其他与交易相关的或有项目'
-            WHEN '06' THEN '3.1跟单信用证'
-            WHEN '07' THEN '3.2其他与贸易相关的或有项目'
-            WHEN '00' THEN '其他'
-            WHEN '00-XX' THEN CONCAT('其他-', REPLACE(REPLACE(src.H030007, '00', ''), '-', ''))
-            WHEN '00XX' THEN CONCAT('其他-', REPLACE(src.H030007, '00', ''))
+        CASE
+            WHEN TRIM(src.H030007) = '01' THEN '1.1承兑汇票'
+            WHEN TRIM(src.H030007) = '02' THEN '1.2融资性保函'
+            WHEN TRIM(src.H030007) = '03' THEN '1.3其他等同于贷款的授信业务'
+            WHEN TRIM(src.H030007) = '04' THEN '2.1非融资性保函'
+            WHEN TRIM(src.H030007) = '05' THEN '2.2其他与交易相关的或有项目'
+            WHEN TRIM(src.H030007) = '06' THEN '3.1跟单信用证'
+            WHEN TRIM(src.H030007) = '07' THEN '3.2其他与贸易相关的或有项目'
+            WHEN TRIM(src.H030007) = '00' THEN '其他'
+            WHEN LEFT(TRIM(src.H030007), 3) = '00-' THEN CONCAT('其他-', SUBSTRING(TRIM(src.H030007), 4))
             ELSE ''
         END AS DKLX,
 
@@ -157,17 +157,15 @@ BEGIN
         END AS DKRQ,
 
         /* 17. DKZT 垫款状态：T_8_3.H030011 → 码值 CASE 转换
-         * 2026-05-09 重构：增加 '00'→'其他' 分支，对齐需求文档"否则置''"规则。
-         * '00-XX'/'00XX' 通配分支为草案扩展，需求文档仅写明'00-XX'→'其他-XX'，
-         *   需与码值原文核对后确认是否保留。
+         * 2026-05-09 修正：同 DKLX，XX 是变量，改用 LEFT/SUBSTRING 模式匹配。
          */
-        CASE TRIM(src.H030011)
-            WHEN '01' THEN '未结清'
-            WHEN '02' THEN '已结清'
-            WHEN '03' THEN '转让'
-            WHEN '04' THEN '核销'
-            WHEN '00' THEN '其他'
-            WHEN '00-XX' THEN CONCAT('其他-', REPLACE(REPLACE(src.H030011, '00', ''), '-', ''))
+        CASE
+            WHEN TRIM(src.H030011) = '01' THEN '未结清'
+            WHEN TRIM(src.H030011) = '02' THEN '已结清'
+            WHEN TRIM(src.H030011) = '03' THEN '转让'
+            WHEN TRIM(src.H030011) = '04' THEN '核销'
+            WHEN TRIM(src.H030011) = '00' THEN '其他'
+            WHEN LEFT(TRIM(src.H030011), 3) = '00-' THEN CONCAT('其他-', SUBSTRING(TRIM(src.H030011), 4))
             ELSE ''
         END AS DKZT,
 
