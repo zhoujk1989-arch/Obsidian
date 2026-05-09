@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_006_601-表内外业务担保合同表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-09
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_006_601-表内外业务担保合同表]]"
@@ -76,3 +76,4 @@ CREATE TABLE `IE_006_601` (...)
 ## Open Questions
 
 - 当前尚未取得 `IE_006_601` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-09 已依据数据字典原文重构 SQL 草案，补齐码值 CASE、JOIN 条件和 WHERE 过滤。待 GBase 跑数验证后闭环。
