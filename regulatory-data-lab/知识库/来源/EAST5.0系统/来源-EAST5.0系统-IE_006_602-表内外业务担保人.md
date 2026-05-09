@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_006_602-表内外业务担保人
 status: draft
-updated: 2026-04-28
+updated: 2026-05-09
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_006_602-表内外业务担保人]]"
@@ -71,8 +71,8 @@ CREATE TABLE `IE_006_602` (...)
 ## Linked Pages
 
 - 数据表页：[[数据表-IE_006_602-表内外业务担保人-EAST5.0系统]]
-- 血缘页：待补（血缘-IE_006_602-表内外业务担保人-EAST5.0系统）
+- 血缘页：[[血缘-IE_006_602-表内外业务担保人-EAST5.0系统]]
 
 ## Open Questions
 
-- 当前尚未取得 `IE_006_602` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-09 重构：ALL 字段级血缘已闭环（除 SENSITIVEFLAG/GSFZJG 缺口字段置 NULL）；SQL 草案已消除 ON 1=1 占位，补齐 JOIN/WHERE/码值 CASE 转换；尚未在 GBase 环境执行验证。
