@@ -156,8 +156,7 @@ BEGIN
             WHEN '03' THEN '转让'
             WHEN '04' THEN '核销'
             WHEN '00' THEN '其他'
-            WHEN '00-XX' THEN CONCAT('其他-', REPLACE(REPLACE(src.H030011, '00', ''), '-', ''))
-            WHEN '00XX' THEN CONCAT('其他-', REPLACE(src.H030011, '00', ''))
+            WHEN '00-XX' THEN CONCAT('其他', REPLACE(REPLACE(src.H030011, '00', ''), '-', ''))
             ELSE ''
         END AS DKZT,
 

@@ -2,7 +2,7 @@
 type: source
 id: 来源-EAST5.0系统-IE_005_513-互联网贷款合作协议表
 status: draft
-updated: 2026-04-28
+updated: 2026-05-09
 external_vault: regulatory-knowledge-vault
 external_paths:
   - "[[03-实体/EAST5.0-IE_005_513-互联网贷款合作协议表]]"
@@ -76,3 +76,5 @@ CREATE TABLE `IE_005_513` (...)
 ## Open Questions
 
 - 当前尚未取得 `IE_005_513` 的实际装载 SQL、存储过程或接口落地脚本，字段级来源和加工状态待补。
+- 2026-05-09 已生成重构后的 GBase 存储过程草案，但尚未在 GBase 环境执行验证。
+- 合作方式临时表 TMP_HZFS 的 SUBSTRING_INDEX 替代方案在 GBase 8a 中的正确性待跑数验证。
