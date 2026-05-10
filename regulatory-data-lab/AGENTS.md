@@ -185,6 +185,7 @@ tags:
 - 英文或 `snake_case` 只用于技术标识。
 - 优先使用要点和表格，不写长篇大段说明。
 - Obsidian 互链使用 `[[报表-对公存款余额日报]]` 格式；不存在页面不要写成 wikilink。
+- 已存在的仓库内部页面和 SQL 文件也必须使用 Obsidian wikilink；SQL 文件格式为 `[[sql/<系统名>/<文件名>.sql|<文件名>.sql]]`，不要写成反引号路径或 Markdown 链接。
 - 代码片段只保留证明结论所必需的最短部分。
 - 对外部来源，只记录 `regulatory-knowledge-vault` 的 vault 名和 Obsidian wikilink，不复制正文。
 
