@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "/Users/zhoujingkun/.local/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/main.py", line 10025, in main
+    sys.exit(run_oneshot(
+             ^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 80, in run_oneshot
+    response = _run_agent(prompt, model=model, provider=provider)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 108, in _run_agent
+    from run_agent import AIAgent
+  File "/Users/zhoujingkun/.hermes/hermes-agent/run_agent.py", line 70, in <module>
+    from model_tools import (
+  File "/Users/zhoujingkun/.hermes/hermes-agent/model_tools.py", line 143, in <module>
+    from tools.mcp_tool import discover_mcp_tools
+  File "/Users/zhoujingkun/.hermes/hermes-agent/tools/mcp_tool.py", line 175, in <module>
+    from mcp import ClientSession, StdioServerParameters
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/__init__.py", line 4, in <module>
+    from .server.session import ServerSession
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/server/__init__.py", line 1, in <module>
+    from .fastmcp import FastMCP
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/server/fastmcp/__init__.py", line 7, in <module>
+    from .server import Context, FastMCP
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/server/fastmcp/server.py", line 57, in <module>
+    from mcp.server.lowlevel.helper_types import ReadResourceContents
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/server/lowlevel/__init__.py", line 1, in <module>
+    from .server import NotificationOptions, Server
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/server/lowlevel/server.py", line 80, in <module>
+    import jsonschema
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1032, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1131, in get_data
+KeyboardInterrupt

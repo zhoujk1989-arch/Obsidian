@@ -1,0 +1,489 @@
+[0m
+> build · qwen/qwen3.6-35b-a3b
+[0m
+[0m✗ [0mread failed
+[91m[1mError: [0mFile not found: /Users/zhoujingkun/Documents/GitHub/Obsidian/01-资料库
+[0m✗ [0mread failed
+[91m[1mError: [0mFile not found: /Users/zhoujingkun/Documents/GitHub/Obsidian/04-综合
+[0m✗ [0mread failed
+[91m[1mError: [0mFile not found: /Users/zhoujingkun/Documents/GitHub/Obsidian/03-实体
+[0m✗ [0mread failed
+[91m[1mError: [0mFile not found: /Users/zhoujingkun/Documents/GitHub/Obsidian/00-首页/index.md
+[0m→ [0mRead .
+[0m→ [0mRead 00-首页
+[0m→ [0mRead 01-资料库
+[0m→ [0mRead 03-实体
+[0m→ [0mRead 04-综合
+[0m→ [0mRead 05-日志
+[0m→ [0mRead 03-实体/一表通系统.md
+[0m→ [0mRead 04-综合/一表通系统-报表关系.md
+[0m→ [0mRead 04-综合/监管系统-报表清单.md
+[0m→ [0mRead 01-资料库/一表通系统
+[0m→ [0mRead 05-日志/log.md[90m [limit=50][0m
+[0m
+[0m← [0mWrite 01-资料库/一表通系统/2026-04-25-表6.21-投资协议-数据字典-原文.md
+Wrote file successfully.
+[0m
+Now I have full context. Let me execute the ingest: create original page, report entity page, and update all related pages.
+[0m← [0mWrite 03-实体/一表通-6.21-投资协议.md
+Wrote file successfully.
+[0m
+[0m← [0mEdit 04-综合/一表通系统-报表关系.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md
+@@ -5,9 +5,9 @@
+ 
+ ## 系统概览
+ 
+ - 所属系统：[[03-实体/一表通系统|一表通系统]]
+-当前已核对报表：48 张（含6.6受托支付信息、6.7贷款展期协议、6.8担保协议、6.9信用卡协议、6.10贸易融资协议、6.11信用证协议、6.12保函及其他担保协议、6.13票据协议、6.14票据转贴现协议、6.15房地产贷款协议、6.16融资租赁协议、6.18委托贷款协议、6.19代理协议）
++当前已核对报表：49 张（含6.6受托支付信息、6.7贷款展期协议、6.8担保协议、6.9信用卡协议、6.10贸易融资协议、6.11信用证协议、6.12保函及其他担保协议、6.13票据协议、6.14票据转贴现协议、6.15房地产贷款协议、6.16融资租赁协议、6.18委托贷款协议、6.19代理协议、6.21投资协议）
+ ||||- 当前覆盖范围：机构基础信息、机构层级关系、员工主数据、岗位主数据、渠道设备主数据、股东与关联方主数据、对公客户主数据、集团客户主数据、同业客户主数据、小微客户主数据、个人客户主数据、客户财务快照、收单商户主数据、高管及关系人关系、集团成员关系、集团实际控制关系、关联集团关系、债务关系、个人关系、账务（总账会计全科目、科目信息、分户账信息、分户账变动情况）、产品业务（产品业务基本信息、债券产品业务、代销保险产品业务、卡产品）、协议（存款协议、贷款协议、项目贷款协议、互联网贷款协议、银团贷款协议、受托支付信息、贷款展期协议、担保协议、信用卡协议、贸易融资协议、信用证协议、保函及其他担保协议、票据协议、票据转贴现协议、房地产贷款协议、融资租赁协议、委托贷款协议、代理协议）
+ - 当前主要入口：报表实体页、原文页
+ 
+ ## 当前报表清单
+
+[0m
+[0m← [0mEdit 04-综合/一表通系统-报表关系.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md
+@@ -61,8 +61,9 @@
+ | 6.15 | 房地产贷款协议 | 一表通协议域房地产专项报表，17个字段全部为FIELD，引用4张码表（YBT_GMZTLX商业用房购房贷款购买主体类型3码值/YBT_XJGRZFDKBS新建个人住房贷款标识2码值/YBT_GRZFDKLLFLBS个人住房贷款利率分类标识3码值/YBT_GRZFDKJYDKSCBJLLBS个人住房贷款基于LPR标识6码值），覆盖房地产开发贷款维度（项目资本金比例/资本金金额/项目投资额）和个人住房贷款维度（住房套数/贷款价值比/新建标识/LPR利率分类/LPR利率区间/建筑面积/偿债收入比/首付金额/房屋总价/押品市场价值），通过机构ID与1.1关联、通过协议ID与6.2关联，与6.3项目贷款协议形成互补：6.3覆盖所有项目贷款（含房地产项目），6.15专门细化房地产贷款全要素，与S67房地产融资风险监测统计表形成数据互补 | 已建原文、已建报表页 | [[03-实体/一表通-6.15-房地产贷款协议|报表页]] | [[01-资料库/一表通系统/2026-04-25-表6.15-房地产贷款协议-数据字典-原文|原文]] | - |
+ | 6.16 | 融资租赁协议 | 一表通协议域融资租赁专项报表，28个字段全部为FIELD，引用5张码表（YBT_RZZLLX融资租赁类型6码值/YBT_RZZLFS融资租赁方式3码值/YBT_BZ币种214类/YBT_ZDCYBS重点产业标识3位分类/YBT_ZJLX证件类型103类），覆盖协议识别（协议ID/机构ID）、融资租赁核心要素（融资租赁类型6类/融资租赁方式3类/租赁标的物/协议币种/合同金额/合同起始日期/合同到期日期）、承租人信息（承租人编号/名称/账号/开户行名称）、租赁公司信息（租赁公司名称/证件类型+证件号码）、费用与保证金（手续费金额+币种/保证金账号+币种+金额+比例）、重点产业标识（3位代码）和人员信息（经办/审查/审批员工ID），通过机构ID与1.1关联、通过承租人编号与客户域关联、通过员工ID与1.3关联，融资租赁属于6.2贷款协议信贷业务种类码表YBT_XDYWZL（21码值）中的业务类型之一，与6.2贷款协议形成互补：6.2覆盖通用贷款协议，6.16专门采集融资租赁协议，承租人信息维度是融资租赁协议区别于贷款协议的核心特征 | 已建原文、已建报表页 | [[03-实体/一表通-6.16-融资租赁协议|报表页]] | [[01-资料库/一表通系统/2026-04-25-表6.16-融资租赁协议-数据字典-原文|原文]] | - |
+ | 6.18 | 委托贷款协议 | 一表通协议域委托贷款专项报表，28个字段全部为FIELD，引用5张码表（YBT_WTDKLX委托贷款类型3码值/YBT_BZ币种214类2字段复用/YBT_SF是否类2码值/YBT_XYZT协议状态7码值/YBT_ZDCYBS重点产业标识3位分类），覆盖协议识别（协议ID/机构ID/委托客户ID/授信ID）、委托贷款核心要素（委托贷款类型3类/委托客户账号+开户行/协议金额+币种/收息标识/生效日期/到期日期/借据ID）、借款人信息（借款人ID/名称/账号/开户行名称）、协议属性（协议状态7类/科目ID+名称/重点产业标识）、费用信息（手续费币种+金额）和人员信息（经办/审查/审批员工ID），通过机构ID与1.1关联、通过授信ID与授信相关报表关联、通过委托客户ID与客户域关联、通过借款人ID与客户域关联、通过科目ID与4.2关联、通过员工ID与1.3关联，委托贷款属于6.2贷款协议信贷业务种类码表YBT_XDYWZL（21码值）中的业务类型之一，与6.2贷款协议形成互补：6.2覆盖通用贷款协议（银行自有资金），6.18专门采集委托贷款协议（银行接受客户委托），委托贷款"三方结构"（委托人+银行+借款人）是核心特征，现金管理项下委托贷款有特殊填报规则 | 已建原文、已建报表页 | [[03-实体/一表通-6.18-委托贷款协议|报表页]] | [[01-资料库/一表通系统/2026-04-25-表6.18-委托贷款协议-数据字典-原文|原文]] | - |
+ | 6.19 | 代理协议 | 一表通协议域代理销售专项报表，20个字段全部为FIELD，引用4张码表（YBT_WTRLX委托人类型9码值/YBT_DLCPLX代理产品类型7码值/YBT_HYLX行业类型/YBT_XYZT协议状态7码值），覆盖协议识别（协议ID/机构ID）、委托人信息（委托人ID/名称/类型9类）、代理产品（代理产品类型7类/代理产品ID）、发行人与融资人（发行机构评级/评级机构/融资人名称/融资人行业类型）、时间要素（签约日期/生效日期/到期日期默认值9999-12-31）、人员信息（经办/审查/审批员工ID）和协议状态（7类），通过机构ID与1.1关联、通过委托人ID与客户域关联、通过员工ID与1.3关联，与6.18委托贷款协议形成互补：6.18是委托贷款协议（银行接受客户委托发放贷款），6.19是代理销售协议（银行接受客户委托代理销售产品），两者同属委托代理类但面向不同业务方向 | 已建原文、已建报表页 | [[03-实体/一表通-6.19-代理协议|报表页]] | [[01-资料库/一表通系统/2026-04-25-表6.19-代理协议-数据字典-原文|原文]] | - |
++| 6.21 | 投资协议 | 一表通协议域投资类协议专项报表，30个字段全部为FIELD，引用8张码表（YBT_SYLX收益类型5码值/YBT_BZ币种214类/YBT_GZFF估值方法2码值/YBT_ZZLY资金来源2码值/YBT_TZGLFS投资管理方式2码值/YBT_SF是否类2码值/YBT_ZDCYBS重点产业标识3位分类/YBT_XYZT协议状态7码值），覆盖协议识别（协议ID/机构ID/交易对手ID/交易对手名称/交易对手账号/交易对手账号行号）、投资要素（收益类型/协议币种/协议金额/估值方法/合同执行利率/投资标的ID）、保证金要素（保证金账号+比例+币种+金额）、资金来源与管理（资金来源2类/投资管理方式2类）、人员信息（经办/审查/审批员工ID）、协议属性（协议状态7类/含权标识2类/重点产业标识3位代码/或有负债标识2类）和时间要素（签约日期/生效日期/到期日期），通过机构ID与1.1关联、通过交易对手ID与客户域关联、通过员工ID与1.3关联、通过投资标的ID与5.1关联，填报范围覆盖与单位或个人签订的资金融出条款合同，不包括票据转贴现协议中已采集的票据资金融出业务 | 已建原文、已建报表页 | [[03-实体/一表通-6.21-投资协议|报表页]] | [[01-资料库/一表通系统/2026-04-25-表6.21-投资协议-数据字典-原文|原文]] | - |
+ 
+ ## 当前结论
+ 
+ - 一表通当前已核对落地的首张报表是 `1.1机构信息`，可作为后续机构关系、员工、岗位等机构域报表的挂接入口。
+
+[0m
+[0m← [0mEdit 04-综合/监管系统-报表清单.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/监管系统-报表清单.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/监管系统-报表清单.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/监管系统-报表清单.md
+@@ -11,9 +11,9 @@
+ 
+ | 系统     | 系统定位            | 当前覆盖       | 主要关注                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 当前状态      | 系统实体页          | 报表页      | 项目页                 |              |                  |            |
+ | ------ | --------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------------- | -------- | ------------------- | ------------ | ---------------- | ---------- |
+ | 1104系统 | 银行业监管报送系统       | 已纳入 52 张报表 | 资产负债、流动性（期限缺口、流动性比例监测、LCR/NSFR）、分币种、托管、表外、存贷比、存贷款期限、存贷款分品种、主要负债项目明细表、最大百家金融机构同业融入、最大十家存款客户情况表、股权质押融资、关联交易（最大十家关联方）、地方政府自主发行债券持有情况、银行卡业务、重点关注行业贷款（战略性新兴产业+文化产业）、融资工具发行情况表（有固定期限+无固定期限，含存单/债券/永续债/优先股等）、大额风险暴露（总体情况）、贷款质量迁徙（五级分类动态迁徙+不良处置）、个人贷款（用途/年龄/授信额度/期限/担保方式/支付方式）、非保本理财（产品情况+资产负债投向）、数字金融、养老金融、制造业融资、普惠金融、科技金融、绿色金融、房地产融资风险监测、大中小微型企业贷款情况（规模维度枢纽）、各控股类型企业融资（控股维度）、城商行省外经营（跨区域维度）、分地区综合（地区维度枢纽）、大中小微型企业贷款分地区、大中小微型企业贷款分行业、地方政府融资平台及支出责任债务持有情况、国别风险敞口及拨备、杠杆率、信贷资产转让、银行账簿利率风险计量（标准化计量框架简化版+完整版）、外汇风险敞口、投资业务、净稳定资金比例、流动性覆盖率 | 已开始整理     | [[03-实体/1104系统 | 1104系统]] | [[04-综合/1104系统-报表关系 | 1104 系统报表页]] | [[06-项目/监管系统知识整理 | 监管系统知识整理]] |
+-||| 一表通系统  | 监管数据采集系统        | 已纳入 48 张报表 | 机构基础信息、机构层级、员工主数据、岗位主数据、渠道设备主数据、股权与关联方主数据、对公客户主数据、柜员主数据、对公客户主数据、集团客户主数据、同业客户主数据、小微客户主数据、个人客户主数据、客户财务快照、收单商户主数据、公司客户关系层、集团关系层、个人关系层、债务关系层、协议单据映射层、科目主数据、总账快照、分户账主数据、分户账变动层、产品业务基础信息、债券产品业务、代销保险产品业务、卡产品、存款协议、贷款协议、项目贷款协议、互联网贷款协议、银团贷款协议、担保协议、信用卡协议、贸易融资协议、信用证协议、保函及其他担保协议、票据协议、票据转贴现协议、房地产贷款协议、融资租赁协议、委托贷款协议、代理协议                                                                                                                                                                              | 已开始整理     | [[03-实体/一表通系统  | 一表通系统
++||| 一表通系统  | 监管数据采集系统        | 已纳入 49 张报表 | 机构基础信息、机构层级、员工主数据、岗位主数据、渠道设备主数据、股权与关联方主数据、对公客户主数据、柜员主数据、对公客户主数据、集团客户主数据、同业客户主数据、小微客户主数据、个人客户主数据、客户财务快照、收单商户主数据、公司客户关系层、集团关系层、个人关系层、债务关系层、协议单据映射层、科目主数据、总账快照、分户账主数据、分户账变动层、产品业务基础信息、债券产品业务、代销保险产品业务、卡产品、存款协议、贷款协议、项目贷款协议、互联网贷款协议、银团贷款协议、担保协议、信用卡协议、贸易融资协议、信用证协议、保函及其他担保协议、票据协议、票据转贴现协议、房地产贷款协议、融资租赁协议、委托贷款协议、代理协议、投资协议                                                                                                                                                                              | 已开始整理     | [[03-实体/一表通系统  | 一表通系统
+ | 大集中系统  | 银行核心业务与基础数据来源系统 | 暂未纳入报表     | 客户、账户、交易、总账、上游数据来源                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | 待建系统页与报表页 | 待建             | 待建       | [[06-项目/监管系统知识整理    | 监管系统知识整理]]   |                  |            |
+ 
+ 
+ ## 当前结论
+
+[0m
+[0m✗ [0medit failed
+[91m[1mError: [0mCould not find oldString in the file. It must match exactly, including whitespace, indentation, and line endings.
+[0m→ [0mRead 03-实体/一表通系统.md[90m [offset=60, limit=60][0m
+[0m→ [0mRead 03-实体/一表通系统.md[90m [limit=60, offset=195][0m
+[0m→ [0mRead 03-实体/一表通系统.md[90m [limit=20, offset=254][0m
+[0m✗ [0medit failed
+[91m[1mError: [0mCould not find oldString in the file. It must match exactly, including whitespace, indentation, and line endings.
+[0m
+[0m$ [0msed -n '64,67p' /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md | cat -A
+cat: illegal option -- A
+usage: cat [-belnstuv] [file ...]
+[0m
+[0m$ [0msed -n '64,67p' /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md | cat -e
+- [[03-�M-^^�M-^S/�M-^@表�M-^@M-^Z-6.18-�M-^T�M-^IM-^X贷款�M-^MM-^O议|�M-^@表�M-^@M-^Z-6.18-�M-^T�M-^IM-^X贷款�M-^MM-^O议]]$
+- [[03-�M-^^�M-^S/�M-^@表�M-^@M-^Z-6.19-代�M-^PM-^F�M-^MM-^O议|�M-^@表�M-^@M-^Z-6.19-代�M-^PM-^F�M-^MM-^O议]]$
+|||- �M-^S�M-^IM-^M已核对�M-^NM-^_�M-^VM-^G�M-^Z$
+  - [[01-�M-^D�M-^VM-^Y�M-^S/�M-^@表�M-^@M-^Z系�M-^_/2026-04-16-1.1-�M-^\��M-^^M-^D信�M-^A�-�M-^U��M-^M��M--M-^W�M-^E�-�M-^NM-^_�M-^VM-^G|1.1 �M-^\��M-^^M-^D信�M-^A�-�M-^U��M-^M��M--M-^W�M-^E�-�M-^NM-^_�M-^VM-^G]]$
+[0m
+[0m✗ [0medit failed
+[91m[1mError: [0mCould not find oldString in the file. It must match exactly, including whitespace, indentation, and line endings.
+[0m
+[0m$ [0mpython3 -c "
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    lines = f.readlines()
+    for i, line in enumerate(lines[63:67], start=64):
+        print(f'{i}: {repr(line)}')"
+64: '- [[03-实体/一表通-6.18-委托贷款协议|一表通-6.18-委托贷款协议]]\n'
+65: '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n'
+66: '|||- 当前已核对原文：\n'
+67: '  - [[01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文|1.1 机构信息-数据字典-原文]]\n'
+[0m
+[0m✗ [0medit failed
+[91m[1mError: [0mCould not find oldString in the file. It must match exactly, including whitespace, indentation, and line endings.
+[0m
+[0m$ [0mpython3 << 'PYEOF'
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Add 6.21 to 已核对报表 section (after 6.19)
+content = content.replace(
+    '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n||||- 当前已核对原文：',
+    '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n- [[03-实体/一表通-6.21-投资协议|一表通-6.21-投资协议]]\n||||- 当前已核对原文：'
+)
+
+# Add 6.21 to 当前范围 section (after 6.19代理协议)
+content = content.replace(
+    '- 6.19代理协议\n||||- 协议单据映射',
+    '- 6.19代理协议\n- 6.21投资协议\n||||- 协议单据映射'
+)
+
+# Add to 变化记录 section (at the end)
+content = content.replace(
+    '- 2026-04-25：新增 `6.19代理协议` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至代理销售专项，20个字段引用4张码表，委托人类型9码值覆盖全谱系金融机构（存款类/非存款类/证券/保险/交易结算类/金控/持牌机构/其他机构），代理产品类型7码值（债券/信托计划/资管计划/保险产品/基金/理财产品/贵金属）是核心分类维度，发行机构评级+评级机构+融资人名称+融资人行业类型构成完整的发行人与融资人维度，到期日期默认值9999-12-31，与 `6.18委托贷款协议` 形成互补：`6.18` 是委托贷款协议（银行接受客户委托发放贷款），`6.19` 是代理销售协议（银行接受客户委托代理销售产品），两者同属委托代理类但面向不同业务方向。',
+    '- 2026-04-25：新增 `6.19代理协议` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至代理销售专项，20个字段引用4张码表，委托人类型9码值覆盖全谱系金融机构（存款类/非存款类/证券/保险/交易结算类/金控/持牌机构/其他机构），代理产品类型7码值（债券/信托计划/资管计划/保险产品/基金/理财产品/贵金属）是核心分类维度，发行机构评级+评级机构+融资人名称+融资人行业类型构成完整的发行人与融资人维度，到期日期默认值9999-12-31，与 `6.18委托贷款协议` 形成互补：`6.18` 是委托贷款协议（银行接受客户委托发放贷款），`6.19` 是代理销售协议（银行接受客户委托代理销售产品），两者同属委托代理类但面向不同业务方向。\n- 2026-04-25：新增 `6.21投资协议` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至投资类协议专项，30个字段全部为FIELD，引用8张码表（`YBT_SYLX`收益类型5码值/`YBT_BZ`币种214类/`YBT_GZFF`估值方法2码值/`YBT_ZZLY`资金来源2码值/`YBT_TZGLFS`投资管理方式2码值/`YBT_SF`是否类2码值/`YBT_ZDCYBS`重点产业标识3位分类/`YBT_XYZT`协议状态7码值），覆盖协议识别（协议ID/机构ID/交易对手ID/交易对手名称/交易对手账号/交易对手账号行号）、投资要素（收益类型/协议币种/协议金额/估值方法/合同执行利率/投资标的ID）、保证金要素（保证金账号+比例+币种+金额）、资金来源与管理（资金来源2类/投资管理方式2类）、人员信息（经办/审查/审批员工ID）、协议属性（协议状态7类/含权标识2类/重点产业标识3位代码/或有负债标识2类）和时间要素（签约日期/生效日期/到期日期），通过机构ID与1.1关联、通过交易对手ID与客户域关联、通过员工ID与1.3关联、通过投资标的ID与5.1关联，填报范围覆盖与单位或个人签订的资金融出条款合同，不包括票据转贴现协议中已采集的票据资金融出业务，含权标识和或有负债标识双重风险维度是首次出现。'
+)
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print("Done")
+PYEOF
+SyntaxError: Non-UTF-8 code starting with '\xef' in file <stdin> on line 19, but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Add 6.21 to 已核对报表 section (after 6.19)
+old1 = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n||||- 当前已核对原文：'
+new1 = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n- [[03-实体/一表通-6.21-投资协议|一表通-6.21-投资协议]]\n||||- 当前已核对原文：'
+content = content.replace(old1, new1)
+
+# Add 6.21 to 当前范围 section (after 6.19代理协议)
+old2 = '- 6.19代理协议\n||||- 协议单据映射'
+new2 = '- 6.19代理协议\n- 6.21投资协议\n||||- 协议单据映射'
+content = content.replace(old2, new2)
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print('Part 1 done')
+"
+Part 1 done
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Add to 变化记录 section (at the end)
+old = '- 2026-04-25：新增 \`6.19代理协议\` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至代理销售专项，20个字段引用4张码表，委托人类型9码值覆盖全谱系金融机构（存款类/非存款类/证券/保险/交易结算类/金控/持牌机构/其他机构），代理产品类型7码值（债券/信托计划/资管计划/保险产品/基金/理财产品/贵金属）是核心分类维度，发行机构评级+评级机构+融资人名称+融资人行业类型构成完整的发行人与融资人维度，到期日期默认值9999-12-31，与 \`6.18委托贷款协议\` 形成互补：\`6.18\` 是委托贷款协议（银行接受客户委托发放贷款），\`6.19\` 是代理销售协议（银行接受客户委托代理销售产品），两者同属委托代理类但面向不同业务方向。'
+
+new = old + '\n- 2026-04-25：新增 \`6.21投资协议\` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至投资类协议专项，30个字段全部为FIELD，引用8张码表（\`YBT_SYLX\`收益类型5码值/\`YBT_BZ\`币种214类/\`YBT_GZFF\`估值方法2码值/\`YBT_ZZLY\`资金来源2码值/\`YBT_TZGLFS\`投资管理方式2码值/\`YBT_SF\`是否类2码值/\`YBT_ZDCYBS\`重点产业标识3位分类/\`YBT_XYZT\`协议状态7码值），覆盖协议识别（协议ID/机构ID/交易对手ID/交易对手名称/交易对手账号/交易对手账号行号）、投资要素（收益类型/协议币种/协议金额/估值方法/合同执行利率/投资标的ID）、保证金要素（保证金账号+比例+币种+金额）、资金来源与管理（资金来源2类/投资管理方式2类）、人员信息（经办/审查/审批员工ID）、协议属性（协议状态7类/含权标识2类/重点产业标识3位代码/或有负债标识2类）和时间要素（签约日期/生效日期/到期日期），通过机构ID与1.1关联、通过交易对手ID与客户域关联、通过员工ID与1.3关联、通过投资标的ID与5.1关联，填报范围覆盖与单位或个人签订的资金融出条款合同，不包括票据转贴现协议中已采集的票据资金融出业务，含权标识和或有负债标识双重风险维度是首次出现。'
+
+content = content.replace(old, new)
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print('Part 2 done')
+"
+Part 2 done
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+new_entry = '''## [2026-04-25] ingest | 一表通-6.21-投资协议 数据字典
+
+- type: ingest
+- summary: 导入一表通系统 \`6.21投资协议\` 数据字典原文，建立原文页和报表实体页，更新系统页、报表关系页和系统清单页。\`6.21投资协议\` 是一表通协议域投资类协议专项报表，30个字段全部为FIELD，覆盖协议识别（协议ID/机构ID/交易对手ID/交易对手名称/交易对手账号/交易对手账号行号）、投资要素（收益类型/协议币种/协议金额/估值方法/合同执行利率/投资标的ID）、保证金要素（保证金账号+比例+币种+金额）、资金来源与管理（资金来源2类/投资管理方式2类）、人员信息（经办/审查/审批员工ID）、协议属性（协议状态7类/含权标识2类/重点产业标识3位代码/或有负债标识2类）和时间要素（签约日期/生效日期/到期日期），引用8张码表。
+- pages: [[01-资料库/一表通系统/2026-04-25-表6.21-投资协议-数据字典-原文|原文]], [[03-实体/一表通-6.21-投资协议|报表页]], [[04-综合/一表通系统-报表关系|报表关系]], [[03-实体/一表通系统|系统页]], [[04-综合/监管系统-报表清单|系统清单]]
+- 核心要点:
+  - \`6.21投资协议\` 物理表名 \`T_6_21\`，报表ID \`1994254277826388766\`，排序号 48，负责人：巴启威，频率：日
+  - 30 个字段，全部为 FIELD 类型，无 INDICATOR
+  - 引用 8 张码表：\`YBT_SYLX\`（收益类型，5码值）、\`YBT_BZ\`（币种，214码值，2个字段复用：协议币种/保证金币种）、\`YBT_GZFF\`（估值方法，2码值）、\`YBT_ZZLY\`（资金来源，2码值）、\`YBT_TZGLFS\`（投资管理方式，2码值）、\`YBT_SF\`（是否类，2码值，2个字段复用：含权标识/或有负债标识）、\`YBT_ZDCYBS\`（重点产业标识，3位分类）、\`YBT_XYZT\`（协议状态，7码值）
+  - **收益类型码表 \`YBT_SYLX\`（5码值）**是核心分类维度：01固定金额收益/02固定比例收益/03浮动比例收益/04不确定收益/05其他。若涉及多个底层产品，站在合并角度填写，既有固定金额收益又存在浮动收益的填\"其他\"
+  - **资金来源（F18）**区分表内资金（01）和表外资金（02），反映投资业务在表内外之间的区分要求
+  - **投资管理方式（F19）**区分自主管理（01）和委托管理（02），反映投资管理维度的分类
+  - **含权标识（F22）和或有负债标识（F28）**复用 \`YBT_SF\` 是否类码表，是投资协议中首次出现的双重风险标识维度，分别标识投资行为是否含有期权和是否为或有负债
+  - **估值方法码表 \`YBT_GZFF\`（2码值：01市值法/02成本法）**是投资类协议的核心估值维度，与1104投资业务相关报表形成数据互补
+  - **保证金三要素（F13+F14+F15+F16）**构成完整的保证金采集体系，与协议金额（F12）可计算保证金比例
+  - **重点产业标识（F23）**是协议域中跨报表复用的产业投向维度，3位数字代码分别对应产业结构调整类型、工业转型升级标识和战略新兴产业类型，虽然填报说明标注\"贷款业务必须填报\"，但投资协议中如不适用可允许为空
+  - **填报范围**：填报机构与单位或个人签订的涉及资金融出的条款、合同。不包括在《票据转贴现协议》中已采集的涉及票据的资金融出业务信息，如转贴现买断、质押式回购逆回购、买断式等
+  - 通过 \`机构ID\`（F210002）与 \`[[03-实体/一表通-1.1-机构信息|1.1机构信息]]\` 关联、通过 \`交易对手ID\`（F210003）与 \`[[03-实体/一表通-2.1-单一法人基本情况|2.1单一法人基本情况]]\` 等客户域报表关联、通过 \`经办/审查/审批员工ID\` 与 \`[[03-实体/一表通-1.3-员工|1.3员工]]\` 关联、通过 \`投资标的ID\`（F210020）与 \`[[03-实体/一表通-5.1-产品业务基本信息|5.1产品业务基本信息]]\` 关联
+  - 一表通协议域知识层扩展为\"存款协议（6.1）→ 贷款协议（6.2）→ 项目贷款协议（6.3）→ 互联网贷款协议（6.4）→ 银团贷款协议（6.5）→ 受托支付信息（6.6）→ 贷款展期协议（6.7）→ 担保协议（6.8）→ 信用卡协议（6.9）→ 贸易融资协议（6.10）→ 信用证协议（6.11）→ 保函及其他担保协议（6.12）→ 票据协议（6.13）→ 票据转贴现协议（6.14）→ 房地产贷款协议（6.15）→ 融资租赁协议（6.16）→ 委托贷款协议（6.18）→ 代理协议（6.19）→ 投资协议（6.21）\"十九层结构
+- 关联关系:
+  - 通过 \`机构ID\`（F210002）与 \`[[03-实体/一表通-1.1-机构信息|1.1机构信息]]\` 关联
+  - 通过 \`交易对手ID\`（F210003）与 \`[[03-实体/一表通-2.1-单一法人基本情况|2.1单一法人基本情况]]\` 等客户域报表关联
+  - 通过 \`经办/审查/审批员工ID\` 与 \`[[03-实体/一表通-1.3-员工|1.3员工]]\` 关联
+  - 通过 \`投资标的ID\`（F210020）与 \`[[03-实体/一表通-5.1-产品业务基本信息|5.1产品业务基本信息]]\` 关联
+
+---
+
+'''
+
+content = new_entry + content
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+print('Log entry added')
+"
+Log entry added
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+# Verify 一表通系统.md has 6.21
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+if '6.21-投资协议' in content:
+    print('一表通系统.md: 6.21 已添加')
+else:
+    print('一表通系统.md: 6.21 未找到')
+
+# Verify 报表关系.md has 6.21
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+if '6.21' in content and '49' in content:
+    print('一表通系统-报表关系.md: 6.21 已添加')
+else:
+    print('一表通系统-报表关系.md: 6.21 未找到')
+
+# Verify 监管系统-报表清单.md has 49
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/监管系统-报表清单.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+if '49' in content and '投资协议' in content:
+    print('监管系统-报表清单.md: 已更新为49张')
+else:
+    print('监管系统-报表清单.md: 未更新')
+
+# Verify 原文页 exists
+import os
+if os.path.exists('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/一表通系统/2026-04-25-表6.21-投资协议-数据字典-原文.md'):
+    print('原文页: 已创建')
+else:
+    print('原文页: 未找到')
+
+# Verify 报表实体页 exists
+if os.path.exists('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通-6.21-投资协议.md'):
+    print('报表实体页: 已创建')
+else:
+    print('报表实体页: 未找到')
+
+# Verify log entry
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+if '6.21' in content and '投资协议' in content:
+    print('日志: 已记录')
+else:
+    print('日志: 未找到')
+"
+一表通系统.md: 6.21 未找到
+一表通系统-报表关系.md: 6.21 已添加
+监管系统-报表清单.md: 已更新为49张
+原文页: 已创建
+报表实体页: 已创建
+日志: 已记录
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+# Check if 6.19 is there
+if '6.19-代理协议' in content:
+    print('6.19 found')
+    idx = content.find('6.19-代理协议')
+    print(repr(content[idx:idx+100]))
+"
+6.19 found
+'6.19-代理协议|一表通-6.19-代理协议]]\n|||- 当前已核对原文：\n  - [[01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文|1.1 机构信息-数据字典'
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+# Check if 6.21 is there
+if '6.21' in content:
+    print('6.21 found')
+else:
+    print('6.21 NOT found')
+# Check the 变化记录 section
+idx = content.find('变化记录')
+if idx >= 0:
+    print(content[idx:idx+100])
+"
+6.21 found
+变化记录
+
+- 2026-04-23：恢复系统页最小承接结构，并补入 `1.1机构信息`、`1.2机构关系` 的系统级结论与入口链接。
+- 2026-04-23：补入 `1.3员工` 的系统级结论、已
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+lines = content.split('\n')
+for i, line in enumerate(lines, 1):
+    if '6.21' in line:
+        print(f'Line {i}: {line[:200]}')
+"
+Line 216: - 6.21投资协议
+Line 274: - 2026-04-25：新增 `6.21投资协议` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至投资类协议专项，30个字段全部为FIELD，引用8张码表（`YBT_SYLX`收益类型5码值/`YBT_BZ`币种214类/`YBT_GZFF`估值方法2码值/`YBT_ZZLY`资金来源2码值/`YBT_TZGLFS`投资管理方式2码值/`YBT_SF`是否类2码值/`YBT_ZD
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+lines = content.split('\n')
+for i, line in enumerate(lines, 1):
+    if '投资协议' in line:
+        print(f'Line {i}: {line[:200]}')
+"
+Line 216: - 6.21投资协议
+Line 274: - 2026-04-25：新增 `6.21投资协议` 到已核对报表列表、原文引用、系统级结论和范围说明，协议域扩展至投资类协议专项，30个字段全部为FIELD，引用8张码表（`YBT_SYLX`收益类型5码值/`YBT_BZ`币种214类/`YBT_GZFF`估值方法2码值/`YBT_ZZLY`资金来源2码值/`YBT_TZGLFS`投资管理方式2码值/`YBT_SF`是否类2码值/`YBT_ZD
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    lines = f.readlines()
+for i, line in enumerate(lines[63:70], start=64):
+    print(f'{i}: {line}', end='')
+"
+64: - [[03-实体/一表通-6.18-委托贷款协议|一表通-6.18-委托贷款协议]]
+65: - [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]
+66: |||- 当前已核对原文：
+67:   - [[01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文|1.1 机构信息-数据字典-原文]]
+68:   - [[01-资料库/一表通系统/2026-04-16-1.2-机构关系-数据字典-原文|1.2 机构关系-数据字典-原文]]
+69:   - [[01-资料库/一表通系统/2026-04-16-1.3-员工-数据字典-原文|1.3 员工-数据字典-原文]]
+70:   - [[01-资料库/一表通系统/2026-04-16-1.4-岗位信息-数据字典-原文|1.4 岗位信息-数据字典-原文]]
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Check what's between 6.19 and 当前已核对原文
+idx = content.find('6.19-代理协议]]')
+if idx >= 0:
+    print(repr(content[idx:idx+80]))
+"
+'6.19-代理协议]]\n|||- 当前已核对原文：\n  - [[01-资料库/一表通系统/2026-04-16-1.1-机构信息-数据字典-原文|1.1 机构信'
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Add 6.21 link to 已核对报表 section
+old = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n||||- 当前已核对原文：'
+new = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n- [[03-实体/一表通-6.21-投资协议|一表通-6.21-投资协议]]\n||||- 当前已核对原文：'
+
+if old in content:
+    content = content.replace(old, new)
+    print('Found and replaced')
+else:
+    print('Not found, trying alternative')
+    # Try with different newline
+    old2 = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n||||- 当前已核对原文：'
+    if old2 in content:
+        content = content.replace(old2, new)
+        print('Found with alt newline')
+    else:
+        print('Still not found')
+        # Print what's actually there
+        idx = content.find('6.19-代理协议]]')
+        print(repr(content[idx:idx+60]))
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+"
+Not found, trying alternative
+Still not found
+'6.19-代理协议]]\n|||- 当前已核对原文：\n  - [[01-资料库/一表通系统/2026-04-16-1.1-'
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# The file has |||- not ||||-
+old = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n|||- 当前已核对原文：'
+new = '- [[03-实体/一表通-6.19-代理协议|一表通-6.19-代理协议]]\n- [[03-实体/一表通-6.21-投资协议|一表通-6.21-投资协议]]\n||||- 当前已核对原文：'
+
+if old in content:
+    content = content.replace(old, new)
+    print('Found and replaced')
+else:
+    print('Not found')
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'w', encoding='utf-8') as f:
+    f.write(content)
+"
+Found and replaced
+[0m
+[0m$ [0mpython3 -c "
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+import os
+
+# Verify all files
+checks = []
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通系统.md', 'r', encoding='utf-8') as f:
+    c = f.read()
+    checks.append(('一表通系统.md 有6.21链接', '6.21-投资协议' in c))
+    checks.append(('一表通系统.md 有6.21范围', '- 6.21投资协议' in c))
+    checks.append(('一表通系统.md 有6.21变化记录', '6.21投资协议' in c and '变化记录' in c))
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/一表通系统-报表关系.md', 'r', encoding='utf-8') as f:
+    c = f.read()
+    checks.append(('报表关系.md 有6.21', '6.21' in c and '投资协议' in c))
+    checks.append(('报表关系.md 更新为49张', '49' in c))
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/监管系统-报表清单.md', 'r', encoding='utf-8') as f:
+    c = f.read()
+    checks.append(('系统清单.md 更新为49张', '49' in c))
+    checks.append(('系统清单.md 有投资协议', '投资协议' in c))
+
+checks.append(('原文页存在', os.path.exists('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/一表通系统/2026-04-25-表6.21-投资协议-数据字典-原文.md')))
+checks.append(('报表实体页存在', os.path.exists('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/一表通-6.21-投资协议.md')))
+
+with open('/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md', 'r', encoding='utf-8') as f:
+    c = f.read()
+    checks.append(('日志有6.21', '6.21' in c and '投资协议' in c))
+
+for name, result in checks:
+    status = 'OK' if result else 'FAIL'
+    print(f'[{status}] {name}')
+"
+[OK] 一表通系统.md 有6.21链接
+[OK] 一表通系统.md 有6.21范围
+[OK] 一表通系统.md 有6.21变化记录
+[OK] 报表关系.md 有6.21
+[OK] 报表关系.md 更新为49张
+[OK] 系统清单.md 更新为49张
+[OK] 系统清单.md 有投资协议
+[OK] 原文页存在
+[OK] 报表实体页存在
+[OK] 日志有6.21
+[0m
+ingest 完成。已创建/更新以下页面：
+
+**新建：**
+- `01-资料库/一表通系统/2026-04-25-表6.21-投资协议-数据字典-原文.md` — 原文页，忠实保留附件全部 586 行内容
+- `03-实体/一表通-6.21-投资协议.md` — 报表实体页，含 frontmatter、字段概览、码表引用、关联关系和核心特征
+
+**更新：**
+- `03-实体/一表通系统.md` — 已核对报表列表、当前范围、变化记录
+- `04-综合/一表通系统-报表关系.md` — 报表清单表格新增 6.21 行，总数 48→49
+- `04-综合/监管系统-报表清单.md` — 一表通系统覆盖数 48→49，新增"投资协议"
+- `05-日志/log.md` — 新增 ingest 日志条目

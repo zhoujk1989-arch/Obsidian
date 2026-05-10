@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "/Users/zhoujingkun/.local/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/main.py", line 10025, in main
+    sys.exit(run_oneshot(
+             ^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 80, in run_oneshot
+    response = _run_agent(prompt, model=model, provider=provider)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 108, in _run_agent
+    from run_agent import AIAgent
+  File "/Users/zhoujingkun/.hermes/hermes-agent/run_agent.py", line 70, in <module>
+    from model_tools import (
+  File "/Users/zhoujingkun/.hermes/hermes-agent/model_tools.py", line 143, in <module>
+    from tools.mcp_tool import discover_mcp_tools
+  File "/Users/zhoujingkun/.hermes/hermes-agent/tools/mcp_tool.py", line 175, in <module>
+    from mcp import ClientSession, StdioServerParameters
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/__init__.py", line 1, in <module>
+    from .client.session import ClientSession
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/client/session.py", line 10, in <module>
+    import mcp.types as types
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/mcp/types.py", line 612, in <module>
+    class GetTaskPayloadRequest(Request[GetTaskPayloadRequestParams, Literal["tasks/result"]]):
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pydantic/_internal/_model_construction.py", line 129, in __new__
+    base_field_names, class_vars, base_private_attributes = mcs._collect_bases_data(bases)
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pydantic/_internal/_model_construction.py", line 321, in _collect_bases_data
+    field_names.update(getattr(base, '__pydantic_fields__', {}).keys())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

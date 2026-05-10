@@ -1,0 +1,61 @@
+Traceback (most recent call last):
+  File "/Users/zhoujingkun/.local/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/main.py", line 10025, in main
+    sys.exit(run_oneshot(
+             ^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 80, in run_oneshot
+    response = _run_agent(prompt, model=model, provider=provider)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 145, in _run_agent
+    detected = detect_provider_for_model(explicit_model, current_provider)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/models.py", line 1554, in detect_provider_for_model
+    or_slug = _find_openrouter_slug(name)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/models.py", line 1579, in _find_openrouter_slug
+    for mid in model_ids():
+               ^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/models.py", line 934, in model_ids
+    return [mid for mid, _ in fetch_openrouter_models(force_refresh=force_refresh)]
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/models.py", line 892, in fetch_openrouter_models
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/urllib/request.py", line 1391, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/urllib/request.py", line 1352, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/client.py", line 1415, in getresponse
+    response.begin()
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/client.py", line 330, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/client.py", line 291, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/socket.py", line 718, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/ssl.py", line 1326, in recv_into
+    return self.read(nbytes, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/ssl.py", line 1178, in read
+    return self._sslobj.read(len, buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

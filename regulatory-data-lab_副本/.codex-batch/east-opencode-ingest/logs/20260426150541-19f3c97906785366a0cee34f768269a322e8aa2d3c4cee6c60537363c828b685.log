@@ -1,0 +1,206 @@
+[0m
+> build · qwen/qwen3.6-35b-a3b
+[0m
+[0m✗ [0mread failed
+[91m[1mError: [0mFile not found: /Users/zhoujingkun/Documents/GitHub/Obsidian/00-首页/index.md
+[0m✗ [0mread failed
+[91m[1mError: [0mFile not found: /Users/zhoujingkun/Documents/GitHub/Obsidian/04-综合/监管系统-报表清单.md
+[0m✱ [0mGlob "**/01-资料库/EAST5.0/*"[90m 0 matches[0m
+[0m✱ [0mGlob "**/04-综合/*EAST5.0*报表关系*"[90m 1 match[0m
+[0m✱ [0mGlob "**/03-实体/*关联关系*"[90m 0 matches[0m
+[0m→ [0mRead .
+[0m→ [0mRead 00-首页
+[0m→ [0mRead 04-综合/EAST5.0系统-报表关系.md
+[0m→ [0mRead 03-实体
+[0m→ [0mRead 01-资料库
+[0m→ [0mRead 03-实体/EAST5.0系统.md
+[0m→ [0mRead 05-日志
+[0m→ [0mRead 01-资料库/EAST5.0系统
+[0m→ [0mRead 05-日志/log.md
+[0m→ [0mRead 01-资料库/EAST5.0系统/README.md
+现在开始执行 ingest，创建原文页、报表实体页并更新相关页面。
+[0m
+[0m← [0mWrite 01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文.md
+Wrote file successfully.
+[0m
+[0m← [0mWrite 03-实体/EAST5.0-IE_002_206-关联关系表.md
+Wrote file successfully.
+[0m
+[0m← [0mEdit 04-综合/EAST5.0系统-报表关系.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md
+@@ -24,8 +24,9 @@
+ | `IE_002_202` | 个人客户关系表   | 个人客户关系信息 | 报送个人客户的所有关联关系（个人对个人、个人对对公），覆盖关系类型、关系人身份和关系状态，月频采集        | [[03-实体/EAST5.0-IE_002_202-个人客户关系表]]   | [[EAST5.0-IE_002_202-个人客户关系表]]   | [[01-资料库/EAST5.0系统/2026-04-26-IE_002_202-个人客户关系表-数据字典-原文     | 原文]] | 已建实体页 |
+ | `IE_002_203` | 对公客户信息表   | 对公客户基础信息 | 报送银行机构所有对公客户的基本信息，覆盖客户身份、账户、企业基本信息、信贷与风险标志，月频采集          | [[03-实体/EAST5.0-IE_002_203-对公客户信息表]]   | [[EAST5.0-IE_002_203-对公客户信息表]]   | [[01-资料库/EAST5.0系统/2026-04-26-IE_002_203-对公客户信息表-数据字典-原文     | 原文]] | 已建实体页 |
+ | `IE_002_204` | 对公客户财务信息表 | 对公客户财务信息 | 报送本月新收集的对公客户财务信息，覆盖资产、负债、利润、收入、现金流等财务指标，月频采集             | [[03-实体/EAST5.0-IE_002_204-对公客户财务信息表]] | [[EAST5.0-IE_002_204-对公客户财务信息表]] | [[01-资料库/EAST5.0系统/2026-04-26-IE_002_204-对公客户财务信息表-数据字典-原文]] | 原文]] | 已建实体页 |
+ | `IE_002_205` | 集团客户表       | 集团客户信息     | 报送在本行纳入集团授信的客户信息（含供应链客户），以集团成员为最小粒度报送，月频采集                  | [[03-实体/EAST5.0-IE_002_205-集团客户表]]       | [[EAST5.0-IE_002_205-集团客户表]]       | [[01-资料库/EAST5.0系统/2026-04-26-IE_002_205-集团客户表-数据字典-原文]]       | 原文]] | 已建实体页 |
++| `IE_002_206` | 关联关系表       | 对公客户关联关系信息 | 报送对公客户以及机构互联网贷款合作方的关联关系（母公司、子公司、担保关系、供应链上下游等），月频采集     | [[03-实体/EAST5.0-IE_002_206-关联关系表]]       | [[EAST5.0-IE_002_206-关联关系表]]       | [[01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文]]       | 原文]] | 已建实体页 |
+ 
+ ## 维护规则
+ 
+ - 新增报表时，本页只增加一行目录和一句话业务描述。
+
+[0m
+[0m← [0mEdit 03-实体/EAST5.0系统.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+@@ -15,9 +15,9 @@
+ ## 关键信息
+ 
+ - 系统定位：监管数据采集系统，当前已纳入机构基础信息、员工基础信息和柜员基础信息类数据字典。
+ - 当前状态：已开始系统化整理；已建 10 张报表实体页。
+-- 覆盖范围：机构基础信息、员工基础信息、柜员基础信息、岗位基础信息、股权与关联方信息、个人客户基础信息、对公客户基础信息。
++- 覆盖范围：机构基础信息、员工基础信息、柜员基础信息、岗位基础信息、股权与关联方信息、个人客户基础信息、个人客户关系信息、对公客户基础信息、对公客户财务信息、集团客户信息、对公客户关联关系信息。
+ - 系统报表页：[[04-综合/EAST5.0系统-报表关系|EAST5.0系统-报表关系]]
+ - 原文目录：[[01-资料库/EAST5.0系统/README|EAST5.0系统原文目录]]
+ - 项目页：[[06-项目/监管系统知识整理|监管系统知识整理]]
+ 
+
+[0m
+[0m← [0mEdit 03-实体/EAST5.0系统.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+@@ -43,8 +43,9 @@
+ | 个人客户关系信息 | `IE_002_202` 个人客户关系表，覆盖个人客户的所有关联关系（个人对个人、个人对对公），包括关系类型、关系人身份和关系状态，月频采集 | [[04-综合/EAST5.0系统-报表关系]] |
+ | 对公客户基础信息 | `IE_002_203` 对公客户信息表，覆盖银行机构所有对公客户的基本信息，包括客户身份、账户、企业基本信息、信贷与风险标志，月频采集   | [[04-综合/EAST5.0系统-报表关系]] |
+ | 对公客户财务信息 | `IE_002_204` 对公客户财务信息表，覆盖对公客户的资产、负债、利润、收入、现金流等财务指标，月频采集                | [[04-综合/EAST5.0系统-报表关系]] |
+ | 集团客户信息   | `IE_002_205` 集团客户表，覆盖纳入集团授信的客户信息（含供应链客户），以集团成员为最小粒度报送，月频采集             | [[04-综合/EAST5.0系统-报表关系]] |
++| 对公客户关联关系信息 | `IE_002_206` 关联关系表，覆盖对公客户以及机构互联网贷款合作方的关联关系（母公司、子公司、担保关系、供应链上下游等），月频采集 | [[04-综合/EAST5.0系统-报表关系]] |
+ 
+ ## 查询入口
+ 
+ - 查系统覆盖范围：先看 [[04-综合/监管系统-报表清单|监管系统-报表清单]]。
+
+[0m
+[0m← [0mEdit 03-实体/EAST5.0系统.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+@@ -76,8 +76,9 @@
+ - 2026-04-26：新增 `IE_002_202` 个人客户关系表，扩展覆盖个人客户关系信息域，含 14 个字段全部为 FIELD，引用 3 张码表（`EAST_GXLX`、`EAST_YXZT`、`EAST_ZJLB`）。
+ - 2026-04-26：新增 `IE_002_203` 对公客户信息表，扩展覆盖对公客户基础信息域，含 37 个字段全部为 FIELD，引用 7 张码表（`EAST_BZ`、`EAST_DGKHLX`、`EAST_QYLFLX`、`EAST_SFBZ`、`EAST_SSHY`、`EAST_XZQH`、`EAST_ZJLB`）。
+ - 2026-04-26：新增 `IE_002_204` 对公客户财务信息表，扩展覆盖对公客户财务信息域，含 23 个字段全部为 FIELD，引用 2 张码表（`EAST_BZ`、`EAST_SFBZ`），记录对公客户资产、负债、利润、收入、现金流等财务指标。
+ - 2026-04-26：新增 `IE_002_205` 集团客户表，扩展覆盖集团客户信息域，含 19 个字段全部为 FIELD，引用 2 张码表（`EAST_BZ`、`EAST_GLLRLB`），报送纳入集团授信的客户信息（含供应链客户），以集团成员为最小粒度。
++- 2026-04-26：新增 `IE_002_206` 关联关系表，扩展覆盖对公客户关联关系信息域，含 15 个字段全部为 FIELD，引用 4 张码表（`EAST_GLLRLB`、`EAST_GXLX`、`EAST_YXZT`、`EAST_ZJLB`），报送对公客户以及机构互联网贷款合作方的关联关系（母公司、子公司、担保关系、供应链上下游等）。
+ 
+ ## 备注
+ 
+ - 后续若 EAST5.0 继续纳入多张表，可补充数据域关系页或表间校验关系页。
+
+[0m
+[0m← [0mEdit 03-实体/EAST5.0系统.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md
+@@ -49,9 +49,9 @@
+ ## 查询入口
+ 
+ - 查系统覆盖范围：先看 [[04-综合/监管系统-报表清单|监管系统-报表清单]]。
+ - 查表编码、表名、数据域和简单描述：进入 [[04-综合/EAST5.0系统-报表关系|EAST5.0系统-报表关系]]。
+-- 查单张表稳定结论：进入 [[03-实体/EAST5.0-IE_001_101-机构信息表|EAST5.0-IE_001_101-机构信息表]]、[[03-实体/EAST5.0-IE_001_102-员工表|EAST5.0-IE_001_102-员工表]]、[[03-实体/EAST5.0-IE_001_103-柜员表|EAST5.0-IE_001_103-柜员表]]、[[03-实体/EAST5.0-IE_001_104-岗位信息表|EAST5.0-IE_001_104-岗位信息表]]、[[03-实体/EAST5.0-IE_001_105-机构关系表|EAST5.0-IE_001_105-机构关系表]]、[[03-实体/EAST5.0-IE_001_106-股东及关联方信息表|EAST5.0-IE_001_106-股东及关联方信息表]]、[[03-实体/EAST5.0-IE_002_201-个人基础信息表|EAST5.0-IE_002_201-个人基础信息表]]、[[03-实体/EAST5.0-IE_002_202-个人客户关系表|EAST5.0-IE_002_202-个人客户关系表]]、[[03-实体/EAST5.0-IE_002_203-对公客户信息表|EAST5.0-IE_002_203-对公客户信息表]]、[[03-实体/EAST5.0-IE_002_204-对公客户财务信息表|EAST5.0-IE_002_204-对公客户财务信息表]] 或 [[03-实体/EAST5.0-IE_002_205-集团客户表|EAST5.0-IE_002_205-集团客户表]]。
++- 查单张表稳定结论：进入 [[03-实体/EAST5.0-IE_001_101-机构信息表|EAST5.0-IE_001_101-机构信息表]]、[[03-实体/EAST5.0-IE_001_102-员工表|EAST5.0-IE_001_102-员工表]]、[[03-实体/EAST5.0-IE_001_103-柜员表|EAST5.0-IE_001_103-柜员表]]、[[03-实体/EAST5.0-IE_001_104-岗位信息表|EAST5.0-IE_001_104-岗位信息表]]、[[03-实体/EAST5.0-IE_001_105-机构关系表|EAST5.0-IE_001_105-机构关系表]]、[[03-实体/EAST5.0-IE_001_106-股东及关联方信息表|EAST5.0-IE_001_106-股东及关联方信息表]]、[[03-实体/EAST5.0-IE_002_201-个人基础信息表|EAST5.0-IE_002_201-个人基础信息表]]、[[03-实体/EAST5.0-IE_002_202-个人客户关系表|EAST5.0-IE_002_202-个人客户关系表]]、[[03-实体/EAST5.0-IE_002_203-对公客户信息表|EAST5.0-IE_002_203-对公客户信息表]]、[[03-实体/EAST5.0-IE_002_204-对公客户财务信息表|EAST5.0-IE_002_204-对公客户财务信息表]]、[[03-实体/EAST5.0-IE_002_205-集团客户表|EAST5.0-IE_002_205-集团客户表]] 或 [[03-实体/EAST5.0-IE_002_206-关联关系表|EAST5.0-IE_002_206-关联关系表]]。
+ - 查字段全量清单、码表和原始数据字典：进入 [[01-资料库/EAST5.0系统/README|EAST5.0系统原文目录]]。
+ 
+ ## 系统级规则
+ 
+
+[0m
+[0m← [0mEdit 01-资料库/EAST5.0系统/README.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/README.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/README.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/README.md
+@@ -14,8 +14,9 @@
+ - [[01-资料库/EAST5.0系统/2026-04-26-IE_002_202-个人客户关系表-数据字典-原文|IE_002_202 个人客户关系表-数据字典-原文]]
+ - [[01-资料库/EAST5.0系统/2026-04-26-IE_002_203-对公客户信息表-数据字典-原文|IE_002_203 对公客户信息表-数据字典-原文]]
+ - [[01-资料库/EAST5.0系统/2026-04-26-IE_002_204-对公客户财务信息表-数据字典-原文|IE_002_204 对公客户财务信息表-数据字典-原文]]
+ - [[01-资料库/EAST5.0系统/2026-04-26-IE_002_205-集团客户表-数据字典-原文|IE_002_205 集团客户表-数据字典-原文]]
++- [[01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文|IE_002_206 关联关系表-数据字典-原文]]
+ 
+ ## 说明
+ 
+ - 本目录下 `*-原文.md` 页面默认按“忠实转录”处理。
+
+[0m
+[0m← [0mEdit 05-日志/log.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md
+@@ -1,4 +1,25 @@
++## [2026-04-26] ingest | EAST5.0-IE_002_206 关联关系表
++
++- type: ingest
++- summary: 导入 EAST5.0 系统 `IE_002_206` 关联关系表数据字典，建立原文页、报表实体页，更新系统报表关系页、系统实体页、原文目录。`IE_002_206` 是 EAST5.0 的对公客户关联关系表，月频采集，15 个字段全部为 FIELD，引用 4 张码表。
++- pages: [[01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文|原文]], [[03-实体/EAST5.0-IE_002_206-关联关系表|报表页]], [[03-实体/EAST5.0系统|系统页]], [[04-综合/EAST5.0系统-报表关系|报表关系]], [[01-资料库/EAST5.0系统/README|原文目录]]
++- 核心要点:
++  - `IE_002_206` 物理表名为 `IE_002_206`，报表ID `1994254277826389363`，排序号 12，负责人：王超，频率：月
++  - 15 个字段全部为 FIELD 类型，无 INDICATOR，引用 4 张码表
++  - 主键：`KHTYBH`（客户统一编号）+ `GXLX`（关系类型）+ `GLRKHTYBH`（关联人客户统一编号）+ `CJRQ`（采集日期）
++  - 报送范围：对公客户以及机构互联网贷款合作方的关联关系，包括母公司、子公司、担保关系、供应链上下游等
++  - 4 张码表：`EAST_GLLRLB`（关联人类别，8 码值）、`EAST_GXLX`（关系类型，14 码值）、`EAST_YXZT`（有效状态，2 码值）、`EAST_ZJLB`（证件类别，42 码值）
++  - 关系类型 14 类，涵盖母公司、子公司、担保关系、供应链上下游、合营/联营企业、关键管理人员及家庭成员等
++  - 隐私字段：`KHTYBH`（如含身份证号）、`KHZJHM`、`GLRMC`（个人）、`GLRZJHM`（如含身份证号）需按《采集技术接口说明》变形
++  - 同一关联人具有多重关联关系的，以多条分别填报
++  - 失效状态的关联关系在次月不再报送
++  - 关联 `IE_001_101` 机构信息表：通过 `NBJGH` 内部机构号关联
++  - 关联 `IE_002_203` 对公客户信息表：通过 `KHTYBH` 客户统一编号关联
++  - 与 `IE_002_202` 个人客户关系表同属关联关系类数据，IE_002_202 为个人客户关联关系，IE_002_206 为对公客户关联关系
++
++---
++
+ ## [2026-04-26] ingest | EAST5.0-IE_002_205 集团客户表
+ 
+ - type: ingest
+ - summary: 导入 EAST5.0 系统 `IE_002_205` 集团客户表数据字典，建立原文页、报表实体页，更新系统报表关系页、系统实体页、原文目录和监管系统清单。`IE_002_205` 是 EAST5.0 的集团客户信息表，月频采集，19 个字段全部为 FIELD，引用 2 张码表。
+
+[0m
+[0m← [0mEdit 04-综合/EAST5.0系统-报表关系.md
+Index: /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md
+===================================================================
+--- /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md
++++ /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md
+@@ -4,9 +4,9 @@
+ 
+ ## 页面角色
+ 
+ - 所属系统：[[03-实体/EAST5.0系统|EAST5.0系统]]
+-- 当前报表实体页数量：10
++- 当前报表实体页数量：11
+ - 原文目录：[[01-资料库/EAST5.0系统/README|EAST5.0系统原文目录]]
+ - 表间关系/数据域关系：待补
+ - 业务场景页：[[04-综合/监管业务场景-报送映射|监管业务场景-报送映射]]
+ 
+
+[0m
+[0m$ [0mgrep -c "IE_002_206" /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文.md /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0-IE_002_206-关联关系表.md /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/README.md /Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md
+/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文.md:2
+/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0-IE_002_206-关联关系表.md:5
+/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/04-综合/EAST5.0系统-报表关系.md:1
+/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/03-实体/EAST5.0系统.md:3
+/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/01-资料库/EAST5.0系统/README.md:1
+/Users/zhoujingkun/Documents/GitHub/Obsidian/my-dev-brain/05-日志/log.md:5
+[0m
+Ingest 完成。本次处理了 EAST5.0 系统 `IE_002_206` 关联关系表，闭环如下：
+
+**证据层（原文页）**
+- `01-资料库/EAST5.0系统/2026-04-26-IE_002_206-关联关系表-数据字典-原文.md` — 忠实转录原始数据字典
+
+**知识层（2 页）**
+- `03-实体/EAST5.0-IE_002_206-关联关系表.md` — 报表实体页：15 个字段、4 张码表、主键/关联键、隐私规则、报送规则
+- 更新 `03-实体/EAST5.0系统.md` — 系统实体页新增覆盖范围和变化记录
+
+**路由入口（2 页）**
+- 更新 `04-综合/EAST5.0系统-报表关系.md` — 新增报表目录行，当前报表数 11
+- 更新 `01-资料库/EAST5.0系统/README.md` — 新增原文页链接
+
+**日志层**
+- 更新 `05-日志/log.md` — 新增 ingest 条目

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SQL Development"
+  short_description: "Build traceable SQL from knowledge pages"
+  default_prompt: "Use $sql-dev to generate a traceable SQL draft, validation SQL, and implementation notes from the repository knowledge base."

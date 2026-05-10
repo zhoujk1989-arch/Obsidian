@@ -1,0 +1,68 @@
+Traceback (most recent call last):
+  File "/Users/zhoujingkun/.local/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/main.py", line 10005, in main
+    discover_plugins()
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 1059, in discover_plugins
+    get_plugin_manager().discover_and_load(force=force)
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 584, in discover_and_load
+    enabled = _get_enabled_plugins()  # None = opt-in default (nothing enabled)
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 126, in _get_enabled_plugins
+    config = load_config()
+             ^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/config.py", line 3304, in load_config
+    user_config = yaml.safe_load(f) or {}
+                  ^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 36, in get_single_node
+    document = self.compose_document()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/composer.py", line 64, in compose_node
+    if self.check_event(AliasEvent):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/parser.py", line 448, in parse_block_mapping_value
+    token = self.get_token()
+            ^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/scanner.py", line 137, in get_token
+    while self.need_more_tokens():
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/scanner.py", line 152, in need_more_tokens
+    self.stale_possible_simple_keys()
+  File "/Users/zhoujingkun/.hermes/hermes-agent/venv/lib/python3.11/site-packages/yaml/scanner.py", line 279, in stale_possible_simple_keys
+    def stale_possible_simple_keys(self):
+
+KeyboardInterrupt

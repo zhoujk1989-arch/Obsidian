@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "/Users/zhoujingkun/.local/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/main.py", line 10025, in main
+    sys.exit(run_oneshot(
+             ^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 80, in run_oneshot
+    response = _run_agent(prompt, model=model, provider=provider)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/oneshot.py", line 108, in _run_agent
+    from run_agent import AIAgent
+  File "/Users/zhoujingkun/.hermes/hermes-agent/run_agent.py", line 70, in <module>
+    from model_tools import (
+  File "/Users/zhoujingkun/.hermes/hermes-agent/model_tools.py", line 139, in <module>
+    discover_builtin_tools()
+  File "/Users/zhoujingkun/.hermes/hermes-agent/tools/registry.py", line 69, in discover_builtin_tools
+    importlib.import_module(mod_name)
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1069, in get_code
+  File "<frozen importlib._bootstrap_external>", line 729, in _compile_bytecode
+KeyboardInterrupt

@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "/Users/zhoujingkun/.local/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/main.py", line 10005, in main
+    discover_plugins()
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 1059, in discover_plugins
+    get_plugin_manager().discover_and_load(force=force)
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 620, in discover_and_load
+    self._load_plugin(manifest)
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 848, in _load_plugin
+    module = self._load_directory_module(manifest)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/plugins.py", line 929, in _load_directory_module
+    spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/Users/zhoujingkun/.hermes/hermes-agent/plugins/spotify/__init__.py", line 27, in <module>
+    from plugins.spotify.tools import (
+  File "/Users/zhoujingkun/.hermes/hermes-agent/plugins/spotify/__init__.py", line 27, in <module>
+    from plugins.spotify.tools import (
+  File "/Users/zhoujingkun/.hermes/hermes-agent/plugins/spotify/tools.py", line 7, in <module>
+    from hermes_cli.auth import get_auth_status
+  File "/Users/zhoujingkun/.hermes/hermes-agent/hermes_cli/auth.py", line 36, in <module>
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+  File "/Users/zhoujingkun/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/http/server.py", line 103, in <module>
+    import socketserver
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1138, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 1078, in _find_spec
+  File "<frozen importlib._bootstrap_external>", line 1507, in find_spec
+  File "<frozen importlib._bootstrap_external>", line 1479, in _get_spec
+  File "<frozen importlib._bootstrap_external>", line 1615, in find_spec
+  File "<frozen importlib._bootstrap_external>", line 147, in _path_stat
+KeyboardInterrupt
