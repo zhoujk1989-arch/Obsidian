@@ -38,7 +38,7 @@ Use this skill to turn documented knowledge into executable SQL artifacts withou
    - Mark unresolved assumptions clearly.
 
 4. **Generate artifacts**
-   - Put draft SQL in the repository's configured SQL development workspace when one exists, commonly `工作区/SQL开发/<系统名>/`.
+   - Put generated SQL in the repository's configured SQL directory when one exists, commonly `sql/<系统名>/`.
    - Use the local SQL template if present, commonly `模板/SQL开发模板.sql`.
    - Generate separate validation SQL for non-trivial outputs, commonly `CHECK_<需求名>_校验.sql`.
    - Generate implementation notes when the task is a report/interface/stored procedure or has meaningful assumptions.
