@@ -354,7 +354,7 @@ BEGIN
           WHEN NULLIF(TRIM(cust.B050004), '') = '04' THEN '境外客户'
           WHEN NULLIF(TRIM(cust.B050004), '') LIKE '00-%' THEN
               CONCAT('其他-', SUBSTR(NULLIF(TRIM(cust.B050004), ''), 4))
-          ELSE NULLIF(TRIM(cust.B050004), '')
+          ELSE NULL
       END AS BXYGBZ,
 
       # 9. 国籍：通过公共代码表转换，取不到则赋值为'其他国家和地区'
@@ -370,7 +370,7 @@ BEGIN
       CASE NULLIF(TRIM(cust.B050010), '')
           WHEN '01' THEN '男'
           WHEN '02' THEN '女'
-          ELSE NULLIF(TRIM(cust.B050010), '')
+          ELSE NULL
       END AS XB,
 
       # 12. 学历：通过公共代码表转换
@@ -387,7 +387,7 @@ BEGIN
       CASE NULLIF(TRIM(cust.B050013), '')
           WHEN '0' THEN '否'
           WHEN '1' THEN '是'
-          ELSE NULLIF(TRIM(cust.B050013), '')
+          ELSE NULL
       END AS SFYH,
 
       # 15. 工作单位名称：直接映射
@@ -410,7 +410,7 @@ BEGIN
           WHEN NULLIF(TRIM(cust.B050019), '') = '06' THEN '境外机构'
           WHEN NULLIF(TRIM(cust.B050019), '') LIKE '00-%' THEN
               CONCAT('其他-', SUBSTR(NULLIF(TRIM(cust.B050019), ''), 4))
-          ELSE NULLIF(TRIM(cust.B050019), '')
+          ELSE NULL
       END AS DWXZ,
 
       # 19. 职业：直接映射
@@ -447,21 +447,21 @@ BEGIN
       CASE NULLIF(TRIM(cust.B050033), '')
           WHEN '0' THEN '否'
           WHEN '1' THEN '是'
-          ELSE NULLIF(TRIM(cust.B050033), '')
+          ELSE NULL
       END AS SFNH,
 
       # 27. 本行员工标志：'0' → '否'; '1' → '是'
       CASE NULLIF(TRIM(cust.B050026), '')
           WHEN '0' THEN '否'
           WHEN '1' THEN '是'
-          ELSE NULLIF(TRIM(cust.B050026), '')
+          ELSE NULL
       END AS BHYGBZ,
 
       # 28. 上黑名单标志：'0' → '否'; '1' → '是'
       CASE NULLIF(TRIM(cust.B050028), '')
           WHEN '0' THEN '否'
           WHEN '1' THEN '是'
-          ELSE NULLIF(TRIM(cust.B050028), '')
+          ELSE NULL
       END AS SHMDBZ,
 
       # 29. 上黑名单日期：YYYY-MM-DD 转换为 YYYYMMDD

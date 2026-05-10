@@ -25,7 +25,7 @@
 - T_3_3：一表通集团成员名单（成员粒度，与集团基本情况关联）。
 - T_3_4：一表通集团实际控制人（实控人名称和类型，按集团ID取第一条）。
 - T_2_6：一表通客户财务信息（资产总额、负债总额，按集团ID关联）。
-- T_8_13：一表通授信情况（授信币种，按集团ID关联）。
+- T_8_13：一表通授信情况（授信币种、备注，按集团ID关联）。
 - T_1_1：一表通机构信息（金融许可证号、银行机构名称）。
 
 目标表：
@@ -81,79 +81,35 @@ BEGIN
      WHERE CJRQ = I_DATE;
 
     # 2. 插入映射数据
+    # 字段顺序按业务需求序号（011_集团客户表.md）排列：
+    # 序号1 金融许可证号 → 序号19 采集日期
+    # GSFZJG、SENSITIVEFLAG 无映射来源，置 NULL，放于备注之后、采集日期之前
     INSERT INTO IE_002_205 (
-        JTMC,
-        MGSMC,
-        CYYYED,
-        GSFZJG,
-        SENSITIVEFLAG,
-        SKRLX,
-        JTFZZE,
-        JTYYED,
-        CYMC,
-        BBZ,
-        JRXKZH,
-        JTBH,
-        NBJGH,
-        YHJGMC,
-        MGSKHTYBH,
-        SKRMC,
-        BZ,
-        JTZCZE,
-        JTSXED,
-        CYKHTYBH,
-        CJRQ
+        JRXKZH,        -- 序号1  金融许可证号
+        NBJGH,         -- 序号2  内部机构号
+        YHJGMC,        -- 序号3  银行机构名称
+        JTBH,          -- 序号4  集团编号
+        JTMC,          -- 序号5  集团名称
+        MGSKHTYBH,     -- 序号6  母公司客户统一编号
+        MGSMC,         -- 序号7  母公司名称
+        SKRMC,         -- 序号8  实控人名称
+        SKRLX,         -- 序号9  实控人类型
+        BZ,            -- 序号10 币种
+        JTZCZE,        -- 序号11 集团资产总额
+        JTFZZE,        -- 序号12 集团负债总额
+        JTSXED,        -- 序号13 集团授信额度
+        JTYYED,        -- 序号14 集团已用额度
+        CYKHTYBH,      -- 序号15 成员客户统一编号
+        CYMC,          -- 序号16 成员名称
+        CYYYED,        -- 序号17 成员已用额度
+        BBZ,           -- 序号18 备注
+        GSFZJG,        -- 归属分支机构（无映射来源，置空）
+        SENSITIVEFLAG, -- 涉密标志（无映射来源，置空）
+        CJRQ           -- 序号19 采集日期
     )
     SELECT
-        # 集团名称（T_2_2.B020007，直接映射）
-        grp.B020007 AS JTMC,
-
-        # 母公司名称（T_2_2.B020005，直接映射；无母公司允许为空）
-        grp.B020005 AS MGSMC,
-
-        # 成员已用额度（T_3_3.C030014，varchar → DECIMAL）
-        CAST(NULLIF(TRIM(mem.C030014), '') AS DECIMAL(20,2)) AS CYYYED,
-
-        # 归属分支机构（无映射来源，置空）
-        NULL AS GSFZJG,
-
-        # 涉密标志（无映射来源，置空）
-        NULL AS SENSITIVEFLAG,
-
-        # 实控人类型（T_3_4.C040012，直接映射；取每个集团第一条）
-        ctrl.C040012 AS SKRLX,
-
-        # 集团负债总额（T_2_6.B060010，varchar → DECIMAL）
-        CAST(NULLIF(TRIM(fin.B060010), '') AS DECIMAL(20,2)) AS JTFZZE,
-
-        # 集团已用额度（T_2_2.B020024，直接映射，varchar 类型）
-        grp.B020024 AS JTYYED,
-
-        # 成员名称（T_3_3.C030003，直接映射）
-        mem.C030003 AS CYMC,
-
-        # 备注（汇总集团基本情况、授信情况、集团实际控制人三种表备注，
-        #       用英文分号连接非空备注）
-        CONCAT(
-            grp.B020021,
-            CASE WHEN grp.B020021 IS NOT NULL AND grp.B020021 <> ''
-                 THEN ';' ELSE '' END,
-            COALESCE(wx_note.note, ''),
-            CASE WHEN wx_note.note IS NOT NULL AND wx_note.note <> ''
-                 AND grp.B020021 IS NOT NULL AND grp.B020021 <> ''
-                 THEN ';'
-                 WHEN wx_note.note IS NOT NULL AND wx_note.note <> ''
-                      AND (grp.B020021 IS NULL OR grp.B020021 = '')
-                 THEN ';'
-                 ELSE '' END,
-            ctrl.C040013
-        ) AS BBZ,
-
         # 金融许可证号（通过机构ID关联 T_1_1 获取）
         org.A010003 AS JRXKZH,
-
-        # 集团编号（T_2_2.B020001，PK 组成部分，直接映射）
-        grp.B020001 AS JTBH,
 
         # 内部机构号（T_2_2.B020002 从第12位开始截取）
         SUBSTR(TRIM(grp.B020002), 12) AS NBJGH,
@@ -161,11 +117,23 @@ BEGIN
         # 银行机构名称（通过机构ID关联 T_1_1 获取）
         org.A010005 AS YHJGMC,
 
+        # 集团编号（T_2_2.B020001，PK 组成部分，直接映射）
+        grp.B020001 AS JTBH,
+
+        # 集团名称（T_2_2.B020007，直接映射）
+        grp.B020007 AS JTMC,
+
         # 母公司客户统一编号（T_2_2.B020020，直接映射；无母公司允许为空）
         grp.B020020 AS MGSKHTYBH,
 
+        # 母公司名称（T_2_2.B020005，直接映射；无母公司允许为空）
+        grp.B020005 AS MGSMC,
+
         # 实控人名称（T_3_4.C040004，取每个集团按实际控制人类别排序第一条）
         ctrl.C040004 AS SKRMC,
+
+        # 实控人类型（T_3_4.C040012，直接映射；取每个集团第一条）
+        ctrl.C040012 AS SKRLX,
 
         # 币种（T_8_13.H130007 授信币种，取每个集团第一条）
         wx.H130007 AS BZ,
@@ -173,14 +141,40 @@ BEGIN
         # 集团资产总额（T_2_6.B060009，varchar → DECIMAL）
         CAST(NULLIF(TRIM(fin.B060009), '') AS DECIMAL(20,2)) AS JTZCZE,
 
-        # 集团授信额度（T_2_2.B020023，直接映射，varchar 类型）
-        grp.B020023 AS JTSXED,
+        # 集团负债总额（T_2_6.B060010，varchar → DECIMAL）
+        CAST(NULLIF(TRIM(fin.B060010), '') AS DECIMAL(20,2)) AS JTFZZE,
+
+        # 集团授信额度（T_2_2.B020023，varchar → DECIMAL）
+        CAST(NULLIF(TRIM(grp.B020023), '') AS DECIMAL(20,2)) AS JTSXED,
+
+        # 集团已用额度（T_2_2.B020024，varchar → DECIMAL）
+        CAST(NULLIF(TRIM(grp.B020024), '') AS DECIMAL(20,2)) AS JTYYED,
 
         # 成员客户统一编号（T_3_3.C030002，PK 组成部分，直接映射）
         mem.C030002 AS CYKHTYBH,
 
+        # 成员名称（T_3_3.C030003，直接映射）
+        mem.C030003 AS CYMC,
+
+        # 成员已用额度（T_3_3.C030014，varchar → DECIMAL）
+        CAST(NULLIF(TRIM(mem.C030014), '') AS DECIMAL(20,2)) AS CYYYED,
+
+        # 备注（汇总集团基本情况、授信情况、集团实际控制人三种表备注，
+        #       用英文分号连接非空备注；CONCAT_WS 自动跳过 NULL 值）
+        CONCAT_WS(';',
+            NULLIF(grp.B020021, ''),
+            NULLIF(wx.H130033, ''),
+            NULLIF(ctrl.C040013, '')
+        ) AS BBZ,
+
+        # 归属分支机构（无映射来源，置空）
+        NULL AS GSFZJG,
+
+        # 涉密标志（无映射来源，置空）
+        NULL AS SENSITIVEFLAG,
+
         # 采集日期（T_2_2.B020019，date → YYYYMMDD 字符串，PK 组成部分）
-        DATE_FORMAT(grp.B020019, '%Y%m%d') AS CJRQ
+        TO_CHAR(grp.B020019, 'YYYYMMDD') AS CJRQ
 
     FROM T_2_2 grp
 
@@ -192,14 +186,17 @@ BEGIN
      AND (mem.C030009 IS NULL OR mem.C030009 >= V_MON_START AND mem.C030009 <= V_MON_END)
 
     # 关联集团实际控制人（取每个集团按实际控制人类别排序的第一条）
+    # 业务需求：取关系状态为01，按集团ID、机构ID分组，按实际控制人类别排序取第一条
+    # T_3_4 无独立"关系状态"字段，当前通过关系失效日期过滤实现有效关系筛选
     LEFT JOIN (
         SELECT
             C040002,
+            C040003,
             C040004,
             C040012,
             C040013,
             ROW_NUMBER() OVER (
-                PARTITION BY C040002
+                PARTITION BY C040002, C040003
                 ORDER BY C040005
             ) AS rn
         FROM T_3_4
@@ -213,7 +210,7 @@ BEGIN
     LEFT JOIN T_2_6 fin
       ON fin.B060001 = grp.B020001
 
-    # 关联授信情况（取授信币种，按集团ID关联取第一条）
+    # 关联授信情况（取授信币种、备注，按集团ID关联取第一条）
     LEFT JOIN (
         SELECT
             H130002,

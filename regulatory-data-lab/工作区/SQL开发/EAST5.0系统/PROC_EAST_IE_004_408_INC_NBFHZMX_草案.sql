@@ -83,40 +83,40 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_004_408_INC (
-        DFXM,
-        JYQD,
-        SQGYH,
-        JZRQ,
-        BBZ,
         JYXLH,
+        JRXKZH,
         NBJGH,
+        YHJGMC,
         MXKMBH,
         MXKMMC,
+        ZHMC,
+        NBFHZZH,
         HXJYRQ,
         HXJYSJ,
+        BZ,
         JYLX,
+        JYJDBZ,
         JYJE,
+        JFYE,
         DFYE,
         DFZH,
+        DFKMBH,
+        DFKMMC,
         DFHM,
+        DFXH,
+        DFXM,
+        ZY,
+        CBMBZ,
+        JYQD,
+        XZBZ,
+        JYGYH,
+        SQGYH,
+        JZRQ,
+        XZRQ,
+        BBZ,
         CJRQ,
         GSFZJG,
         SENSITIVEFLAG,
-        JRXKZH,
-        YHJGMC,
-        ZHMC,
-        NBFHZZH,
-        BZ,
-        JYJDBZ,
-        JFYE,
-        DFKMBH,
-        DFKMMC,
-        DFXH,
-        ZY,
-        CBMBZ,
-        XZBZ,
-        JYGYH,
-        XZRQ,
         DFKHLB
     )
     SELECT
@@ -133,8 +133,8 @@ BEGIN
             WHEN TRIM(src.G100019) = '06' THEN '手机银行'
             WHEN TRIM(src.G100019) LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(TRIM(src.G100019), '07', ''))
             WHEN TRIM(src.G100019) = '08' THEN '银联交易'
-            WHEN TRIM(src.G100019) LIKE '00%' THEN CONCAT('其他-', REPLACE(TRIM(src.G100019), '00', ''))
-            ELSE TRIM(src.G100019)
+            WHEN TRIM(src.G100019) = '00' THEN CONCAT('其他-', REPLACE(TRIM(src.G100019), '00', ''))
+            ELSE NULL
         END AS JYQD,
 
         /* 28 授权柜员号：T_7_10.G100021；'自动'转NULL */
@@ -142,7 +142,7 @@ BEGIN
 
         /* 29 进账日期：T_7_10.G100026；YYYY-MM-DD → YYYYMMDD */
         CASE
-            WHEN src.G100026 IS NOT NULL THEN DATE_FORMAT(src.G100026, '%Y%m%d')
+            WHEN src.G100026 IS NOT NULL THEN TO_CHAR(src.G100026, 'YYYYMMDD')
             ELSE NULL
         END AS JZRQ,
 
@@ -162,10 +162,10 @@ BEGIN
         dim_mx.KJKMMC AS MXKMMC,
 
         /* 9 核心交易日期：T_7_10.G100003；YYYY-MM-DD → YYYYMMDD */
-        DATE_FORMAT(src.G100003, '%Y%m%d') AS HXJYRQ,
+        TO_CHAR(src.G100003, 'YYYYMMDD') AS HXJYRQ,
 
         /* 10 核心交易时间：T_7_10.G100004；去除冒号 */
-        REPLACE(DATE_FORMAT(src.G100004, '%H:%i:%s'), ':', '') AS HXJYSJ,
+        TO_CHAR(src.G100004, 'HH24MISS') AS HXJYSJ,
 
         /* 12 交易类型：T_7_10.G100006；码值转化 15 分支 */
         CASE
@@ -183,8 +183,8 @@ BEGIN
             WHEN TRIM(src.G100006) = '12' THEN '贷款还息'
             WHEN TRIM(src.G100006) = '13' THEN '银证业务'
             WHEN TRIM(src.G100006) = '14' THEN '投资理财'
-            WHEN TRIM(src.G100006) LIKE '00%' THEN CONCAT('其他-', REPLACE(TRIM(src.G100006), '00', ''))
-            ELSE TRIM(src.G100006)
+            WHEN TRIM(src.G100006) = '00' THEN CONCAT('其他-', REPLACE(TRIM(src.G100006), '00', ''))
+            ELSE NULL
         END AS JYLX,
 
         /* 14 交易金额：T_7_10.G100010；CAST DECIMAL(20,2) */
@@ -250,7 +250,7 @@ BEGIN
         CASE
             WHEN TRIM(src.G100022) = '01' THEN '正常'
             WHEN TRIM(src.G100022) = '02' THEN '冲补抹'
-            ELSE TRIM(src.G100022)
+            ELSE NULL
         END AS CBMBZ,
 
         /* 26 现转标志：T_7_10.G100025；码值转化 3 分支 */
@@ -265,7 +265,7 @@ BEGIN
 
         /* 30 销账日期：T_7_10.G100027；YYYY-MM-DD → YYYYMMDD */
         CASE
-            WHEN src.G100027 IS NOT NULL THEN DATE_FORMAT(src.G100027, '%Y%m%d')
+            WHEN src.G100027 IS NOT NULL THEN TO_CHAR(src.G100027, 'YYYYMMDD')
             ELSE NULL
         END AS XZRQ,
 

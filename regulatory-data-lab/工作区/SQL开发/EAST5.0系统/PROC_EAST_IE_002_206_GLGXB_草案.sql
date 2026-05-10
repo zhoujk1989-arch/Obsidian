@@ -91,7 +91,9 @@ BEGIN
     GLRZJHM,   -- 12 关联人证件号码
     GXZT,      -- 13 关系状态
     BBZ,       -- 14 备注
-    CJRQ       -- 15 采集日期
+    CJRQ,      -- 15 采集日期
+    GSFZJG,    -- 16 归属分支机构：无业务来源，暂置 NULL
+    SENSITIVEFLAG -- 17 涉密标志：无业务来源，暂置 NULL
   )
   SELECT
     cust.JRXKZH,                          -- 金融许可证号：关联对公客户信息表
@@ -114,7 +116,7 @@ BEGIN
       WHEN '11' THEN '供应链上下游'
       WHEN '12' THEN '担保关系'
       WHEN src.GXLX_DM LIKE '00-%' THEN CONCAT('其他-', SUBSTRING(src.GXLX_DM, 4))
-      ELSE src.GXLX_DM
+      ELSE NULL
     END,                                  -- 关系类型：码值转换
     src.GLRKHDID,                         -- 关联人客户统一编号：直接映射
     src.GLRMC,                            -- 关联人名称：直接映射
@@ -127,12 +129,12 @@ BEGIN
       WHEN '06' THEN '社会团体'
       WHEN '07' THEN '境外机构'
       WHEN src.GLRLB_DM LIKE '00-%' THEN CONCAT('其他-', SUBSTRING(src.GLRLB_DM, 4))
-      ELSE src.GLRLB_DM
+      ELSE NULL
     END,                                  -- 关联人类别：码值转换
     CASE
       WHEN src.GLRZJLB_DM LIKE '1999-%' THEN CONCAT('其他-', SUBSTRING(src.GLRZJLB_DM, 6))
       WHEN src.GLRZJLB_DM LIKE '2999-%' THEN CONCAT('其他-', SUBSTRING(src.GLRZJLB_DM, 6))
-      ELSE src.GLRZJLB_DM
+      ELSE NULL
     END,                                  -- 关联人证件类别：1999/2999转其他
     src.GLRZJHM,                          -- 关联人证件号码：直接映射
     CASE
@@ -140,7 +142,11 @@ BEGIN
       ELSE '0'
     END,                                  -- 关系状态：失效判断
     src.BZ,                               -- 备注：直接映射
-    I_DATE                                -- 采集日期：默认值报告日
+    I_DATE,                               -- 采集日期：默认值报告日
+    /* GSFZJG - 归属分支机构：无业务来源，暂置 NULL */
+    NULL AS GSFZJG,
+    /* SENSITIVEFLAG - 涉密标志：无业务来源，暂置 NULL */
+    NULL AS SENSITIVEFLAG
   FROM (
     /* 来源1：重要股东及主要关联企业（关系人为对公、集团和供应链） */
     SELECT
@@ -152,9 +158,9 @@ BEGIN
       C010007   AS GLRZJLB_DM,           -- 股东/关联企业证件类型
       C010008   AS GLRZJHM,              -- 股东/关联企业证件号码
       C010020   AS BZ,                   -- 备注
-      C010017   AS GXLX_SX_RQ            -- 采集日期（作为关系失效时间代理）
+      C010017   AS GXLX_SX_RQ            -- 关系失效时间
     FROM T_3_1
-    WHERE C010017 = TO_DATE(I_DATE, 'YYYYMMDD')
+    WHERE (C010017 IS NULL OR TO_CHAR(C010017, 'YYYYMM') = SUBSTR(I_DATE, 1, 6))
 
     UNION ALL
 
@@ -171,7 +177,7 @@ BEGIN
       C020013   AS GXLX_SX_RQ            -- 关系失效日期
     FROM T_3_2
     WHERE C020014 = TO_DATE(I_DATE, 'YYYYMMDD')
-      AND (C020013 IS NULL OR C020013 > TO_DATE(I_DATE, 'YYYYMMDD'))
+      AND (C020013 IS NULL OR TO_CHAR(C020013, 'YYYYMM') = SUBSTR(I_DATE, 1, 6))
   ) src
   LEFT JOIN IE_002_203 cust
     ON src.KHDID = cust.KHTYBH

@@ -1,6 +1,9 @@
 /*
 草案质量状态：待验证（JOIN 条件、码值 CASE、WHERE 过滤已按业务需求补齐，尚未在 GBase 环境执行验证）。
 审计记录：工作区/SQL开发/EAST5.0系统/审计-EAST5.0-GBase存储过程草案质量问题-2026-05-04.md
+
+校准记录：2026-05-10 按业务需求序号校准字段顺序；码值 CASE ELSE 改为 NULL；日期 CONCAT 改为 TO_CHAR；
+          NULLIF(TRIM) 改为 NULLIF；DATE_FORMAT 改为 TO_CHAR。
 */
 
 /*
@@ -98,7 +101,7 @@ BEGIN
     SET V_DATA_DATE = CAST(CONCAT(LEFT(P_DATA_DATE, 4), '-', SUBSTR(P_DATA_DATE, 5, 2), '-', SUBSTR(P_DATA_DATE, 7, 2)) AS DATE);
 
     -- 计算上月首日，用于筛选当月销户的账户
-    SET V_LAST_MONTH_FIRST = DATE_SUB(DATE_FORMAT(V_DATA_DATE, '%Y-%m-01'), INTERVAL 1 MONTH);
+    SET V_LAST_MONTH_FIRST = DATE_SUB(TO_DATE(TO_CHAR(V_DATA_DATE, 'YYYY-MM-01'), 'YYYY-MM-DD'), INTERVAL 1 MONTH);
 
     START TRANSACTION;
 
@@ -106,101 +109,56 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_004_405 (
-        JRXKZH,
-        YHJGMC,
-        MXKMMC,
-        DGCKZH,
-        BZJZHBZ,
-        LL,
-        KHRQ,
-        XHRQ,
-        CHLB,
-        BBZ,
-        GSFZJG,
-        SENSITIVEFLAG,
-        NBJGH,
-        MXKMBH,
-        KHTYBH,
-        ZHMC,
-        DGCKZHLX,
-        BZ,
-        CKYE,
-        KHGYH,
-        SCDHRQ,
-        ZHZT,
-        CJRQ
+        JRXKZH,          /* 1.  金融许可证号 */
+        NBJGH,           /* 2.  内部机构号 */
+        YHJGMC,          /* 3.  银行机构名称 */
+        MXKMBH,          /* 4.  明细科目编号 */
+        MXKMMC,          /* 5.  明细科目名称 */
+        KHTYBH,          /* 6.  客户统一编号 */
+        ZHMC,            /* 7.  账户名称 */
+        DGCKZH,          /* 8.  对公存款账号 */
+        DGCKZHLX,        /* 9.  对公存款账户类型 */
+        BZJZHBZ,         /* 10. 保证金账户标志 */
+        LL,              /* 11. 利率 */
+        BZ,              /* 12. 币种 */
+        CKYE,            /* 13. 存款余额 */
+        KHRQ,            /* 14. 开户日期 */
+        KHGYH,           /* 15. 开户柜员号 */
+        XHRQ,            /* 16. 销户日期 */
+        SCDHRQ,          /* 17. 上次动户日期 */
+        CHLB,            /* 18. 钞汇类别 */
+        ZHZT,            /* 19. 账户状态 */
+        BBZ,             /* 20. 备注 */
+        GSFZJG,          /* 21. 归属分支机构（系统保留，置NULL） */
+        SENSITIVEFLAG,   /* 22. 涉密标志（系统保留，置NULL） */
+        CJRQ             /* 23. 采集日期 */
     )
     SELECT
         /* 1. 金融许可证号：机构信息.金融许可证号 -> T_1_1.A010003 */
         s3.A010003 AS JRXKZH,
 
-        /* 2. 银行机构名称：机构信息.银行机构名称 -> T_1_1.A010005 */
-        s3.A010005 AS YHJGMC,
-
-        /* 3. 明细科目名称：科目信息.科目名称 -> T_4_2.D020003 */
-        s4.D020003 AS MXKMMC,
-
-        /* 4. 对公存款账号：存款协议.分户账号 -> T_6_1.F010007 */
-        src.F010007 AS DGCKZH,
-
-        /* 5. 保证金账户标志：存款协议.保证金账户标识 -> T_6_1.F010016 */
-        CASE WHEN src.F010016 = '1' THEN '是' ELSE '否' END AS BZJZHBZ,
-
-        /* 6. 利率：存款协议.利率 -> T_6_1.F010017 */
-        CAST(NULLIF(TRIM(src.F010017), '') AS DECIMAL(20,6)) AS LL,
-
-        /* 7. 开户日期：存款协议.开户日期 -> T_6_1.F010019 */
-        CASE WHEN src.F010019 IS NULL THEN '99991231'
-             ELSE CONCAT(CAST(YEAR(src.F010019) AS CHAR(4)),
-                         LPAD(CAST(MONTH(src.F010019) AS CHAR(2)), 2, '0'),
-                         LPAD(CAST(DAY(src.F010019) AS CHAR(2)), 2, '0'))
-        END AS KHRQ,
-
-        /* 8. 销户日期：存款协议.销户日期 -> T_6_1.F010024 */
-        CASE WHEN src.F010024 IS NULL THEN '99991231'
-             ELSE CONCAT(CAST(YEAR(src.F010024) AS CHAR(4)),
-                         LPAD(CAST(MONTH(src.F010024) AS CHAR(2)), 2, '0'),
-                         LPAD(CAST(DAY(src.F010024) AS CHAR(2)), 2, '0'))
-        END AS XHRQ,
-
-        /* 9. 钞汇类别：存款协议.钞汇类别 -> T_6_1.F010023 */
-        CASE
-            WHEN src.F010022 = 'CNY' THEN '人民币'
-            WHEN src.F010023 = '01' THEN '钞'
-            WHEN src.F010023 = '02' THEN '汇'
-            WHEN src.F010023 = '03' THEN '可钞可汇'
-            WHEN src.F010023 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(src.F010023, 5))
-            ELSE src.F010023
-        END AS CHLB,
-
-        /* 10. 备注：多源拼接 */
-        CONCAT_WS(';',
-            src.F010032,          -- 存款协议.备注 (T_6_1.F010032)
-            s2.H140021,           -- 存款状态.备注 (T_8_14.H140021)
-            s1.D030014,           -- 分户账信息.备注 (T_4_3.D030014)
-            s3.A010026,           -- 机构信息.备注 (T_1_1.A010026)
-            s4.D020010            -- 科目信息.备注 (T_4_2.D020010)
-        ) AS BBZ,
-
-        /* 11. 归属分支机构：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS GSFZJG,
-
-        /* 12. 涉密标志：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS SENSITIVEFLAG,
-
-        /* 13. 内部机构号：存款协议.机构ID -> T_6_1.F010002，从第12位开始截取 */
+        /* 2. 内部机构号：存款协议.机构ID -> T_6_1.F010002，从第12位开始截取 */
         SUBSTR(TRIM(src.F010002), 12) AS NBJGH,
 
-        /* 14. 明细科目编号：存款协议.科目ID -> T_6_1.F010005 */
+        /* 3. 银行机构名称：机构信息.银行机构名称 -> T_1_1.A010005 */
+        s3.A010005 AS YHJGMC,
+
+        /* 4. 明细科目编号：存款协议.科目ID -> T_6_1.F010005 */
         src.F010005 AS MXKMBH,
 
-        /* 15. 客户统一编号：存款协议.客户ID -> T_6_1.F010003 */
+        /* 5. 明细科目名称：科目信息.科目名称 -> T_4_2.D020003 */
+        s4.D020003 AS MXKMMC,
+
+        /* 6. 客户统一编号：存款协议.客户ID -> T_6_1.F010003 */
         src.F010003 AS KHTYBH,
 
-        /* 16. 账户名称：分户账信息.分户账名称 -> T_4_3.D030004 */
+        /* 7. 账户名称：分户账信息.分户账名称 -> T_4_3.D030004 */
         s1.D030004 AS ZHMC,
 
-        /* 17. 对公存款账户类型：存款协议.存款产品类别/社会保障基金存款标识 -> T_6_1.F010048/F010049 */
+        /* 8. 对公存款账号：存款协议.分户账号 -> T_6_1.F010007 */
+        src.F010007 AS DGCKZH,
+
+        /* 9. 对公存款账户类型：存款协议.存款产品类别/社会保障基金存款标识 -> T_6_1.F010048/F010049 */
         CASE
             WHEN src.F010049 = '1' THEN '社会保障基金'
             WHEN src.F010048 = '01' THEN '单位活期存款'
@@ -216,26 +174,50 @@ BEGIN
             WHEN src.F010048 IN ('20', '21') THEN '保险公司存放款'
             WHEN src.F010048 = '22' THEN '同业存放款'
             WHEN src.F010048 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(src.F010048, 5))
-            ELSE src.F010048
+            ELSE NULL
         END AS DGCKZHLX,
 
-        /* 18. 币种：存款协议.协议币种 -> T_6_1.F010022 */
+        /* 10. 保证金账户标志：存款协议.保证金账户标识 -> T_6_1.F010016 */
+        CASE WHEN src.F010016 = '1' THEN '是' ELSE '否' END AS BZJZHBZ,
+
+        /* 11. 利率：存款协议.利率 -> T_6_1.F010017 */
+        CAST(NULLIF(src.F010017, '') AS DECIMAL(20,6)) AS LL,
+
+        /* 12. 币种：存款协议.协议币种 -> T_6_1.F010022 */
         src.F010022 AS BZ,
 
-        /* 19. 存款余额：存款状态.存款余额 -> T_8_14.H140013 */
-        CAST(NULLIF(TRIM(s2.H140013), '') AS DECIMAL(20,2)) AS CKYE,
+        /* 13. 存款余额：存款状态.存款余额 -> T_8_14.H140013 */
+        CAST(NULLIF(s2.H140013, '') AS DECIMAL(20,2)) AS CKYE,
 
-        /* 20. 开户柜员号：存款协议.经办员工ID -> T_6_1.F010028 */
+        /* 14. 开户日期：存款协议.开户日期 -> T_6_1.F010019 */
+        CASE WHEN src.F010019 IS NULL THEN '99991231'
+             ELSE TO_CHAR(src.F010019, 'YYYYMMDD')
+        END AS KHRQ,
+
+        /* 15. 开户柜员号：存款协议.经办员工ID -> T_6_1.F010028 */
         CASE WHEN src.F010028 = '自动' THEN NULL ELSE src.F010028 END AS KHGYH,
 
-        /* 21. 上次动户日期：存款状态.上次动户日期 -> T_8_14.H140016 */
+        /* 16. 销户日期：存款协议.销户日期 -> T_6_1.F010024 */
+        CASE WHEN src.F010024 IS NULL THEN '99991231'
+             ELSE TO_CHAR(src.F010024, 'YYYYMMDD')
+        END AS XHRQ,
+
+        /* 17. 上次动户日期：存款状态.上次动户日期 -> T_8_14.H140016 */
         CASE WHEN s2.H140016 IS NULL THEN '99991231'
-             ELSE CONCAT(CAST(YEAR(s2.H140016) AS CHAR(4)),
-                         LPAD(CAST(MONTH(s2.H140016) AS CHAR(2)), 2, '0'),
-                         LPAD(CAST(DAY(s2.H140016) AS CHAR(2)), 2, '0'))
+             ELSE TO_CHAR(s2.H140016, 'YYYYMMDD')
         END AS SCDHRQ,
 
-        /* 22. 账户状态：分户账信息.账户状态 -> T_4_3.D030013
+        /* 18. 钞汇类别：存款协议.钞汇类别 -> T_6_1.F010023 */
+        CASE
+            WHEN src.F010022 = 'CNY' THEN '人民币'
+            WHEN src.F010023 = '01' THEN '钞'
+            WHEN src.F010023 = '02' THEN '汇'
+            WHEN src.F010023 = '03' THEN '可钞可汇'
+            WHEN src.F010023 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(src.F010023, 5))
+            ELSE NULL
+        END AS CHLB,
+
+        /* 19. 账户状态：分户账信息.账户状态 -> T_4_3.D030013
            注意：业务需求文档标注来源为"存款协议.账户状态"，但 T_6_1 DDL 无此字段；
            实际账户状态在 T_4_3.D030013，本草案以 T_4_3 为准。详见 Open Questions。 */
         CASE
@@ -245,8 +227,23 @@ BEGIN
             WHEN s1.D030013 = '04' THEN '冻结'
             WHEN s1.D030013 = '05' THEN '止付'
             WHEN s1.D030013 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(s1.D030013, 5))
-            ELSE s1.D030013
+            ELSE NULL
         END AS ZHZT,
+
+        /* 20. 备注：多源拼接 */
+        CONCAT_WS(';',
+            src.F010032,          -- 存款协议.备注 (T_6_1.F010032)
+            s2.H140021,           -- 存款状态.备注 (T_8_14.H140021)
+            s1.D030014,           -- 分户账信息.备注 (T_4_3.D030014)
+            s3.A010026,           -- 机构信息.备注 (T_1_1.A010026)
+            s4.D020010            -- 科目信息.备注 (T_4_2.D020010)
+        ) AS BBZ,
+
+        /* 21. 归属分支机构：系统保留字段，不派生，置NULL */
+        NULL AS GSFZJG,
+
+        /* 22. 涉密标志：系统保留字段，不派生，置NULL */
+        NULL AS SENSITIVEFLAG,
 
         /* 23. 采集日期：参数 P_DATA_DATE */
         P_DATA_DATE AS CJRQ

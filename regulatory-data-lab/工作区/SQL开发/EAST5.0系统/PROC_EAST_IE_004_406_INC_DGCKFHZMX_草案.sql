@@ -153,21 +153,18 @@ BEGIN
             WHEN src.G010010 = '12' THEN '贷款还息'
             WHEN src.G010010 = '13' THEN '银证业务'
             WHEN src.G010010 = '14' THEN '投资理财'
-            WHEN src.G010010 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010010, '00', ''))
-            ELSE src.G010010
+            WHEN src.G010010 = '00' THEN '其他'
+            WHEN src.G010010 LIKE '00%' THEN CONCAT('其他-', SUBSTR(src.G010010, 3))
+            ELSE NULL
         END AS JYLX,
         /* 13. 交易借贷标志：码值转换（依据业务需求第13条） */
         CASE
             WHEN src.G010014 = '01' THEN '借'
             WHEN src.G010014 = '02' THEN '贷'
-            ELSE src.G010014
+            ELSE NULL
         END AS JYJDBZ,
         /* 14. 核心交易日期：YYYY-MM-DD -> YYYYMMDD（依据业务需求第14条） */
-        CASE WHEN src.G010005 IS NULL THEN NULL
-             ELSE CONCAT(CAST(YEAR(src.G010005) AS VARCHAR(4)),
-                         LPAD(CAST(MONTH(src.G010005) AS VARCHAR(2)), 2, '0'),
-                         LPAD(CAST(DAY(src.G010005) AS VARCHAR(2)), 2, '0'))
-        END AS HXJYRQ,
+        TO_CHAR(src.G010005, 'YYYYMMDD') AS HXJYRQ,
         /* 15. 核心交易时间：HH:MM:SS -> HHMMSS（依据业务需求第15条） */
         CASE WHEN src.G010006 IS NULL THEN NULL
              ELSE REPLACE(CAST(src.G010006 AS VARCHAR(8)), ':', '')
@@ -210,27 +207,29 @@ BEGIN
             WHEN src.G010021 = '04' THEN 'POS'
             WHEN src.G010021 = '05' THEN '网银'
             WHEN src.G010021 = '06' THEN '手机银行'
-            WHEN src.G010021 LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(src.G010021, '07', ''))
+            WHEN src.G010021 = '07' THEN '第三方支付'
+            WHEN src.G010021 LIKE '07%' THEN CONCAT('第三方支付-', SUBSTR(src.G010021, 3))
             WHEN src.G010021 = '08' THEN '银联交易'
-            WHEN src.G010021 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010021, '00', ''))
-            ELSE src.G010021
+            WHEN src.G010021 = '00' THEN '其他'
+            WHEN src.G010021 LIKE '00%' THEN CONCAT('其他-', SUBSTR(src.G010021, 3))
+            ELSE NULL
         END AS JYQD,
         /* 28. IP地址：直接映射（依据业务需求第28条） */
         src.G010023 AS IPDZ,
         /* 29. MAC地址：直接映射（依据业务需求第29条） */
         src.G010024 AS MACDZ,
-        /* 30. 交易柜员号：'自动' -> NULL（依据业务需求第30条） */
-        CASE WHEN src.G010029 = '自动' THEN NULL ELSE src.G010029 END AS JYGYH,
-        /* 31. 授权柜员号：'自动' -> NULL（依据业务需求第31条） */
-        CASE WHEN src.G010030 = '自动' THEN NULL ELSE src.G010030 END AS SQGYH,
+        /* 30. 交易柜员号：'自动' -> ''（依据业务需求第30条） */
+        CASE WHEN src.G010029 = '自动' THEN '' ELSE src.G010029 END AS JYGYH,
+        /* 31. 授权柜员号：'自动' -> ''（依据业务需求第31条） */
+        CASE WHEN src.G010030 = '自动' THEN '' ELSE src.G010030 END AS SQGYH,
         /* 32. 备注：直接映射（依据业务需求第32条） */
         src.G010034 AS BBZ,
         /* 33. 采集日期：参数（依据业务需求第33条） */
         P_DATA_DATE AS CJRQ,
-        /* 涉密标志：来源为EAST.对公存款分户账.SENSITIVEFLAG（DDL存在，业务需求未给来源） */
-        acct.SENSITIVEFLAG AS SENSITIVEFLAG,
-        /* 归属分支机构：来源为EAST.对公存款分户账.GSFZJG（DDL存在，业务需求未给来源） */
-        acct.GSFZJG AS GSFZJG,
+        /* 涉密标志：业务需求未提供来源，置NULL */
+        NULL AS SENSITIVEFLAG,
+        /* 归属分支机构：业务需求未提供来源，置NULL */
+        NULL AS GSFZJG,
         /* 对方客户类别：业务需求未给来源，固定 NULL（DDL存在，业务需求未给来源） */
         NULL AS DFKHLB
     FROM T_7_1 src

@@ -76,59 +76,50 @@ BEGIN
   #2.插入数据
   INSERT INTO IE_001_102 (
       SENSITIVEFLAG,
-      BBZ,
       JRXKZH,
-      YHJGMC,
-      ZJLB,
-      SSBM,
-      YGLX,
-      CJRQ,
-      GSFZJG,
       NBJGH,
+      YHJGMC,
       GH,
       XM,
       GJHDQ,
+      ZJLB,
       ZJHM,
       LXDH,
+      SSBM,
       GWBH,
+      GWMC,
       SFGG,
       PFRQ,
       RZRQ,
+      YGLX,
       YGZT,
-      GWMC
+      BBZ,
+      CJRQ,
+      GSFZJG
   )
   SELECT
       NULL AS SENSITIVEFLAG,
-      NULLIF(TRIM(e.A030027), '') AS BBZ,
       NULLIF(TRIM(o.A010003), '') AS JRXKZH,
-      NULLIF(TRIM(o.A010005), '') AS YHJGMC,
-      CASE
-          WHEN e.A030005 LIKE '1999%' THEN '其他-自定义'
-          WHEN e.A030005 LIKE '2999%' THEN '其他-自定义'
-          WHEN ct.code_name IS NOT NULL THEN ct.code_name
-          ELSE NULLIF(TRIM(e.A030005), '')
-      END AS ZJLB,
-      NULLIF(TRIM(e.A030010), '') AS SSBM,
-      CASE
-          WHEN e.A030015 = '01' THEN '正式员工'
-          WHEN e.A030015 = '02' THEN '非正式员工'
-          WHEN e.A030015 = '03' THEN '非员工高管'
-          WHEN e.A030015 LIKE '00%' THEN '其他-自定义'
-          ELSE NULLIF(TRIM(e.A030015), '')
-      END AS YGLX,
-      TO_CHAR(e.A030028, 'YYYYMMDD') AS CJRQ,
-      NULL AS GSFZJG,
       SUBSTR(NULLIF(TRIM(e.A030002), ''), 12) AS NBJGH,
+      NULLIF(TRIM(o.A010005), '') AS YHJGMC,
       NULLIF(TRIM(e.A030001), '') AS GH,
       NULLIF(TRIM(e.A030003), '') AS XM,
       COALESCE(cc.code_name, NULLIF(TRIM(e.A030004), '')) AS GJHDQ,
+      CASE
+          WHEN e.A030005 LIKE '1999%' THEN CONCAT('其他-', SUBSTR(e.A030005, 5))
+          WHEN e.A030005 LIKE '2999%' THEN CONCAT('其他-', SUBSTR(e.A030005, 5))
+          WHEN ct.code_name IS NOT NULL THEN ct.code_name
+          ELSE NULL
+      END AS ZJLB,
       NULLIF(TRIM(e.A030006), '') AS ZJHM,
       NULLIF(TRIM(e.A030008), '') AS LXDH,
+      NULLIF(TRIM(e.A030010), '') AS SSBM,
       COALESCE(NULLIF(TRIM(e.A030016), ''), '') AS GWBH,
+      COALESCE(NULLIF(TRIM(e.A030017), ''), '') AS GWMC,
       CASE
           WHEN e.A030012 = '1' THEN '是'
           WHEN e.A030012 = '0' THEN '否'
-          ELSE NULLIF(TRIM(e.A030012), '')
+          ELSE NULL
       END AS SFGG,
       CASE
           WHEN e.A030013 IS NULL THEN NULL
@@ -139,15 +130,24 @@ BEGIN
           ELSE TO_CHAR(e.A030014, 'YYYYMMDD')
       END AS RZRQ,
       CASE
+          WHEN e.A030015 = '01' THEN '正式员工'
+          WHEN e.A030015 = '02' THEN '非正式员工'
+          WHEN e.A030015 = '03' THEN '非员工高管'
+          WHEN e.A030015 LIKE '00%' THEN CONCAT('其他-', SUBSTR(e.A030015, 4))
+          ELSE NULL
+      END AS YGLX,
+      CASE
           WHEN e.A030022 = '01' THEN '在岗'
           WHEN e.A030022 = '02' THEN '其他-退休'
           WHEN e.A030022 = '03' THEN '其他-待岗'
           WHEN e.A030022 = '04' THEN '离职'
           WHEN e.A030022 = '05' THEN '离岗'
-          WHEN e.A030022 LIKE '00%' THEN '其他-自定义'
-          ELSE NULLIF(TRIM(e.A030022), '')
+          WHEN e.A030022 LIKE '00%' THEN CONCAT('其他-', SUBSTR(e.A030022, 4))
+          ELSE NULL
       END AS YGZT,
-      COALESCE(NULLIF(TRIM(e.A030017), ''), '') AS GWMC
+      NULLIF(TRIM(e.A030027), '') AS BBZ,
+      TO_CHAR(e.A030028, 'YYYYMMDD') AS CJRQ,
+      NULL AS GSFZJG
   FROM (
       SELECT DISTINCT
           emp.A030001,

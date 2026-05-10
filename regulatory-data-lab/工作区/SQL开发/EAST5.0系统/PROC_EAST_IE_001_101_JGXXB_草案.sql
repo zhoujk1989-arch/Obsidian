@@ -60,29 +60,31 @@ BEGIN
 
   #2.插入数据
   INSERT INTO IE_001_101 (
-      FZRLXDH,
-      GSFZJG,
-      SENSITIVEFLAG,
-      JGLB,
-      CLRQ,
-      JGDZ,
-      BBZ,
+      YHJGDM,
       NBJGH,
       JRXKZH,
       YYZZH,
       YHJGMC,
+      JGLB,
       XZQHDM,
       YYZT,
+      CLRQ,
+      JGDZ,
       JGLXDH,
       FZRXM,
       FZRZW,
+      FZRLXDH,
+      BBZ,
       CJRQ,
-      YHJGDM
+      GSFZJG,
+      SENSITIVEFLAG
   )
   SELECT
-      c.A010019 AS FZRLXDH,
-      NULL AS GSFZJG,
-      NULL AS SENSITIVEFLAG,
+      c.A010006 AS YHJGDM,
+      c.A010002 AS NBJGH,
+      c.A010003 AS JRXKZH,
+      c.A010004 AS YYZZH,
+      c.A010005 AS YHJGMC,
       CASE
           WHEN c.A010008 IN ('0101', '0102') THEN '管理机构'
           WHEN c.A010008 IN ('0201', '0202', '0203') THEN '营业机构'
@@ -90,24 +92,22 @@ BEGIN
           WHEN c.A010008 IN ('0401', '0402') THEN '内设机构'
           ELSE NULL
       END AS JGLB,
-      TO_CHAR(c.A010015, 'YYYYMMDD') AS CLRQ,
-      c.A010016 AS JGDZ,
-      c.A010026 AS BBZ,
-      c.A010002 AS NBJGH,
-      c.A010003 AS JRXKZH,
-      c.A010004 AS YYZZH,
-      c.A010005 AS YHJGMC,
       c.A010013 AS XZQHDM,
       CASE
           WHEN c.A010014 = '01' THEN '营业'
           WHEN c.A010014 IN ('00', '02', '03') THEN '停业'
           ELSE '停业'
       END AS YYZT,
+      TO_CHAR(c.A010015, 'YYYYMMDD') AS CLRQ,
+      c.A010016 AS JGDZ,
       c.A010024 AS JGLXDH,
       c.A010017 AS FZRXM,
       e.A030011 AS FZRZW,
+      c.A010019 AS FZRLXDH,
+      c.A010026 AS BBZ,
       TO_CHAR(c.A010020, 'YYYYMMDD') AS CJRQ,
-      c.A010006 AS YHJGDM
+      NULL AS GSFZJG,
+      NULL AS SENSITIVEFLAG
   FROM (
       SELECT
           t.A010001,

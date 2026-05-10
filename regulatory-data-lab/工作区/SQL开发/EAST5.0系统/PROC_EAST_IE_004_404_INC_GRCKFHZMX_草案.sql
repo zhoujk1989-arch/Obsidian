@@ -131,7 +131,7 @@ BEGIN
             WHEN src.G010010 = '13' THEN '银证业务'
             WHEN src.G010010 = '14' THEN '投资理财'
             WHEN src.G010010 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010010, '00', ''))
-            ELSE src.G010010
+            ELSE NULL
         END AS JYLX,
         /* 涉密标志：业务需求未提供来源 */
         NULL AS SENSITIVEFLAG,
@@ -145,7 +145,7 @@ BEGIN
         CASE
             WHEN src.G010014 = '01' THEN '借'
             WHEN src.G010014 = '02' THEN '贷'
-            ELSE src.G010014
+            ELSE NULL
         END AS JYJDBZ,
         /* 核心交易时间：HH:MM:SS 转 HHMMSS */
         REPLACE(CAST(src.G010006 AS VARCHAR(8)), ':', '') AS HXJYSJ,
@@ -180,7 +180,7 @@ BEGIN
         /* 外部账号 */
         src.G010025 AS WBZH,
         /* 核心交易日期 */
-        CASE WHEN src.G010005 IS NULL THEN NULL ELSE CONCAT(CAST(YEAR(src.G010005) AS VARCHAR(4)), LPAD(CAST(MONTH(src.G010005) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.G010005) AS VARCHAR(2)), 2, '0')) END AS HXJYRQ,
+        TO_CHAR(src.G010005, 'YYYYMMDD') AS HXJYRQ,
         /* 币种 */
         src.G010009 AS BZ,
         /* 交易金额 */
@@ -199,16 +199,17 @@ BEGIN
         CASE
             WHEN src.G010020 = '01' THEN '正常'
             WHEN src.G010020 = '02' THEN '冲补抹'
-            ELSE src.G010020
+            ELSE NULL
         END AS CBMBZ,
         /* 现转标志 */
         CASE
             WHEN src.G010013 = '01' THEN '现'
             WHEN src.G010013 = '02' THEN '转'
-            ELSE src.G010013
+            ELSE NULL
         END AS XZBZ,
         /* 交易渠道 */
         CASE
+            WHEN src.G010021 = '00' THEN '其他'
             WHEN src.G010021 = '01' THEN '柜面'
             WHEN src.G010021 = '02' THEN 'ATM'
             WHEN src.G010021 = '03' THEN 'VTM'
@@ -217,8 +218,8 @@ BEGIN
             WHEN src.G010021 = '06' THEN '手机银行'
             WHEN src.G010021 LIKE '07%' THEN CONCAT('第三方支付-', REPLACE(src.G010021, '07', ''))
             WHEN src.G010021 = '08' THEN '银联交易'
-            WHEN src.G010021 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010021, '00', ''))
-            ELSE src.G010021
+            WHEN src.G010021 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010021, '00-', ''))
+            ELSE NULL
         END AS JYQD,
         /* IP地址 */
         src.G010023 AS IPDZ,
@@ -244,10 +245,11 @@ BEGIN
            AND src.G010009 = acct.BZ
            AND CASE
                    WHEN src.G010009 = 'CNY' THEN '人民币'
+                   WHEN src.G010033 = '00' THEN '其他'
                    WHEN src.G010033 = '01' THEN '钞'
                    WHEN src.G010033 = '02' THEN '汇'
                    WHEN src.G010033 = '03' THEN '可钞可汇'
-                   WHEN src.G010033 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010033, '00', ''))
+                   WHEN src.G010033 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.G010033, '00-', ''))
                    ELSE src.G010033
                END = acct.CHLB
            AND acct.CJRQ = P_DATA_DATE

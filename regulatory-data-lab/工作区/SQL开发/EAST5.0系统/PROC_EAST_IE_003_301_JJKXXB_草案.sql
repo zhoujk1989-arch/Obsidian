@@ -71,57 +71,63 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_003_301 (
-        GSFZJG,
-        CJRQ,
-        JRXKZH,
-        SENSITIVEFLAG,
-        XNKBZ,
-        KHTYBH,
-        BBZ,
-        HQCKZH,
-        ZJLB,
-        KPZT,
-        KKGYH,
-        YGKBZ,
-        JJKCPMC,
-        KH,
-        ZJHM,
-        KHMC,
-        NBJGH,
-        KHLB,
-        KKRQ
+        /* 按业务需求序号排列（序1~16），其后为DDL缺口字段（GSFZJG/SENSITIVEFLAG/KHLB 置NULL） */
+        JRXKZH,        /*  1 金融许可证号 */
+        NBJGH,         /*  2 内部机构号 */
+        KHTYBH,        /*  3 客户统一编号 */
+        KHMC,          /*  4 客户名称 */
+        ZJLB,          /*  5 证件类别 */
+        ZJHM,          /*  6 证件号码 */
+        KH,            /*  7 卡号 */
+        HQCKZH,        /*  8 活期存款账号 */
+        JJKCPMC,       /*  9 借记卡产品名称 */
+        XNKBZ,         /* 10 虚拟卡标志 */
+        YGKBZ,         /* 11 员工卡标志 */
+        KKRQ,          /* 12 开卡日期 */
+        KKGYH,         /* 13 开卡柜员号 */
+        KPZT,          /* 14 卡片状态 */
+        BBZ,           /* 15 备注 */
+        CJRQ,          /* 16 采集日期 */
+        GSFZJG,        /* DDL缺口字段，置NULL */
+        SENSITIVEFLAG,  /* DDL缺口字段，置NULL */
+        KHLB            /* DDL缺口字段，置NULL */
     )
     SELECT
-        /* 归属分支机构：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS GSFZJG,
-        /* 采集日期：参数 P_DATA_DATE */
-        P_DATA_DATE AS CJRQ,
-        /* 金融许可证号：机构信息.金融许可证号 -> T_1_1.A010003；加工映射：将【一表通】【介质协议表】【机构id】关联【一表通】【机构信息表】的【机构id】取【金融许可证号】 */
+        /*  1 金融许可证号：机构信息.金融许可证号 -> T_1_1.A010003；介质协议表.机构ID 关联 机构信息表.机构ID */
         s6.A010003 AS JRXKZH,
-        /* 涉密标志：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS SENSITIVEFLAG,
-        /* 虚拟卡标志：介质协议表.虚拟卡标识 -> T_6_28.F280007；0 否，1 是 */
+        /*  2 内部机构号：介质协议表.机构ID -> T_6_28.F280001；从第12位开始截取 */
+        SUBSTR(TRIM(src.F280001), 12) AS NBJGH,
+        /*  3 客户统一编号：介质协议表.客户ID -> T_6_28.F280002 */
+        src.F280002 AS KHTYBH,
+        /*  4 客户名称：优先取EAST个人基础信息表，取不到取EAST对公客户信息表 */
+        COALESCE(per.KHXM, corp.KHMC) AS KHMC,
+        /*  5 证件类别：优先取EAST个人基础信息表，取不到取EAST对公客户信息表 */
+        COALESCE(per.ZJLB, corp.ZJLB) AS ZJLB,
+        /*  6 证件号码：优先取EAST个人基础信息表，取不到取EAST对公客户信息表 */
+        COALESCE(per.ZJHM, corp.ZJHM) AS ZJHM,
+        /*  7 卡号：介质协议表.介质号 -> T_6_28.F280005 */
+        src.F280005 AS KH,
+        /*  8 活期存款账号：介质协议表.分户账号 -> T_6_28.F280003 */
+        src.F280003 AS HQCKZH,
+        /*  9 借记卡产品名称：卡产品.产品名称 -> T_5_6.E060003；通过卡产品ID关联 */
+        card.E060003 AS JJKCPMC,
+        /* 10 虚拟卡标志：介质协议表.虚拟卡标识 -> T_6_28.F280007；0否，1是 */
         CASE
             WHEN src.F280007 = '1' THEN '是'
             WHEN src.F280007 = '0' THEN '否'
             ELSE NULL
         END AS XNKBZ,
-        /* 客户统一编号：介质协议表.客户ID -> T_6_28.F280002；直接映射:【介质协议表】.【客户ID】 */
-        src.F280002 AS KHTYBH,
-        /* 备注：介质协议表备注和卡产品备注以英文分号拼接 */
-        TRIM(BOTH ';' FROM CONCAT(
-            COALESCE(NULLIF(TRIM(src.F280013), ''), ''),
-            CASE
-                WHEN NULLIF(TRIM(src.F280013), '') IS NOT NULL
-                 AND NULLIF(TRIM(card.E060016), '') IS NOT NULL
-                THEN ';' ELSE '' END,
-            COALESCE(NULLIF(TRIM(card.E060016), ''), '')
-        )) AS BBZ,
-        /* 活期存款账号：介质协议表.分户账号 -> T_6_28.F280003；直接映射:【介质协议表】.【分户账号】 */
-        src.F280003 AS HQCKZH,
-        /* 证件类别：优先取 EAST 个人基础信息表，取不到再取 EAST 对公客户信息表 */
-        COALESCE(per.ZJLB, corp.ZJLB) AS ZJLB,
-        /* 卡片状态：介质协议表.介质状态码值转换 */
+        /* 11 员工卡标志：介质协议表.员工标志 -> T_6_28.F280008；0否，1是 */
+        CASE
+            WHEN src.F280008 = '1' THEN '是'
+            WHEN src.F280008 = '0' THEN '否'
+            ELSE NULL
+        END AS YGKBZ,
+        /* 12 开卡日期：介质协议表.介质启用日期 -> T_6_28.F280009；YYYY-MM-DD转YYYYMMDD */
+        TO_CHAR(src.F280009, 'YYYYMMDD') AS KKRQ,
+        /* 13 开卡柜员号：介质协议表.介质启用柜员ID -> T_6_28.F280011；如为"自动"则置空 */
+        CASE WHEN src.F280011 = '自动' THEN NULL ELSE src.F280011 END AS KKGYH,
+        /* 14 卡片状态：介质协议表.介质状态 -> T_6_28.F280012；码值转换 */
         CASE
             WHEN src.F280012 = '01' THEN '未激活'
             WHEN src.F280012 = '02' THEN '正常'
@@ -133,28 +139,23 @@ BEGIN
             WHEN src.F280012 LIKE '00%' THEN CONCAT('其他-', SUBSTR(src.F280012, 3))
             ELSE NULL
         END AS KPZT,
-        /* 开卡柜员号：介质协议表.介质启用柜员ID -> T_6_28.F280011；加工映射:【介质协议表】.【介质启用柜员ID】，如为“自动”则转为空，否则取原值 */
-        CASE WHEN src.F280011 = '自动' THEN NULL ELSE src.F280011 END AS KKGYH,
-        /* 员工卡标志：介质协议表.员工标志；0 否，1 是 */
-        CASE
-            WHEN src.F280008 = '1' THEN '是'
-            WHEN src.F280008 = '0' THEN '否'
-            ELSE NULL
-        END AS YGKBZ,
-        /* 借记卡产品名称：卡产品.产品名称 -> T_5_6.E060003；加工映射：通过卡产品ID关联【卡产品】.【产品id】，取【产品名称】 */
-        card.E060003 AS JJKCPMC,
-        /* 卡号：介质协议表.介质号 -> T_6_28.F280005；直接映射:【介质协议表】.【介质号】 */
-        src.F280005 AS KH,
-        /* 证件号码：优先取 EAST 个人基础信息表，取不到再取 EAST 对公客户信息表 */
-        COALESCE(per.ZJHM, corp.ZJHM) AS ZJHM,
-        /* 客户名称：优先取 EAST 个人基础信息表，取不到再取 EAST 对公客户信息表 */
-        COALESCE(per.KHXM, corp.KHMC) AS KHMC,
-        /* 内部机构号：介质协议表.机构ID -> T_6_28.F280001；加工映射：将【一表通】【介质协议表】【机构id】从第12位开始截取 */
-        SUBSTR(TRIM(src.F280001), 12) AS NBJGH,
-        /* 客户类别：需求字段未与目标 DDL 注释精确匹配，待确认 */
-        NULL AS KHLB,
-        /* 开卡日期：介质协议表.介质启用日期 -> T_6_28.F280009；加工映射：格式由YYYY-MM-DD转化成YYYYMMDD */
-        CONCAT(CAST(YEAR(src.F280009) AS VARCHAR(4)), LPAD(CAST(MONTH(src.F280009) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.F280009) AS VARCHAR(2)), 2, '0')) AS KKRQ
+        /* 15 备注：介质协议表备注和卡产品备注以英文分号拼接 */
+        TRIM(BOTH ';' FROM CONCAT(
+            COALESCE(NULLIF(TRIM(src.F280013), ''), ''),
+            CASE
+                WHEN NULLIF(TRIM(src.F280013), '') IS NOT NULL
+                 AND NULLIF(TRIM(card.E060016), '') IS NOT NULL
+                THEN ';' ELSE '' END,
+            COALESCE(NULLIF(TRIM(card.E060016), ''), '')
+        )) AS BBZ,
+        /* 16 采集日期：参数 P_DATA_DATE */
+        P_DATA_DATE AS CJRQ,
+        /* 归属分支机构：业务需求未给来源，置NULL */
+        NULL AS GSFZJG,
+        /* 涉密标志：业务需求未给来源，置NULL */
+        NULL AS SENSITIVEFLAG,
+        /* 客户类别：业务需求未给来源，置NULL */
+        NULL AS KHLB
     FROM T_6_28 src
     LEFT JOIN T_1_1 s6
            ON src.F280001 = s6.A010001

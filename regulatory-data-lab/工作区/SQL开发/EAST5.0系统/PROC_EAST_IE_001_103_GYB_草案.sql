@@ -87,6 +87,8 @@ BEGIN
       JRXKZH,
       NBJGH,
       YHJGMC,
+      SENSITIVEFLAG,
+      GSFZJG,
       GYH,
       GH,
       GYLX,
@@ -105,42 +107,46 @@ BEGIN
       SUBSTR(NULLIF(TRIM(t.A070001), ''), 12) AS NBJGH,
       # 3. 银行机构名称：来源于一表通机构信息的银行机构名称字段
       NULLIF(TRIM(o.A010005), '') AS YHJGMC,
-      # 4. 柜员号：直接取自一表通柜员表的柜员号字段
+      # 4. 涉密标志：无来源，置空
+      NULL AS SENSITIVEFLAG,
+      # 5. 归属分支机构：无来源，置空
+      NULL AS GSFZJG,
+      # 6. 柜员号：直接取自一表通柜员表的柜员号字段
       NULLIF(TRIM(t.A070002), '') AS GYH,
-      # 5. 工号：直接取自一表通柜员表的工号字段
+      # 7. 工号：直接取自一表通柜员表的工号字段
       NULLIF(TRIM(t.A070003), '') AS GH,
-      # 6. 柜员类型：直接取自一表通柜员表的柜员类型字段
+      # 8. 柜员类型：直接取自一表通柜员表的柜员类型字段
       NULLIF(TRIM(t.A070004), '') AS GYLX,
-      # 7. 是否实体柜员：1='是'；0='否'
+      # 9. 是否实体柜员：1='是'；0='否'
       CASE
           WHEN t.A070012 = '1' THEN '是'
           WHEN t.A070012 = '0' THEN '否'
-          ELSE NULLIF(TRIM(t.A070012), '')
+          ELSE NULL
       END AS SFSTGY,
-      # 8. 岗位编号：直接取自一表通柜员表的岗位编号字段
+      # 10. 岗位编号：直接取自一表通柜员表的岗位编号字段
       NULLIF(TRIM(t.A070005), '') AS GWBH,
-      # 9. 柜员权限级别：01=高柜；02=低柜；'00-***'替换为'其他-***'
+      # 11. 柜员权限级别：01=高柜；02=低柜；'00-***'替换为'其他-***'
       CASE
           WHEN t.A070006 = '01' THEN '高柜'
           WHEN t.A070006 = '02' THEN '低柜'
           WHEN t.A070006 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(t.A070006, 4))
           ELSE NULLIF(TRIM(t.A070006), '')
       END AS GYQXJB,
-      # 10. 上岗日期：yyyy-mm-dd 转为 yyyymmdd；虚拟柜员可填写默认日期（当前未实现兜底）
+      # 12. 上岗日期：yyyy-mm-dd 转为 yyyymmdd；虚拟柜员可填写默认日期（当前未实现兜底）
       CASE
           WHEN t.A070007 IS NULL THEN NULL
           ELSE TO_CHAR(t.A070007, 'YYYYMMDD')
       END AS SGRQ,
-      # 11. 柜员状态：01=在岗；02=离岗；'00-***'替换为'其他-***'
+      # 13. 柜员状态：01=在岗；02=离岗；'00-***'替换为'其他-***'
       CASE
           WHEN t.A070008 = '01' THEN '在岗'
           WHEN t.A070008 = '02' THEN '离岗'
           WHEN t.A070008 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(t.A070008, 4))
           ELSE NULLIF(TRIM(t.A070008), '')
       END AS GYZT,
-      # 12. 备注：直接取自一表通柜员表的备注字段
+      # 14. 备注：直接取自一表通柜员表的备注字段
       NULLIF(TRIM(t.A070010), '') AS BBZ,
-      # 13. 采集日期：yyyy-mm-dd 转为 yyyymmdd
+      # 15. 采集日期：yyyy-mm-dd 转为 yyyymmdd
       TO_CHAR(t.A070011, 'YYYYMMDD') AS CJRQ
 
   FROM (

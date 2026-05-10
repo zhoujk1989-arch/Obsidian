@@ -80,7 +80,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'P_DATA_DATE must be YYYYMMDD';
     END IF;
 
-    SET V_DATA_DATE = CAST(CONCAT(LEFT(P_DATA_DATE, 4), '-', SUBSTR(P_DATA_DATE, 5, 2), '-', SUBSTR(P_DATA_DATE, 7, 2)) AS DATE);
+    SET V_DATA_DATE = STR_TO_DATE(P_DATA_DATE, '%Y%m%d');
     SET V_MONTH_START = DATE_FORMAT(V_DATA_DATE, '%Y-%m-01');
     SET V_MONTH_END = LAST_DAY(V_DATA_DATE);
 
@@ -91,40 +91,75 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     -- 主加工区：从 T_4_3 分户账信息取数，左关联 T_1_1 机构信息和 T_4_2 科目信息
+    -- 字段顺序按业务需求序号排列（022_内部分户账.md 第3节）
     INSERT INTO IE_004_407 (
-        BBZ,
-        GSFZJG,
-        JXFS,
-        JXBZ,
-        JDBZ,
-        NBFHZZH,
-        MXKMBH,
-        NBJGH,
-        ZHMC,
-        BZ,
-        DFYE,
-        MXKMMC,
-        YHJGMC,
         JRXKZH,
+        NBJGH,
+        YHJGMC,
+        MXKMBH,
+        MXKMMC,
+        ZHMC,
+        NBFHZZH,
+        BZ,
+        JDBZ,
         JFYE,
-        SENSITIVEFLAG,
-        CJRQ,
-        ZHZT,
-        KHRQ,
+        DFYE,
+        JXBZ,
+        JXFS,
         LL,
-        XHRQ
+        KHRQ,
+        XHRQ,
+        ZHZT,
+        BBZ,
+        CJRQ,
+        GSFZJG,
+        SENSITIVEFLAG
     )
     SELECT
-        /* BBZ 备注：拼接 T_4_3.备注(D030014)、T_1_1.备注(A020026)、T_4_2.备注(D02010)，非空时以英文分号 ';' 分隔 */
-        CONCAT_WS(
-            ';',
-            src.D030014,
-            s1.A010026,
-            s2.D020010
-        ) AS BBZ,
+        /* JRXKZH 金融许可证号：T_1_1.A010003 */
+        s1.A010003 AS JRXKZH,
 
-        /* GSFZJG 归属分支机构：本地 DDL 存在，业务需求映射表未给来源，置 NULL */
-        NULL AS GSFZJG,
+        /* NBJGH 内部机构号：T_4_3.D030001 从第12位开始截取 */
+        SUBSTR(TRIM(src.D030001), 12) AS NBJGH,
+
+        /* YHJGMC 银行机构名称：T_1_1.A010005 */
+        s1.A010005 AS YHJGMC,
+
+        /* MXKMBH 明细科目编号：T_4_3.D030008 直接映射 */
+        src.D030008 AS MXKMBH,
+
+        /* MXKMMC 明细科目名称：T_4_2.D020003 科目名称 */
+        s2.D020003 AS MXKMMC,
+
+        /* ZHMC 账户名称：T_4_3.D030004 直接映射 */
+        src.D030004 AS ZHMC,
+
+        /* NBFHZZH 内部分户账账号：T_4_3.D030002 直接映射 */
+        src.D030002 AS NBFHZZH,
+
+        /* BZ 币种：T_4_3.D030009 直接映射 */
+        src.D030009 AS BZ,
+
+        /* JDBZ 借贷标志：T_4_3.D030010 码值转换，01-借，02-贷，03-借贷并列 */
+        CASE TRIM(src.D030010)
+            WHEN '01' THEN '借'
+            WHEN '02' THEN '贷'
+            WHEN '03' THEN '借贷并列'
+            ELSE NULL
+        END AS JDBZ,
+
+        /* JFYE 借方余额：T_4_3.D030018 CAST 为 DECIMAL(20,2) */
+        CAST(NULLIF(TRIM(src.D030018), '') AS DECIMAL(20,2)) AS JFYE,
+
+        /* DFYE 贷方余额：T_4_3.D030019 CAST 为 DECIMAL(20,2) */
+        CAST(NULLIF(TRIM(src.D030019), '') AS DECIMAL(20,2)) AS DFYE,
+
+        /* JXBZ 计息标志：T_4_3.D030006 码值转换，1-是，0-否 */
+        CASE TRIM(src.D030006)
+            WHEN '1' THEN '是'
+            WHEN '0' THEN '否'
+            ELSE NULL
+        END AS JXBZ,
 
         /* JXFS 计息方式：T_4_3.D030007 码值转换 */
         CASE TRIM(src.D030007)
@@ -136,59 +171,23 @@ BEGIN
             WHEN '06' THEN '不记利息'
             WHEN '07' THEN '利随本清'
             WHEN '00' THEN CONCAT('其他-', IFNULL(TRIM(SUBSTR(src.D030007, 3)), ''))
-            ELSE src.D030007
+            ELSE NULL
         END AS JXFS,
 
-        /* JXBZ 计息标志：T_4_3.D030006 码值转换，1-是，0-否 */
-        CASE TRIM(src.D030006)
-            WHEN '1' THEN '是'
-            WHEN '0' THEN '否'
-            ELSE ''
-        END AS JXBZ,
+        /* LL 利率：T_4_3.D030017（内部账利率）CAST 为 DECIMAL(20,6) */
+        CAST(NULLIF(TRIM(src.D030017), '') AS DECIMAL(20,6)) AS LL,
 
-        /* JDBZ 借贷标志：T_4_3.D030010 码值转换，01-借，02-贷，03-借贷并列 */
-        CASE TRIM(src.D030010)
-            WHEN '01' THEN '借'
-            WHEN '02' THEN '贷'
-            WHEN '03' THEN '借贷并列'
-            ELSE ''
-        END AS JDBZ,
+        /* KHRQ 开户日期：T_4_3.D030011 格式由 date 转 YYYYMMDD，空值转 '99991231' */
+        CASE
+            WHEN src.D030011 IS NULL THEN '99991231'
+            ELSE TO_CHAR(src.D030011, 'YYYYMMDD')
+        END AS KHRQ,
 
-        /* NBFHZZH 内部分户账账号：T_4_3.D030002 直接映射 */
-        src.D030002 AS NBFHZZH,
-
-        /* MXKMBH 明细科目编号：T_4_3.D030008 直接映射 */
-        src.D030008 AS MXKMBH,
-
-        /* NBJGH 内部机构号：T_4_3.D030001 从第12位开始截取 */
-        SUBSTR(TRIM(src.D030001), 12) AS NBJGH,
-
-        /* ZHMC 账户名称：T_4_3.D030004 直接映射 */
-        src.D030004 AS ZHMC,
-
-        /* BZ 币种：T_4_3.D030009 直接映射 */
-        src.D030009 AS BZ,
-
-        /* DFYE 贷方余额：T_4_3.D030019 CAST 为 DECIMAL(20,2) */
-        CAST(NULLIF(TRIM(src.D030019), '') AS DECIMAL(20,2)) AS DFYE,
-
-        /* MXKMMC 明细科目名称：T_4_2.D020003 科目名称 */
-        s2.D020003 AS MXKMMC,
-
-        /* YHJGMC 银行机构名称：T_1_1.A010005 */
-        s1.A010005 AS YHJGMC,
-
-        /* JRXKZH 金融许可证号：T_1_1.A010003 */
-        s1.A010003 AS JRXKZH,
-
-        /* JFYE 借方余额：T_4_3.D030018 CAST 为 DECIMAL(20,2) */
-        CAST(NULLIF(TRIM(src.D030018), '') AS DECIMAL(20,2)) AS JFYE,
-
-        /* SENSITIVEFLAG 涉密标志：本地 DDL 存在，业务需求映射表未给来源，置 NULL */
-        NULL AS SENSITIVEFLAG,
-
-        /* CJRQ 采集日期：参数 P_DATA_DATE */
-        P_DATA_DATE AS CJRQ,
+        /* XHRQ 销户日期：T_4_3.D030012 格式由 date 转 YYYYMMDD，空值转 '99991231' */
+        CASE
+            WHEN src.D030012 IS NULL THEN '99991231'
+            ELSE TO_CHAR(src.D030012, 'YYYYMMDD')
+        END AS XHRQ,
 
         /* ZHZT 账户状态：T_4_3.D030013 码值转换，01-正常，02-预销户，03-销户，04-冻结，05-止付 */
         CASE TRIM(src.D030013)
@@ -198,23 +197,25 @@ BEGIN
             WHEN '04' THEN '冻结'
             WHEN '05' THEN '止付'
             WHEN '00' THEN CONCAT('其他-', IFNULL(TRIM(SUBSTR(src.D030013, 3)), ''))
-            ELSE src.D030013
+            ELSE NULL
         END AS ZHZT,
 
-        /* KHRQ 开户日期：T_4_3.D030011 格式由 YYYY-MM-DD 转 YYYYMMDD，空值转 '99991231' */
-        CASE
-            WHEN src.D030011 IS NULL OR TRIM(src.D030011) = '' THEN '99991231'
-            ELSE REPLACE(DATE_FORMAT(src.D030011, '%Y%m%d'), '-', '')
-        END AS KHRQ,
+        /* BBZ 备注：拼接 T_4_3.备注(D030014)、T_1_1.备注(A010026)、T_4_2.备注(D020010)，非空时以英文分号 ';' 分隔 */
+        CONCAT_WS(
+            ';',
+            src.D030014,
+            s1.A010026,
+            s2.D020010
+        ) AS BBZ,
 
-        /* LL 利率：T_4_3.D030017（内部账利率）CAST 为 DECIMAL(20,6) */
-        CAST(NULLIF(TRIM(src.D030017), '') AS DECIMAL(20,6)) AS LL,
+        /* CJRQ 采集日期：参数 P_DATA_DATE */
+        P_DATA_DATE AS CJRQ,
 
-        /* XHRQ 销户日期：T_4_3.D030012 格式由 YYYY-MM-DD 转 YYYYMMDD，空值转 '99991231' */
-        CASE
-            WHEN src.D030012 IS NULL OR TRIM(src.D030012) = '' THEN '99991231'
-            ELSE REPLACE(DATE_FORMAT(src.D030012, '%Y%m%d'), '-', '')
-        END AS XHRQ
+        /* GSFZJG 归属分支机构：本地 DDL 存在，业务需求映射表未给来源，置 NULL */
+        NULL AS GSFZJG,
+
+        /* SENSITIVEFLAG 涉密标志：本地 DDL 存在，业务需求映射表未给来源，置 NULL */
+        NULL AS SENSITIVEFLAG
 
     FROM T_4_3 src
     LEFT JOIN T_1_1 s1

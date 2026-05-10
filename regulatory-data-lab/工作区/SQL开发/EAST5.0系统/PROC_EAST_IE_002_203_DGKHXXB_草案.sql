@@ -46,8 +46,10 @@
   单一法人/同业客户表关联后取 MIN，当前已实现。
 - 证件类别中"其他-统一社会信用代码"等码值映射依赖一表通公共代码表，
   当前使用需求文档中给出的码值说明直接映射。
-- 采集日期格式转换使用 TO_CHAR(TO_DATE(col, 'YYYY-MM-DD'), 'YYYYMMDD')，
-  若源表采集日期字段已是字符串格式，可简化为直接截取。
+- 采集日期格式转换使用 TO_CHAR(field, 'YYYYMMDD')，
+  源表日期字段均为 DATE 类型，无需 TO_DATE 转换。
+  对于 varchar 类型的 YYYY-MM 字段（如 B010048），使用 SUBSTR(TRIM(field), 1, 6)。
+  对于 DATE 类型的字段（如 B030033），使用 TO_CHAR(field, 'YYYYMM')。
 
 开发说明：
 - 本存储过程按 GBase 8a 生产环境风格编写。
@@ -124,7 +126,7 @@ BEGIN
     YHJGMC,
     KHTYBH,
     KHMC,
-    KHTX,
+    KHLX,
     ZJLB,
     ZJHM,
     FRDB,
@@ -155,7 +157,9 @@ BEGIN
     FXYJXH,
     GZSJDM,
     BBZ,
-    CJRQ
+    CJRQ,
+    GSFZJG,
+    SENSITIVEFLAG
   )
   SELECT
     # 1. 金融许可证号：用机构ID关联机构信息表取金融许可证号
@@ -184,12 +188,26 @@ BEGIN
       WHEN '3' THEN grp.B020007
     END AS KHMC,
 
-    # 6. 客户类型：单一法人/同业客户/集团客户
+    # 6. 客户类型：单一法人按对公客户类型映射；同业客户/集团客户固定
     CASE cust_type
-      WHEN '1' THEN '单一法人客户'
+      WHEN '1' THEN
+        CASE single.B010026
+          WHEN '01' THEN '单一法人客户'
+          WHEN '02' THEN '单一法人客户'
+          WHEN '03' THEN '单一法人客户'
+          WHEN '04' THEN '单一法人客户'
+          WHEN '05' THEN '政府机关'
+          WHEN '06' THEN '事业单位'
+          WHEN '07' THEN '社会团体'
+          WHEN '08' THEN '其他-其他组织机构'
+          WHEN '09' THEN '其他-个体工商户'
+          WHEN '10' THEN '境外机构'
+          WHEN single.B010026 LIKE '00%' THEN '其他' || SUBSTR(single.B010026, 3)
+          ELSE NULL
+        END
       WHEN '2' THEN '同业客户'
       WHEN '3' THEN '集团客户'
-    END AS KHTX,
+    END AS KHLX,
 
     # 7. 证件类别：按客户类型分别取
     CASE cust_type
@@ -202,7 +220,7 @@ BEGIN
           WHEN single.B010062 = '03' THEN '公司注册证书'
           WHEN single.B010062 = '04' THEN '全球法人识别码'
           WHEN single.B010062 LIKE '00%' THEN '其他' || SUBSTR(single.B010062, 3)
-          ELSE NULLIF(TRIM(single.B010062), '')
+          ELSE NULL
         END
       # 同业客户：优先统一社会信用代码，其次金融许可证，其次SWIFT，其次其他证件类型，最后银行机构代码
       WHEN '2' THEN
@@ -267,7 +285,7 @@ BEGIN
           WHEN single.B010033 = '03' THEN '公司注册证书'
           WHEN single.B010033 = '04' THEN '全球法人识别码'
           WHEN single.B010033 LIKE '00%' THEN '其他' || SUBSTR(single.B010033, 3)
-          ELSE NULLIF(TRIM(single.B010033), '')
+          ELSE NULL
         END
       WHEN '2' THEN
         CASE
@@ -276,7 +294,7 @@ BEGIN
           WHEN tony.B030014 = '03' THEN '公司注册证书'
           WHEN tony.B030014 = '04' THEN '全球法人识别码'
           WHEN tony.B030014 LIKE '00%' THEN '其他' || SUBSTR(tony.B030014, 3)
-          ELSE NULLIF(TRIM(tony.B030014), '')
+          ELSE NULL
         END
       WHEN '3' THEN
         CASE
@@ -285,7 +303,7 @@ BEGIN
           WHEN parent.B010033 = '03' THEN '公司注册证书'
           WHEN parent.B010033 = '04' THEN '全球法人识别码'
           WHEN parent.B010033 LIKE '00%' THEN '其他' || SUBSTR(parent.B010033, 3)
-          ELSE NULLIF(TRIM(parent.B010033), '')
+          ELSE NULL
         END
     END AS FRDBZJLB,
 
@@ -312,7 +330,7 @@ BEGIN
           WHEN single.B010036 = '03' THEN '公司注册证书'
           WHEN single.B010036 = '04' THEN '全球法人识别码'
           WHEN single.B010036 LIKE '00%' THEN '其他' || SUBSTR(single.B010036, 3)
-          ELSE NULLIF(TRIM(single.B010036), '')
+          ELSE NULL
         END
       WHEN '2' THEN
         CASE
@@ -321,7 +339,7 @@ BEGIN
           WHEN tony.B030017 = '03' THEN '公司注册证书'
           WHEN tony.B030017 = '04' THEN '全球法人识别码'
           WHEN tony.B030017 LIKE '00%' THEN '其他' || SUBSTR(tony.B030017, 3)
-          ELSE NULLIF(TRIM(tony.B030017), '')
+          ELSE NULL
         END
       WHEN '3' THEN
         CASE
@@ -330,7 +348,7 @@ BEGIN
           WHEN parent.B010036 = '03' THEN '公司注册证书'
           WHEN parent.B010036 = '04' THEN '全球法人识别码'
           WHEN parent.B010036 LIKE '00%' THEN '其他' || SUBSTR(parent.B010036, 3)
-          ELSE NULLIF(TRIM(parent.B010036), '')
+          ELSE NULL
         END
     END AS CWFZRZJLB,
 
@@ -411,24 +429,24 @@ BEGIN
       WHEN '3' THEN NULLIF(TRIM(parent.B010024), '')
     END AS JYFW,
 
-    # 25. 成立日期：yyyy-mm-dd 转为 yyyymmdd
+    # 25. 成立日期：DATE类型转为 YYYYMMDD
     CASE cust_type
       WHEN '1' THEN
         CASE
           WHEN single.B010023 IS NOT NULL
-            THEN TO_CHAR(TO_DATE(single.B010023, 'YYYY-MM-DD'), 'YYYYMMDD')
+            THEN TO_CHAR(single.B010023, 'YYYYMMDD')
           ELSE NULL
         END
       WHEN '2' THEN
         CASE
           WHEN tony.B030009 IS NOT NULL
-            THEN TO_CHAR(TO_DATE(tony.B030009, 'YYYY-MM-DD'), 'YYYYMMDD')
+            THEN TO_CHAR(tony.B030009, 'YYYYMMDD')
           ELSE NULL
         END
       WHEN '3' THEN
         CASE
           WHEN parent.B010023 IS NOT NULL
-            THEN TO_CHAR(TO_DATE(parent.B010023, 'YYYY-MM-DD'), 'YYYYMMDD')
+            THEN TO_CHAR(parent.B010023, 'YYYYMMDD')
           ELSE NULL
         END
     END AS CLRQ,
@@ -486,9 +504,7 @@ BEGIN
         END
       WHEN '2' THEN
         CASE
-          WHEN tony.B030033 IS NOT NULL AND LENGTH(TRIM(tony.B030033)) > 0
-               AND TRIM(tony.B030033) <> '999912'
-            THEN '是'
+          WHEN tony.B030033 IS NOT NULL THEN '是'
           ELSE '否'
         END
       WHEN '3' THEN
@@ -510,9 +526,9 @@ BEGIN
           ELSE NULL
         END
       WHEN '2' THEN
-        # 直接映射
+        # 直接映射，B030033为DATE类型，转为YYYYMM格式
         CASE
-          WHEN tony.B030033 IS NOT NULL THEN SUBSTR(TRIM(tony.B030033), 1, 6)
+          WHEN tony.B030033 IS NOT NULL THEN TO_CHAR(tony.B030033, 'YYYYMM')
           ELSE NULL
         END
       WHEN '3' THEN
@@ -580,12 +596,18 @@ BEGIN
       WHEN '3' THEN NULLIF(TRIM(grp.B020021), '')
     END AS BBZ,
 
-    # 37. 采集日期：转为 YYYYMMDD 格式
+    # 37. 采集日期：DATE类型转为 YYYYMMDD
     CASE cust_type
-      WHEN '1' THEN TO_CHAR(TO_DATE(single.B010060, 'YYYY-MM-DD'), 'YYYYMMDD')
-      WHEN '2' THEN TO_CHAR(TO_DATE(tony.B030036, 'YYYY-MM-DD'), 'YYYYMMDD')
-      WHEN '3' THEN TO_CHAR(TO_DATE(grp.B020019, 'YYYY-MM-DD'), 'YYYYMMDD')
-    END AS CJRQ
+      WHEN '1' THEN TO_CHAR(single.B010060, 'YYYYMMDD')
+      WHEN '2' THEN TO_CHAR(tony.B030036, 'YYYYMMDD')
+      WHEN '3' THEN TO_CHAR(grp.B020019, 'YYYYMMDD')
+    END AS CJRQ,
+
+    # 38. 归属分支机构：置NULL
+    NULL AS GSFZJG,
+
+    # 39. 涉密标志：置NULL
+    NULL AS SENSITIVEFLAG
 
   FROM (
     # 子查询：三大客户类型合并源
@@ -878,8 +900,8 @@ BEGIN
           CASE
             WHEN sc.B010048 IS NOT NULL AND LENGTH(TRIM(sc.B010048)) > 0
               THEN SUBSTR(TRIM(sc.B010048), 1, 6)
-            WHEN tny.B030033 IS NOT NULL AND LENGTH(TRIM(tony.B030033)) > 0
-              THEN SUBSTR(TRIM(tony.B030033), 1, 6)
+            WHEN tny.B030033 IS NOT NULL
+              THEN TO_CHAR(tny.B030033, 'YYYYMM')
             ELSE NULL
           END
         ) AS credit_date

@@ -66,59 +66,51 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_004_401 (
-        DFFSE,
-        CJRQ,
-        GSFZJG,
+        JRXKZH,
         NBJGH,
         YHJGMC,
-        QCJFYE,
-        JFFSE,
-        QMDFYE,
-        KJRQ,
-        BBZ,
-        JRXKZH,
         KJKMBH,
         KJKMMC,
         BZ,
+        QCJFYE,
         QCDFYE,
+        JFFSE,
+        DFFSE,
         QMJFYE,
+        QMDFYE,
         BSZQ,
+        KJRQ,
+        BBZ,
+        CJRQ,
+        GSFZJG,
         SENSITIVEFLAG
     )
     SELECT
-        /* 本期贷方发生额：总账会计全科目.本期贷方发生额 */
-        CAST(NULLIF(TRIM(src.D010006), '') AS DECIMAL(20,2)) AS DFFSE,
-        /* 采集日期：跑批参数 */
-        P_DATA_DATE AS CJRQ,
-        /* 归属分支机构：业务需求未提供来源 */
-        NULL AS GSFZJG,
-        /* 内部机构号：机构ID 从第12位开始截取 */
-        SUBSTR(TRIM(src.D010001), 12) AS NBJGH,
-        /* 银行机构名称：机构信息.银行机构名称 */
-        org.A010005 AS YHJGMC,
-        /* 期初借方余额 */
-        CAST(NULLIF(TRIM(src.D010003), '') AS DECIMAL(20,2)) AS QCJFYE,
-        /* 本期借方发生额 */
-        CAST(NULLIF(TRIM(src.D010005), '') AS DECIMAL(20,2)) AS JFFSE,
-        /* 期末贷方余额 */
-        CAST(NULLIF(TRIM(src.D010008), '') AS DECIMAL(20,2)) AS QMDFYE,
-        /* 会计日期：YYYY-MM-DD 转 YYYYMMDD */
-        CASE WHEN src.D010010 IS NULL THEN NULL ELSE CONCAT(CAST(YEAR(src.D010010) AS VARCHAR(4)), LPAD(CAST(MONTH(src.D010010) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.D010010) AS VARCHAR(2)), 2, '0')) END AS KJRQ,
-        /* 备注 */
-        src.D010013 AS BBZ,
-        /* 金融许可证号：机构信息.金融许可证号 */
+        /* 1 金融许可证号：机构信息.金融许可证号 */
         org.A010003 AS JRXKZH,
-        /* 会计科目编号 */
+        /* 2 内部机构号：机构ID 从第12位开始截取 */
+        SUBSTR(TRIM(src.D010001), 12) AS NBJGH,
+        /* 3 银行机构名称：机构信息.银行机构名称 */
+        org.A010005 AS YHJGMC,
+        /* 4 会计科目编号 */
         src.D010002 AS KJKMBH,
-        /* 会计科目名称：科目信息.科目名称 */
+        /* 5 会计科目名称：科目信息.科目名称 */
         subj.D020003 AS KJKMMC,
-        /* 币种：只保留 CNY/BWB */
+        /* 6 币种：只保留 CNY/BWB */
         src.D010009 AS BZ,
-        /* 期初贷方余额 */
+        /* 7 期初借方余额 */
+        CAST(NULLIF(TRIM(src.D010003), '') AS DECIMAL(20,2)) AS QCJFYE,
+        /* 8 期初贷方余额 */
         CAST(NULLIF(TRIM(src.D010004), '') AS DECIMAL(20,2)) AS QCDFYE,
-        /* 期末借方余额 */
+        /* 9 本期借方发生额 */
+        CAST(NULLIF(TRIM(src.D010005), '') AS DECIMAL(20,2)) AS JFFSE,
+        /* 10 本期贷方发生额 */
+        CAST(NULLIF(TRIM(src.D010006), '') AS DECIMAL(20,2)) AS DFFSE,
+        /* 11 期末借方余额 */
         CAST(NULLIF(TRIM(src.D010007), '') AS DECIMAL(20,2)) AS QMJFYE,
-        /* 报送周期：01 日报、02 月报、03 季报、04 半年报、05 年报、00% 其他 */
+        /* 12 期末贷方余额 */
+        CAST(NULLIF(TRIM(src.D010008), '') AS DECIMAL(20,2)) AS QMDFYE,
+        /* 13 报送周期：01 日报、02 月报、03 季报、04 半年报、05 年报、00% 其他 */
         CASE
             WHEN src.D010011 = '01' THEN '日报'
             WHEN src.D010011 = '02' THEN '月报'
@@ -126,9 +118,17 @@ BEGIN
             WHEN src.D010011 = '04' THEN '半年报'
             WHEN src.D010011 = '05' THEN '年报'
             WHEN src.D010011 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.D010011, '00', ''))
-            ELSE src.D010011
+            ELSE NULL
         END AS BSZQ,
-        /* 涉密标志：业务需求未提供来源 */
+        /* 14 会计日期：YYYY-MM-DD 转 YYYYMMDD */
+        TO_CHAR(src.D010010, 'YYYYMMDD') AS KJRQ,
+        /* 15 备注 */
+        src.D010013 AS BBZ,
+        /* 16 采集日期：总账会计全科目.采集日期 YYYY-MM-DD 转 YYYYMMDD */
+        TO_CHAR(src.D010012, 'YYYYMMDD') AS CJRQ,
+        /* 17 归属分支机构：业务需求未提供来源 */
+        NULL AS GSFZJG,
+        /* 18 涉密标志：业务需求未提供来源 */
         NULL AS SENSITIVEFLAG
     FROM T_4_1 src
     LEFT JOIN T_1_1 org

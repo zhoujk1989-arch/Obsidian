@@ -68,81 +68,81 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_003_303 (
-        QSZHLB,
-        BBZ,
-        SENSITIVEFLAG,
-        SHMCCMC,
-        QSZH,
-        QSZHKHHMC,
-        CJRQ,
-        JRXKZH,
-        NBJGH,
-        SHBH,
-        SHMC,
-        SFPOS,
-        ZDH,
-        SHMCCM,
-        SHDQ,
-        QSZHLX,
-        QSZHMC,
-        QXRQ,
-        SXRQ,
-        SHZT,
-        GSFZJG
+        JRXKZH,       /* 1. 金融许可证号 */
+        NBJGH,        /* 2. 内部机构号 */
+        SHBH,         /* 3. 商户编号 */
+        SHMC,         /* 4. 商户名称 */
+        SFPOS,        /* 5. 是否POS商户 */
+        ZDH,          /* 6. 终端号 */
+        SHMCCM,       /* 7. 商户MCC码 */
+        SHMCCMC,      /* 8. 商户MCC名称 */
+        SHDQ,         /* 9. 商户地区 */
+        QSZH,         /* 10. 清算账号 */
+        QSZHLX,       /* 11. 清算账号类型 */
+        QSZHMC,       /* 12. 清算账户名称 */
+        QSZHKHHMC,    /* 13. 清算账号开户行名称 */
+        QXRQ,         /* 14. 起效日期 */
+        SXRQ,         /* 15. 失效日期 */
+        SHZT,         /* 16. 商户状态 */
+        BBZ,          /* 17. 备注 */
+        CJRQ,         /* 18. 采集日期 */
+        QSZHLB,       /* 补充：清算账户类别 */
+        SENSITIVEFLAG,/* 补充：涉密标志 */
+        GSFZJG        /* 补充：归属分支机构 */
     )
     SELECT
-        /* 清算账户类别：业务需求未提供来源 */
-        NULL AS QSZHLB,
-        /* 备注：收单商户信息.备注 */
-        src.B070018 AS BBZ,
-        /* 涉密标志：业务需求未提供来源 */
-        NULL AS SENSITIVEFLAG,
-        /* 商户MCC名称：收单商户信息.商户类别码名称 */
-        src.B070008 AS SHMCCMC,
-        /* 清算账号：收单商户信息.清算卡号或账号 */
-        src.B070009 AS QSZH,
-        /* 清算账号开户行名称：收单商户信息.清算账号开户行名称 */
-        src.B070012 AS QSZHKHHMC,
-        /* 采集日期：跑批参数 */
-        P_DATA_DATE AS CJRQ,
-        /* 金融许可证号：机构ID 关联机构信息取金融许可证号 */
+        /* 1. 金融许可证号：机构ID 关联机构信息取金融许可证号 */
         org.A010003 AS JRXKZH,
-        /* 内部机构号：机构ID 从第12位开始截取 */
+        /* 2. 内部机构号：机构ID 从第12位开始截取 */
         SUBSTR(TRIM(src.B070003), 12) AS NBJGH,
-        /* 商户编号：收单商户信息.商户ID */
+        /* 3. 商户编号：收单商户信息.商户ID */
         src.B070001 AS SHBH,
-        /* 商户名称：收单商户信息.商户名称 */
+        /* 4. 商户名称：收单商户信息.商户名称 */
         src.B070004 AS SHMC,
-        /* 是否POS商户：1=是，其余=否 */
+        /* 5. 是否POS商户：收单商户信息.是否为POS机特约商户，1=是，否则=否 */
         CASE WHEN src.B070005 = '1' THEN '是' ELSE '否' END AS SFPOS,
-        /* 终端号：收单商户信息.终端号 */
+        /* 6. 终端号：收单商户信息.终端号 */
         src.B070006 AS ZDH,
-        /* 商户MCC码：收单商户信息.商户类别码 */
+        /* 7. 商户MCC码：收单商户信息.商户类别码 */
         src.B070007 AS SHMCCM,
-        /* 商户地区：按行政区划公共代码拼接中文含义 */
+        /* 8. 商户MCC名称：收单商户信息.商户类别码名称 */
+        src.B070008 AS SHMCCMC,
+        /* 9. 商户地区：按行政区划公共代码拼接中文含义 */
         CASE
             WHEN RIGHT(src.B070015, 4) = '0000' THEN pc_prov.K010005
             WHEN RIGHT(src.B070015, 2) = '00' THEN CONCAT(COALESCE(pc_prov.K010005, ''), COALESCE(pc_city.K010005, ''))
             ELSE CONCAT(COALESCE(pc_prov.K010005, ''), COALESCE(pc_city.K010005, ''), COALESCE(pc_county.K010005, ''))
         END AS SHDQ,
-        /* 清算账号类型：按一表通代码转换 EAST 展示值 */
+        /* 10. 清算账号：收单商户信息.清算卡号或账号 */
+        src.B070009 AS QSZH,
+        /* 11. 清算账号类型：按一表通代码转换 EAST 展示值 */
         CASE
             WHEN src.B070010 = '01' THEN '本行卡'
             WHEN src.B070010 = '02' THEN '本行对公结算账户'
             WHEN src.B070010 = '03' THEN '他行卡'
             WHEN src.B070010 = '04' THEN '他行对公结算账户'
-            WHEN src.B070010 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.B070010, '00', ''))
-            ELSE src.B070010
+            WHEN src.B070010 = '00' THEN '其他-自定义'
+            ELSE NULL
         END AS QSZHLX,
-        /* 清算账户名称：收单商户信息.清算账户名称 */
+        /* 12. 清算账户名称：收单商户信息.清算账户名称 */
         src.B070011 AS QSZHMC,
-        /* 起效日期：YYYY-MM-DD 转 YYYYMMDD */
-        CASE WHEN src.B070013 IS NULL THEN NULL ELSE CONCAT(CAST(YEAR(src.B070013) AS VARCHAR(4)), LPAD(CAST(MONTH(src.B070013) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.B070013) AS VARCHAR(2)), 2, '0')) END AS QXRQ,
-        /* 失效日期：为空赋值 99991231，否则 YYYY-MM-DD 转 YYYYMMDD */
-        CASE WHEN src.B070014 IS NULL THEN '99991231' ELSE CONCAT(CAST(YEAR(src.B070014) AS VARCHAR(4)), LPAD(CAST(MONTH(src.B070014) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.B070014) AS VARCHAR(2)), 2, '0')) END AS SXRQ,
-        /* 商户状态：收单商户信息.商户状态 */
+        /* 13. 清算账号开户行名称：收单商户信息.清算账号开户行名称 */
+        src.B070012 AS QSZHKHHMC,
+        /* 14. 起效日期：YYYY-MM-DD 转 YYYYMMDD */
+        TO_CHAR(src.B070013, 'YYYYMMDD') AS QXRQ,
+        /* 15. 失效日期：为空赋值 99991231，否则 YYYY-MM-DD 转 YYYYMMDD */
+        COALESCE(TO_CHAR(src.B070014, 'YYYYMMDD'), '99991231') AS SXRQ,
+        /* 16. 商户状态：收单商户信息.商户状态 */
         src.B070016 AS SHZT,
-        /* 归属分支机构：业务需求未提供来源 */
+        /* 17. 备注：收单商户信息.备注 */
+        src.B070018 AS BBZ,
+        /* 18. 采集日期：跑批参数 */
+        P_DATA_DATE AS CJRQ,
+        /* 补充：清算账户类别（业务需求未提供来源） */
+        NULL AS QSZHLB,
+        /* 补充：涉密标志（业务需求未提供来源） */
+        NULL AS SENSITIVEFLAG,
+        /* 补充：归属分支机构（业务需求未提供来源） */
         NULL AS GSFZJG
     FROM T_2_7 src
     LEFT JOIN T_1_1 org

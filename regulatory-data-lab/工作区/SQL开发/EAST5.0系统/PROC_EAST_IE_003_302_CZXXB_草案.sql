@@ -73,47 +73,61 @@ BEGIN
 
     INSERT INTO IE_003_302 (
         JRXKZH,
-        KHLB,
         NBJGH,
-        KHMC,
-        ZJHM,
-        HQCKZH,
-        YGBZ,
-        QYGYH,
-        CJRQ,
-        CZZT,
-        SENSITIVEFLAG,
         KHTYBH,
+        KHMC,
         ZJLB,
+        ZJHM,
         CZH,
+        HQCKZH,
         CZLX,
+        YGBZ,
         QYRQ,
+        QYGYH,
+        CZZT,
         BBZ,
+        CJRQ,
+        KHLB,
+        SENSITIVEFLAG,
         GSFZJG
     )
     SELECT
         /* 金融许可证号：介质协议表.机构ID 关联机构信息表.机构ID 取金融许可证号 */
         org.A010003 AS JRXKZH,
-        /* 客户类别：业务需求未提供来源 */
-        NULL AS KHLB,
         /* 内部机构号：介质协议表.机构ID 从第12位开始截取 */
         SUBSTR(TRIM(src.F280001), 12) AS NBJGH,
+        /* 客户统一编号：介质协议表.客户ID */
+        src.F280002 AS KHTYBH,
         /* 客户名称：优先个人客户姓名，取不到再取对公客户名称 */
         COALESCE(per.KHXM, corp.KHMC) AS KHMC,
+        /* 证件类别：优先个人，取不到再取对公，均取不到赋"无证件" */
+        COALESCE(per.ZJLB, corp.ZJLB, '无证件') AS ZJLB,
         /* 证件号码：优先个人，取不到再取对公 */
         COALESCE(per.ZJHM, corp.ZJHM) AS ZJHM,
+        /* 存折号：介质协议表.介质号 */
+        src.F280005 AS CZH,
         /* 存款账号：介质协议表.分户账号 */
         src.F280003 AS HQCKZH,
+        /* 存折类型：按介质类型转换 */
+        CASE
+            WHEN src.F280006 = '02' THEN '普通存折'
+            WHEN src.F280006 = '04' THEN '存单'
+            WHEN src.F280006 = '05' THEN '大额定期存单'
+            WHEN src.F280006 = '06' THEN '一本通'
+            WHEN src.F280006 = '07' THEN '普通存折'
+            WHEN src.F280006 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.F280006, '00', ''))
+            ELSE NULL
+        END AS CZLX,
         /* 员工标志：0=否，1=是 */
         CASE
             WHEN src.F280008 = '1' THEN '是'
             WHEN src.F280008 = '0' THEN '否'
-            ELSE src.F280008
+            ELSE NULL
         END AS YGBZ,
-        /* 启用柜员号：“自动”转为空，否则取原值 */
+        /* 启用日期：YYYY-MM-DD 转 YYYYMMDD */
+        TO_CHAR(src.F280009, 'YYYYMMDD') AS QYRQ,
+        /* 启用柜员号："自动"转为空，否则取原值 */
         CASE WHEN src.F280011 = '自动' THEN NULL ELSE src.F280011 END AS QYGYH,
-        /* 采集日期：跑批参数 */
-        P_DATA_DATE AS CJRQ,
         /* 存折状态：介质状态码值转换 */
         CASE
             WHEN src.F280012 = '01' THEN '未激活'
@@ -123,30 +137,16 @@ BEGIN
             WHEN src.F280012 = '05' THEN '睡眠'
             WHEN src.F280012 = '06' THEN '挂失'
             WHEN src.F280012 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.F280012, '00', ''))
-            ELSE src.F280012
+            ELSE NULL
         END AS CZZT,
-        /* 涉密标志：业务需求未提供来源 */
-        NULL AS SENSITIVEFLAG,
-        /* 客户统一编号：介质协议表.客户ID */
-        src.F280002 AS KHTYBH,
-        /* 证件类别：优先个人，取不到再取对公，均取不到赋“无证件” */
-        COALESCE(per.ZJLB, corp.ZJLB, '无证件') AS ZJLB,
-        /* 存折号：介质协议表.介质号 */
-        src.F280005 AS CZH,
-        /* 存折类型：按介质类型转换 */
-        CASE
-            WHEN src.F280006 = '02' THEN '普通存折'
-            WHEN src.F280006 = '04' THEN '存单'
-            WHEN src.F280006 = '05' THEN '大额定期存单'
-            WHEN src.F280006 = '06' THEN '一本通'
-            WHEN src.F280006 = '07' THEN '普通存折'
-            WHEN src.F280006 LIKE '00%' THEN CONCAT('其他-', REPLACE(src.F280006, '00', ''))
-            ELSE src.F280006
-        END AS CZLX,
-        /* 启用日期：YYYY-MM-DD 转 YYYYMMDD */
-        CASE WHEN src.F280009 IS NULL THEN NULL ELSE CONCAT(CAST(YEAR(src.F280009) AS VARCHAR(4)), LPAD(CAST(MONTH(src.F280009) AS VARCHAR(2)), 2, '0'), LPAD(CAST(DAY(src.F280009) AS VARCHAR(2)), 2, '0')) END AS QYRQ,
         /* 备注：介质协议表.备注 */
         src.F280013 AS BBZ,
+        /* 采集日期：跑批参数 */
+        P_DATA_DATE AS CJRQ,
+        /* 客户类别：业务需求未提供来源 */
+        NULL AS KHLB,
+        /* 涉密标志：业务需求未提供来源 */
+        NULL AS SENSITIVEFLAG,
         /* 归属分支机构：业务需求未提供来源 */
         NULL AS GSFZJG
     FROM T_6_28 src

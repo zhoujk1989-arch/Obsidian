@@ -34,7 +34,7 @@
 
 未确认点：
 - 一表通 T_1_4 表级关联规则中"岗位ID从12开始截取到最后"的截取逻辑，需确认 T_1_4 的机构ID字段（A040001）是否直接包含完整机构编号，截取后与 T_1_1 的内部机构号（A010002）匹配。
-- 岗位撤销日期的"当月"判断：当前实现为 DATE_FORMAT(岗位撤销日期, '%Y%m') = DATE_FORMAT(采集日期, '%Y%m')，需确认是否应使用采集日期的年月。
+- 岗位撤销日期的"当月"判断：当前实现为 TO_CHAR(岗位撤销日期, 'YYYYMM') = TO_CHAR(采集日期, 'YYYYMM')，按月筛选有效/终态岗位。
 - GSFZJG（归属分支机构）、SENSITIVEFLAG（涉密标志）当前无映射来源，仍置空。
 - 一表通 T_1_4 的岗位撤销日期字段（A040010）取值为 9999-12-31 时表示有效，需确认该常量是否统一。
 - 采集日期字段在 T_1_4 中为 DATE 类型，输出为 VARCHAR(8) 格式 YYYYMMDD，需确认 EAST5.0 目标表 CJRQ 是否必须 VARCHAR(8)。
@@ -78,51 +78,51 @@ BEGIN
 
   #2.插入数据
   INSERT INTO IE_001_104 (
-      NBJGH,
       JRXKZH,
-      GSFZJG,
-      CJRQ,
-      GWSM,
-      SENSITIVEFLAG,
-      BBZ,
-      GWMC,
-      GWZT,
+      NBJGH,
+      GWBH,
       GWZL,
-      GWBH
+      GWMC,
+      GWSM,
+      GWZT,
+      BBZ,
+      CJRQ,
+      GSFZJG,
+      SENSITIVEFLAG
   )
   SELECT
-      # 内部机构号：从岗位信息.机构ID（A040001）截取第12位开始至最后一位
-      SUBSTR(src.A040001, 12) AS NBJGH,
-
       # 金融许可证号：通过截取后的内部机构号关联机构信息表获取
       org.A010003 AS JRXKZH,
 
-      # 归属分支机构：当前无映射来源，置空
-      NULL AS GSFZJG,
+      # 内部机构号：从岗位信息.机构ID（A040001）截取第12位开始至最后一位
+      SUBSTR(src.A040001, 12) AS NBJGH,
 
-      # 采集日期：从岗位信息.采集日期（A040008）转换 YYYYMMDD 格式
-      TO_CHAR(src.A040008, 'YYYYMMDD') AS CJRQ,
-
-      # 岗位说明：直接映射
-      src.A040005 AS GWSM,
-
-      # 涉密标志：当前无映射来源，置空
-      NULL AS SENSITIVEFLAG,
-
-      # 备注：直接映射
-      src.A040007 AS BBZ,
-
-      # 岗位名称：直接映射
-      src.A040004 AS GWMC,
-
-      # 岗位状态：直接映射
-      src.A040006 AS GWZT,
+      # 岗位编号：直接映射
+      src.A040002 AS GWBH,
 
       # 岗位种类：直接映射
       src.A040003 AS GWZL,
 
-      # 岗位编号：直接映射
-      src.A040002 AS GWBH
+      # 岗位名称：直接映射
+      src.A040004 AS GWMC,
+
+      # 岗位说明：直接映射
+      src.A040005 AS GWSM,
+
+      # 岗位状态：直接映射
+      src.A040006 AS GWZT,
+
+      # 备注：直接映射
+      src.A040007 AS BBZ,
+
+      # 采集日期：从岗位信息.采集日期（A040008）转换 YYYYMMDD 格式
+      TO_CHAR(src.A040008, 'YYYYMMDD') AS CJRQ,
+
+      # 归属分支机构：当前无映射来源，置空
+      NULL AS GSFZJG,
+
+      # 涉密标志：当前无映射来源，置空
+      NULL AS SENSITIVEFLAG
 
   FROM (
       # 主源：一表通岗位信息表
@@ -138,7 +138,7 @@ BEGIN
           t.A040008,
           t.A040010
       FROM T_1_4 t
-      WHERE t.A040010 = TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')
+      WHERE TO_CHAR(t.A040010, 'YYYYMM') = TO_CHAR(P_DATA_DATE, 'YYYYMM')
          OR t.A040010 = '9999-12-31'
   ) src
   LEFT JOIN (

@@ -39,7 +39,7 @@
 - 按 SQL 开发规范使用直接 select + left join 风格。
 - 不使用 select *。
 - 不使用 CTE；T_1_1 去重通过派生表 NOT EXISTS 实现。
-- INSERT 字段顺序与目标表 DDL 一致。
+|- INSERT 字段顺序与业务需求文档序号一致。
 - 日期函数使用 GBase 8a 风格：TO_DATE / TO_CHAR。
 */
 
@@ -60,63 +60,63 @@ BEGIN
 
   #2.插入数据
   INSERT INTO IE_001_105 (
-      YHJGMC,             #  1. 银行机构名称
+      YHJGDM,             #  1. 银行机构代码
       JRXKZH,             #  2. 金融许可证号
-      SJGLJGDM,           #  3. 上级管理机构代码
-      GSFZJG,             #  4. 归属分支机构（暂无来源）
-      SJGLNBJGH,          #  5. 上级管理内部机构号
-      YHJGDM,             #  6. 银行机构代码
-      BBZ,                #  7. 备注
-      CJRQ,               #  8. 采集日期
-      SENSITIVEFLAG,      #  9. 涉密标志（暂无来源）
-      NBJGH,              # 10. 内部机构号
-      SJGLJGMC            # 11. 上级管理机构名称
+      NBJGH,              #  3. 内部机构号
+      YHJGMC,             #  4. 银行机构名称
+      SJGLJGDM,           #  5. 上级管理机构代码
+      SJGLNBJGH,          #  6. 上级管理内部机构号
+      SJGLJGMC,           #  7. 上级管理机构名称
+      BBZ,                #  8. 备注
+      CJRQ,               #  9. 采集日期
+      GSFZJG,             # 10. 归属分支机构（暂无来源）
+      SENSITIVEFLAG       # 11. 涉密标志（暂无来源）
   )
   SELECT
-      #  1. YHJGMC：用本表机构ID关联机构信息表，取银行机构名称
-      cur_org.A010005                                          AS YHJGMC,
+      #  1. YHJGDM：银行机构代码，用本表机构ID关联机构信息表，取支付行号
+      cur_org.A010006                                          AS YHJGDM,
 
-      #  2. JRXKZH：用本表机构ID关联机构信息表，取金融许可证号
+      #  2. JRXKZH：金融许可证号，用本表机构ID关联机构信息表，取金融许可证号
       cur_org.A010003                                          AS JRXKZH,
 
-      #  3. SJGLJGDM：上级管理机构代码
+      #  3. NBJGH：内部机构号，机构关系表机构ID从第12位截取
+      SUBSTR(t.A020001, 12)                                    AS NBJGH,
+
+      #  4. YHJGMC：银行机构名称，用本表机构ID关联机构信息表，取银行机构名称
+      cur_org.A010005                                          AS YHJGMC,
+
+      #  5. SJGLJGDM：上级管理机构代码
       #     上级id='0'时赋'0'，否则关联上级机构信息表取支付行号
       CASE
           WHEN t.A020002 = '0' THEN '0'
           ELSE par_org.A010006
       END                                                      AS SJGLJGDM,
 
-      #  4. GSFZJG：归属分支机构，当前无映射来源
-      NULL                                                     AS GSFZJG,
-
-      #  5. SJGLNBJGH：上级管理内部机构号
+      #  6. SJGLNBJGH：上级管理内部机构号
       #     上级id='0'时赋'0'，否则取上级机构ID从第12位截取
       CASE
           WHEN t.A020002 = '0' THEN '0'
           ELSE SUBSTR(t.A020002, 12)
       END                                                      AS SJGLNBJGH,
 
-      #  6. YHJGDM：银行机构代码，用本表机构ID关联机构信息表，取支付行号
-      cur_org.A010006                                          AS YHJGDM,
-
-      #  7. BBZ：备注，直接取自机构关系表
-      t.A020004                                                AS BBZ,
-
-      #  8. CJRQ：采集日期，日期格式转换为 YYYYMMDD
-      TO_CHAR(t.A020003, 'YYYYMMDD')                           AS CJRQ,
-
-      #  9. SENSITIVEFLAG：涉密标志，当前无映射来源
-      NULL                                                     AS SENSITIVEFLAG,
-
-      # 10. NBJGH：内部机构号，机构关系表机构ID从第12位截取
-      SUBSTR(t.A020001, 12)                                    AS NBJGH,
-
-      # 11. SJGLJGMC：上级管理机构名称
+      #  7. SJGLJGMC：上级管理机构名称
       #     上级id='0'时用本机构名称，否则关联上级机构信息表取名称
       CASE
           WHEN t.A020002 = '0' THEN cur_org.A010005
           ELSE par_org.A010005
-      END                                                      AS SJGLJGMC
+      END                                                      AS SJGLJGMC,
+
+      #  8. BBZ：备注，直接取自机构关系表
+      t.A020004                                                AS BBZ,
+
+      #  9. CJRQ：采集日期，日期格式转换为 YYYYMMDD
+      TO_CHAR(t.A020003, 'YYYYMMDD')                           AS CJRQ,
+
+      # 10. GSFZJG：归属分支机构，当前无映射来源
+      NULL                                                     AS GSFZJG,
+
+      # 11. SENSITIVEFLAG：涉密标志，当前无映射来源
+      NULL                                                     AS SENSITIVEFLAG
 
   FROM T_1_2 t
 

@@ -34,9 +34,12 @@
 - 上级科目编号：一级科目填 `0`，非一级取 `T_4_2.D020008`。
 - 上级科目名称：非一级科目按同机构、同采集日期、上级科目ID关联科目信息取科目名称。
 
+字段顺序说明：
+- INSERT/SELECT 列序按业务需求序号排列（1-金融许可证号,2-内部机构号,3-银行机构名称,4-会计科目编号,5-会计科目名称,6-会计科目级次,7-上级科目编号,8-上级科目名称,9-科目借贷标志,10-归属业务大类,11-归属业务子类,12-备注,13-采集日期,14-SENSITIVEFLAG,15-GSFZJG）。
+
 未确认点：
-- 业务需求写“当月末的数据”，当前按采集日期等于跑批日实现；如跑批日不是月末，应由调度保证传入月末日期。
-- 归属业务子类规则写“关联公共参数取对应转换值”，但当前业务需求和 DDL 未给出公共参数表名/字段条件；本草案暂取 `T_4_2.D020007` 原值，待补公共参数来源后再替换。
+- 业务需求写"当月末的数据"，当前按采集日期等于跑批日实现；如跑批日不是月末，应由调度保证传入月末日期。
+- 归属业务子类规则写"关联公共参数取对应转换值"，但当前业务需求和 DDL 未给出公共参数表名/字段条件；本草案暂取 `T_4_2.D020007` 原值，待补公共参数来源后再替换。
 - 目标 DDL 字段 GSFZJG、SENSITIVEFLAG 在本业务需求未给出来源，保留 NULL，待补充来源后再加工。
 - SQL 草案尚未在 GBase 环境执行验证，目标页和血缘状态保持 draft。
 */
@@ -66,38 +69,56 @@ BEGIN
      WHERE CJRQ = P_DATA_DATE;
 
     INSERT INTO IE_004_402 (
-        NBJGH,
-        BBZ,
-        KJKMJC,
-        SJKMMC,
-        GSYWDL,
-        GSYWZL,
-        CJRQ,
-        SENSITIVEFLAG,
-        GSFZJG,
-        JRXKZH,
-        YHJGMC,
-        KJKMMC,
-        SJKMBH,
-        KMJDBZ,
-        KJKMBH
+        JRXKZH,             /* 01-金融许可证号 */
+        NBJGH,              /* 02-内部机构号 */
+        YHJGMC,             /* 03-银行机构名称 */
+        KJKMBH,             /* 04-会计科目编号 */
+        KJKMMC,             /* 05-会计科目名称 */
+        KJKMJC,             /* 06-会计科目级次 */
+        SJKMBH,             /* 07-上级科目编号 */
+        SJKMMC,             /* 08-上级科目名称 */
+        KMJDBZ,             /* 09-科目借贷标志 */
+        GSYWDL,             /* 10-归属业务大类 */
+        GSYWZL,             /* 11-归属业务子类 */
+        BBZ,                /* 12-备注 */
+        CJRQ,               /* 13-采集日期 */
+        SENSITIVEFLAG,      /* 涉密标志（待补充） */
+        GSFZJG              /* 归属分支机构（待补充） */
     )
     SELECT
-        /* 内部机构号：机构ID 从第12位开始截取 */
+        /* 01-金融许可证号：机构信息.金融许可证号 */
+        org.A010003 AS JRXKZH,
+        /* 02-内部机构号：机构ID 从第12位开始截取 */
         SUBSTR(TRIM(src.D020002), 12) AS NBJGH,
-        /* 备注 */
-        src.D020010 AS BBZ,
-        /* 会计科目级次：01-1 ... 20-20 */
+        /* 03-银行机构名称：机构信息.银行机构名称 */
+        org.A010005 AS YHJGMC,
+        /* 04-会计科目编号 */
+        src.D020001 AS KJKMBH,
+        /* 05-会计科目名称 */
+        src.D020003 AS KJKMMC,
+        /* 06-会计科目级次：01-1,02-2,...,20-20；不匹配则置NULL */
         CASE
             WHEN src.D020004 BETWEEN '01' AND '20' THEN CAST(src.D020004 AS INTEGER)
             ELSE NULL
         END AS KJKMJC,
-        /* 上级科目名称：一级科目为空，非一级取上级科目名称 */
+        /* 07-上级科目编号：一级科目填0，其他取上级科目ID */
+        CASE
+            WHEN src.D020004 = '01' THEN '0'
+            ELSE src.D020008
+        END AS SJKMBH,
+        /* 08-上级科目名称：一级科目为空，非一级取上级科目名称 */
         CASE
             WHEN src.D020004 = '01' THEN NULL
             ELSE parent.D020003
         END AS SJKMMC,
-        /* 归属业务大类 */
+        /* 09-科目借贷标志：01-借,02-贷,03-借贷并列；不匹配则置NULL */
+        CASE
+            WHEN src.D020006 = '01' THEN '借'
+            WHEN src.D020006 = '02' THEN '贷'
+            WHEN src.D020006 = '03' THEN '借贷并列'
+            ELSE NULL
+        END AS KMJDBZ,
+        /* 10-归属业务大类：01-资产,02-负债,03-所有者权益,04-损益,05-资产负债共同类,06-表外,00-其他；不匹配则置NULL */
         CASE
             WHEN src.D020005 = '01' THEN '资产'
             WHEN src.D020005 = '02' THEN '负债'
@@ -106,36 +127,18 @@ BEGIN
             WHEN src.D020005 = '05' THEN '资产负债共同类'
             WHEN src.D020005 = '06' THEN '表外'
             WHEN src.D020005 = '00' THEN '其他'
-            ELSE src.D020005
+            ELSE NULL
         END AS GSYWDL,
-        /* 归属业务子类：公共参数来源待补，暂取科目信息原值 */
+        /* 11-归属业务子类：公共参数来源待补，暂取科目信息原值 */
         src.D020007 AS GSYWZL,
-        /* 采集日期：跑批参数 */
-        P_DATA_DATE AS CJRQ,
+        /* 12-备注 */
+        src.D020010 AS BBZ,
+        /* 13-采集日期：取科目信息.采集日期，YYYY-MM-DD转YYYYMMDD */
+        TO_CHAR(src.D020011, 'YYYYMMDD') AS CJRQ,
         /* 涉密标志：业务需求未提供来源 */
         NULL AS SENSITIVEFLAG,
         /* 归属分支机构：业务需求未提供来源 */
-        NULL AS GSFZJG,
-        /* 金融许可证号：机构信息.金融许可证号 */
-        org.A010003 AS JRXKZH,
-        /* 银行机构名称：机构信息.银行机构名称 */
-        org.A010005 AS YHJGMC,
-        /* 会计科目名称 */
-        src.D020003 AS KJKMMC,
-        /* 上级科目编号：一级科目填0，其他取上级科目ID */
-        CASE
-            WHEN src.D020004 = '01' THEN '0'
-            ELSE src.D020008
-        END AS SJKMBH,
-        /* 科目借贷标志 */
-        CASE
-            WHEN src.D020006 = '01' THEN '借'
-            WHEN src.D020006 = '02' THEN '贷'
-            WHEN src.D020006 = '03' THEN '借贷并列'
-            ELSE src.D020006
-        END AS KMJDBZ,
-        /* 会计科目编号 */
-        src.D020001 AS KJKMBH
+        NULL AS GSFZJG
     FROM T_4_2 src
     LEFT JOIN T_1_1 org
            ON src.D020002 = org.A010001

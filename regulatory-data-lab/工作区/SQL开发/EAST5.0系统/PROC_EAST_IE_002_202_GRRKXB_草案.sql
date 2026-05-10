@@ -79,30 +79,67 @@ BEGIN
 
   #2.插入数据
   INSERT INTO IE_002_202 (
+      JRXKZH,          # 1. 金融许可证号
+      NBJGH,           # 2. 内部机构号
+      KHTYBH,          # 3. 客户统一编号
+      KHXM,            # 4. 客户姓名
+      ZJLB,            # 5. 证件类别
+      ZJHM,            # 6. 证件号码
+      GXLX,            # 7. 关系类型
+      GXRKHTYBH,       # 8. 关系人客户统一编号
+      GXRMC,           # 9. 关系人名称
+      GXRZJLB,         # 10. 关系人证件类别
+      GXRZJHM,         # 11. 关系人证件号码
+      GXZT,            # 12. 关系状态
+      BBZ,             # 13. 备注
+      CJRQ,            # 14. 采集日期
       SENSITIVEFLAG,   # 涉密标志
-      GXZT,            # 关系状态
-      ZJLB,            # 证件类别
-      GXLX,            # 关系类型
-      GXRMC,           # 关系人名称
-      JRXKZH,          # 金融许可证号
-      KHXM,            # 客户姓名
-      BBZ,             # 备注
-      CJRQ,            # 采集日期
       GXRKHLB,         # 关系人客户类别
-      NBJGH,           # 内部机构号
-      KHTYBH,          # 客户统一编号
-      ZJHM,            # 证件号码
-      GXRKHTYBH,       # 关系人客户统一编号
-      GXRZJLB,         # 关系人证件类别
-      GXRZJHM,         # 关系人证件号码
       GSFZJG           # 归属分支机构
   )
   SELECT
-      # 1. SENSITIVEFLAG：涉密标志，需求文档无映射来源，置空
-      NULL AS SENSITIVEFLAG,
+      # 1. JRXKZH：金融许可证号，关联 IE_002_201 取
+      NULLIF(TRIM(e201.JRXKZH), '') AS JRXKZH,
 
-      # 2. GXZT：关系状态
-      #    加工映射：解除关系日期不为空且小于等于跑批日期 → '无效'，否则 '有效'
+      # 2. NBJGH：内部机构号，关联 IE_002_201 取
+      NULLIF(TRIM(e201.NBJGH), '') AS NBJGH,
+
+      # 3. KHTYBH：客户统一编号，直接映射 T_3_7.个人ID
+      rel.C070003 AS KHTYBH,
+
+      # 4. KHXM：客户姓名，关联 IE_002_201 取
+      NULLIF(TRIM(e201.KHXM), '') AS KHXM,
+
+      # 5. ZJLB：证件类别，关联 IE_002_201 取
+      NULLIF(TRIM(e201.ZJLB), '') AS ZJLB,
+
+      # 6. ZJHM：证件号码，关联 IE_002_201 取
+      NULLIF(TRIM(e201.ZJHM), '') AS ZJHM,
+
+      # 7. GXLX：关系类型，直接映射 T_3_7.社会关系
+      NULLIF(TRIM(rel.C070004), '') AS GXLX,
+
+      # 8. GXRKHTYBH：关系人客户统一编号，直接映射 T_3_7.关系人ID
+      rel.C070005 AS GXRKHTYBH,
+
+      # 9. GXRMC：关系人名称，直接映射 T_3_7.关系人姓名
+      NULLIF(TRIM(rel.C070006), '') AS GXRMC,
+
+      # 10. GXRZJLB：关系人证件类别，码值转换
+      #     1999-XX → 其他-XX；2999-XX → 其他-XX；其余置NULL
+      CASE
+          WHEN NULLIF(TRIM(rel.C070007), '') LIKE '1999-%'
+          THEN CONCAT('其他-', SUBSTR(NULLIF(TRIM(rel.C070007), ''), 6))
+          WHEN NULLIF(TRIM(rel.C070007), '') LIKE '2999-%'
+          THEN CONCAT('其他-', SUBSTR(NULLIF(TRIM(rel.C070007), ''), 6))
+          ELSE NULL
+      END AS GXRZJLB,
+
+      # 11. GXRZJHM：关系人证件号码，直接映射 T_3_7.关系人证件号码
+      NULLIF(TRIM(rel.C070008), '') AS GXRZJHM,
+
+      # 12. GXZT：关系状态
+      #     加工映射：解除关系日期不为空且小于等于跑批日期 → '无效'，否则 '有效'
       CASE
           WHEN rel.C070010 IS NOT NULL
            AND rel.C070010 <= TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')
@@ -110,54 +147,17 @@ BEGIN
           ELSE '有效'
       END AS GXZT,
 
-      # 3. ZJLB：证件类别，关联 IE_002_201 取
-      NULLIF(TRIM(e201.ZJLB), '') AS ZJLB,
-
-      # 4. GXLX：关系类型，直接映射 T_3_7.社会关系
-      NULLIF(TRIM(rel.C070004), '') AS GXLX,
-
-      # 5. GXRMC：关系人名称，直接映射 T_3_7.关系人姓名
-      NULLIF(TRIM(rel.C070006), '') AS GXRMC,
-
-      # 6. JRXKZH：金融许可证号，关联 IE_002_201 取
-      NULLIF(TRIM(e201.JRXKZH), '') AS JRXKZH,
-
-      # 7. KHXM：客户姓名，关联 IE_002_201 取
-      NULLIF(TRIM(e201.KHXM), '') AS KHXM,
-
-      # 8. BBZ：备注，直接映射 T_3_7.备注
+      # 13. BBZ：备注，直接映射 T_3_7.备注
       NULLIF(TRIM(rel.C070012), '') AS BBZ,
 
-      # 9. CJRQ：采集日期，DATE → YYYYMMDD
+      # 14. CJRQ：采集日期，DATE → YYYYMMDD
       TO_CHAR(rel.C070011, 'YYYYMMDD') AS CJRQ,
 
-      # 10. GXRKHLB：关系人客户类别，需求文档无映射来源，置空
+      # 15. SENSITIVEFLAG：涉密标志，需求文档无映射来源，置空
+      NULL AS SENSITIVEFLAG,
+
+      # 16. GXRKHLB：关系人客户类别，需求文档无映射来源，置空
       NULL AS GXRKHLB,
-
-      # 11. NBJGH：内部机构号，关联 IE_002_201 取
-      NULLIF(TRIM(e201.NBJGH), '') AS NBJGH,
-
-      # 12. KHTYBH：客户统一编号，直接映射 T_3_7.个人ID
-      rel.C070003 AS KHTYBH,
-
-      # 13. ZJHM：证件号码，关联 IE_002_201 取
-      NULLIF(TRIM(e201.ZJHM), '') AS ZJHM,
-
-      # 14. GXRKHTYBH：关系人客户统一编号，直接映射 T_3_7.关系人ID
-      rel.C070005 AS GXRKHTYBH,
-
-      # 15. GXRZJLB：关系人证件类别，码值转换
-      #     1999-XX → 其他-XX；2999-XX → 其他-XX；其余直接映射
-      CASE
-          WHEN NULLIF(TRIM(rel.C070007), '') LIKE '1999-%'
-          THEN CONCAT('其他-', SUBSTR(NULLIF(TRIM(rel.C070007), ''), 6))
-          WHEN NULLIF(TRIM(rel.C070007), '') LIKE '2999-%'
-          THEN CONCAT('其他-', SUBSTR(NULLIF(TRIM(rel.C070007), ''), 6))
-          ELSE NULLIF(TRIM(rel.C070007), '')
-      END AS GXRZJLB,
-
-      # 16. GXRZJHM：关系人证件号码，直接映射 T_3_7.关系人证件号码
-      NULLIF(TRIM(rel.C070008), '') AS GXRZJHM,
 
       # 17. GSFZJG：归属分支机构，需求文档无映射来源，置空
       NULL AS GSFZJG
@@ -184,7 +184,7 @@ BEGIN
       ON rel.C070003 = e201.KHTYBH
      AND e201.rn = 1
 
-  WHERE rel.C070011 = TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')
+  WHERE rel.C070011 <= TO_CHAR(P_DATA_DATE, 'YYYY-MM-DD')   # 全量表：取截至采集日所有数据；非仅当日
     # 剔除：解除关系日期非空且小于上个采集日期（已在上个周期前解除的关系不再报送）
     AND NOT (rel.C070010 IS NOT NULL AND rel.C070010 < TO_CHAR(P_PREV_DATE, 'YYYY-MM-DD'))
     # 剔除：本人为本人担保的关系不报送

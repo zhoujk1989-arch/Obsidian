@@ -42,7 +42,7 @@
 - 一表通 T_1_6 中「股东或关联方状态」(A060017) 的枚举：当前已知 01=有效、00=无效；其他状态值是否存在待确认。
 - T_1_6 中「不良信息」(A060013) 去掉前导0后的最大长度，与 EAST IE_001_106.BLXX VARCHAR(300) 的适配性。
 - 对公/个人客户表的一表通源表字段名（当前假定为一表通 T_2_X 表）待确认。
-- 归属分支机构（GSFZJG）字段：一表通映射规则文档未提供来源，当前按内部机构号（NBJGH）兜底。
+- 归属分支机构（GSFZJG）字段：一表通映射规则文档未提供来源，置空。
 - 涉密标志（SENSITIVEFLAG）字段：一表通映射规则文档未提供来源，当前置空。
 
 开发说明：
@@ -50,7 +50,7 @@
 - 不使用 select *；所有 CTE 和主查询只取实际使用字段。
 - 日期统一输出 YYYYMMDD 格式。
 - 字符字段使用 NULLIF(TRIM(col),'') 清洗空值。
-- 码值转换使用 CASE WHEN；证件类别优先通过代码映射表获取，映射表未命中时回退到枚举兜底。
+- 码值转换使用 CASE WHEN；未匹配码值的 ELSE 分支统一返回 NULL；证件类别优先通过代码映射表获取，映射表未命中时回退到枚举兜底。
 - 持股数量（CGSL）、参股/控股商业银行数量（CGSYYHSL、KGSL）需转换 VARCHAR→DECIMAL(20,0)。
 - 持股比例（CGBL）、质押比例（ZYBL）需转换 VARCHAR→DECIMAL(20,6)。
 - 日期函数使用 GBase 8a 风格：TO_DATE / TO_CHAR。
@@ -92,12 +92,11 @@ BEGIN
 
   #2.插入数据
   INSERT INTO IE_001_106 (
-      JRXKZH, CJRQ, BLXX, YHJGMC, ZCD, GXLX,
-      CGSYYHSL, SFXQ, RGZJLY, CGSL, RGRQ, ZYBL,
-      ZJYCBDRQ, BBZ, GSFZJG, NBJGH, KHTYBH,
-      GDHGLFMC, GDHGLFLX, GDHGLFZJLB, GDHGLFZJHM,
-      SSHY, SJKZR, KGSL, RGZJZH, CGBL, SFZPDJS,
-      GDHGLFZT, SENSITIVEFLAG
+      JRXKZH, NBJGH, YHJGMC, KHTYBH, GDHGLFMC, GDHGLFLX,
+      GDHGLFZJLB, GDHGLFZJHM, SSHY, ZCD, GXLX, SJKZR,
+      CGSYYHSL, KGSL, BLXX, SFXQ, RGZJLY, RGZJZH,
+      CGSL, CGBL, RGRQ, ZYBL, SFZPDJS, GDHGLFZT,
+      ZJYCBDRQ, BBZ, CJRQ, GSFZJG, SENSITIVEFLAG
   )
   WITH
   # CTE1: 当期 T_1_6 数据，采集日期 = p_data_date
@@ -197,89 +196,23 @@ BEGIN
       #  1. 金融许可证号：关联 T_1_1，取金融许可证号
       NULLIF(TRIM(org.A010003), '') AS JRXKZH,
 
-      #  2. 采集日期：入参格式化输出
-      I_DATE AS CJRQ,
-
-      #  3. 不良信息：如果为'00'则置空，否则去掉前面的0
-      CASE
-          WHEN cur.A060013 = '00' THEN NULL
-          WHEN cur.A060013 IS NULL THEN NULL
-          ELSE TRIM(LEADING '0' FROM cur.A060013)
-      END AS BLXX,
-
-      #  4. 银行机构名称：关联 T_1_1，取银行机构名称
-      NULLIF(TRIM(org.A010005), '') AS YHJGMC,
-
-      #  5. 股东或关联方注册地：直接取自 T_1_6.A060008
-      NULLIF(TRIM(cur.A060008), '') AS ZCD,
-
-      #  6. 关系类型：
-      #     码值映射：01→1, 02→2, ..., 13→13, 00→其他-自定义
-      CASE
-          WHEN cur.A060009 BETWEEN '01' AND '13' THEN CAST(CAST(cur.A060009 AS UNSIGNED) AS CHAR)
-          WHEN cur.A060009 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060009, 4))
-          ELSE NULLIF(TRIM(cur.A060009), '')
-      END AS GXLX,
-
-      #  7. 参股商业银行的数量：直接取 T_1_6.A060011，转 DECIMAL
-      CAST(NULLIF(TRIM(cur.A060011), '') AS DECIMAL(20, 0)) AS CGSYYHSL,
-
-      #  8. 是否限权：0→'否', 1→'是'
-      CASE
-          WHEN cur.A060014 = '0' THEN '否'
-          WHEN cur.A060014 = '1' THEN '是'
-          ELSE NULLIF(TRIM(cur.A060014), '')
-      END AS SFXQ,
-
-      #  9. 入股资金来源：
-      #     码值映射：01→自有资金, 02→委托资金, 03→债务资金, 00-XX→其他-XX
-      CASE
-          WHEN cur.A060015 = '01' THEN '自有资金'
-          WHEN cur.A060015 = '02' THEN '委托资金'
-          WHEN cur.A060015 = '03' THEN '债务资金'
-          WHEN cur.A060015 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060015, 4))
-          ELSE NULLIF(TRIM(cur.A060015), '')
-      END AS RGZJLY,
-
-      # 10. 持股数量：直接取 T_1_6.A060018，转 DECIMAL
-      CAST(NULLIF(TRIM(cur.A060018), '') AS DECIMAL(20, 0)) AS CGSL,
-
-      # 11. 入股日期：yyyy-mm-dd 转为 yyyymmdd
-      CASE
-          WHEN cur.A060020 IS NULL THEN NULL
-          ELSE TO_CHAR(cur.A060020, 'YYYYMMDD')
-      END AS RGRQ,
-
-      # 12. 质押比例：直接取 T_1_6.A060021，转 DECIMAL
-      CAST(NULLIF(TRIM(cur.A060021), '') AS DECIMAL(20, 6)) AS ZYBL,
-
-      # 13. 最近一次变动日期：yyyy-mm-dd 转为 yyyymmdd
-      CASE
-          WHEN cur.A060023 IS NULL THEN NULL
-          ELSE TO_CHAR(cur.A060023, 'YYYYMMDD')
-      END AS ZJYCBDRQ,
-
-      # 14. 备注：直接取自 T_1_6.A060030
-      NULLIF(TRIM(cur.A060030), '') AS BBZ,
-
-      # 15. 归属分支机构：一表通映射规则未提供来源，暂按 NBJGH 兜底
-      #     TODO: 确认业务来源
-      SUBSTR(NULLIF(TRIM(cur.A060002), ''), 12) AS GSFZJG,
-
-      # 16. 内部机构号：从 T_1_6.A060002 第12位截取至最后一位
+      #  2. 内部机构号：从 T_1_6.A060002 第12位截取至最后一位
       SUBSTR(NULLIF(TRIM(cur.A060002), ''), 12) AS NBJGH,
 
-      # 17. 客户统一编号：
+      #  3. 银行机构名称：关联 T_1_1，取银行机构名称
+      NULLIF(TRIM(org.A010005), '') AS YHJGMC,
+
+      #  4. 客户统一编号：
       #     优先关联对公客户表，其次关联个人客户表，均关联不上则赋空
       COALESCE(
           NULLIF(TRIM(corp.east_cust_id), ''),
           NULLIF(TRIM(person.east_cust_id), '')
       ) AS KHTYBH,
 
-      # 18. 股东或关联方名称：直接取自 T_1_6.A060003
+      #  5. 股东或关联方名称：直接取自 T_1_6.A060003
       NULLIF(TRIM(cur.A060003), '') AS GDHGLFMC,
 
-      # 19. 股东或关联方类型：
+      #  6. 股东或关联方类型：
       #     码值映射：01→自然人(中国公民), 02→自然人(非中国公民), ...
       CASE
           WHEN cur.A060004 = '01' THEN '自然人（中国公民）'
@@ -295,61 +228,120 @@ BEGIN
           WHEN cur.A060004 = '15' THEN '社会团体'
           WHEN cur.A060004 = '16' THEN '境外机构'
           WHEN cur.A060004 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060004, 4))
-          ELSE NULLIF(TRIM(cur.A060004), '')
+          ELSE NULL
       END AS GDHGLFLX,
 
-      # 20. 股东或关联方证件类别：
+      #  7. 股东或关联方证件类别：
       #     优先通过代码映射表 YBT-EAST-GDHGLFZJLB 转换；
       #     映射表未命中时回退到 '00-XX'→'其他-XX' 兜底
       COALESCE(
           NULLIF(TRIM(cm.target_desc), ''),
           CASE
               WHEN cur.A060005 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060005, 4))
-              ELSE NULLIF(TRIM(cur.A060005), '')
+              ELSE NULL
           END
       ) AS GDHGLFZJLB,
 
-      # 21. 股东或关联方证件号码：直接取自 T_1_6.A060006
+      #  8. 股东或关联方证件号码：直接取自 T_1_6.A060006
       NULLIF(TRIM(cur.A060006), '') AS GDHGLFZJHM,
 
-      # 22. 股东或关联方所属行业：
+      #  9. 股东或关联方所属行业：
       #     如果为 '99999' 则赋值 '境外'，否则直取
       CASE
           WHEN cur.A060007 = '99999' THEN '境外'
-          ELSE NULLIF(TRIM(cur.A060007), '')
+          ELSE NULL
       END AS SSHY,
 
-      # 23. 实际控制人：如果值为 '0' 时转成 '无'，其他直接映射
+      # 10. 股东或关联方注册地：直接取自 T_1_6.A060008
+      NULLIF(TRIM(cur.A060008), '') AS ZCD,
+
+      # 11. 关系类型：
+      #     码值映射：01→1, 02→2, ..., 13→13, 00-XX→其他-XX
+      CASE
+          WHEN cur.A060009 BETWEEN '01' AND '13' THEN CAST(CAST(cur.A060009 AS UNSIGNED) AS CHAR)
+          WHEN cur.A060009 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060009, 4))
+          ELSE NULL
+      END AS GXLX,
+
+      # 12. 实际控制人：如果值为 '0' 时转成 '无'，其他直接映射
       CASE
           WHEN cur.A060010 = '0' THEN '无'
-          ELSE NULLIF(TRIM(cur.A060010), '')
+          ELSE NULL
       END AS SJKZR,
 
-      # 24. 控股商业银行的数量：直接取 T_1_6.A060012，转 DECIMAL
+      # 13. 参股商业银行的数量：直接取 T_1_6.A060011，转 DECIMAL
+      CAST(NULLIF(TRIM(cur.A060011), '') AS DECIMAL(20, 0)) AS CGSYYHSL,
+
+      # 14. 控股商业银行的数量：直接取 T_1_6.A060012，转 DECIMAL
       CAST(NULLIF(TRIM(cur.A060012), '') AS DECIMAL(20, 0)) AS KGSL,
 
-      # 25. 入股资金账号：直接取自 T_1_6.A060016
+      # 15. 不良信息：如果为'00'则置空，否则去掉前面的0
+      CASE
+          WHEN cur.A060013 = '00' THEN NULL
+          WHEN cur.A060013 IS NULL THEN NULL
+          ELSE TRIM(LEADING '0' FROM cur.A060013)
+      END AS BLXX,
+
+      # 16. 是否限权：0→'否', 1→'是'
+      CASE
+          WHEN cur.A060014 = '0' THEN '否'
+          WHEN cur.A060014 = '1' THEN '是'
+          ELSE NULL
+      END AS SFXQ,
+
+      # 17. 入股资金来源：
+      #     码值映射：01→自有资金, 02→委托资金, 03→债务资金, 00-XX→其他-XX
+      CASE
+          WHEN cur.A060015 = '01' THEN '自有资金'
+          WHEN cur.A060015 = '02' THEN '委托资金'
+          WHEN cur.A060015 = '03' THEN '债务资金'
+          WHEN cur.A060015 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060015, 4))
+          ELSE NULL
+      END AS RGZJLY,
+
+      # 18. 入股资金账号：直接取自 T_1_6.A060016
       NULLIF(TRIM(cur.A060016), '') AS RGZJZH,
 
-      # 26. 持股比例：直接取 T_1_6.A060019，转 DECIMAL
+      # 19. 持股数量：直接取 T_1_6.A060018，转 DECIMAL
+      CAST(NULLIF(TRIM(cur.A060018), '') AS DECIMAL(20, 0)) AS CGSL,
+
+      # 20. 持股比例：直接取 T_1_6.A060019，转 DECIMAL
       CAST(NULLIF(TRIM(cur.A060019), '') AS DECIMAL(20, 6)) AS CGBL,
 
-      # 27. 是否驻派董监事：0→'否', 1→'是'
+      # 21. 入股日期：yyyy-mm-dd 转为 yyyymmdd
+      TO_CHAR(cur.A060020, 'YYYYMMDD') AS RGRQ,
+
+      # 22. 质押比例：直接取 T_1_6.A060021，转 DECIMAL
+      CAST(NULLIF(TRIM(cur.A060021), '') AS DECIMAL(20, 6)) AS ZYBL,
+
+      # 23. 是否驻派董监事：0→'否', 1→'是'
       CASE
           WHEN cur.A060022 = '0' THEN '否'
           WHEN cur.A060022 = '1' THEN '是'
-          ELSE NULLIF(TRIM(cur.A060022), '')
+          ELSE NULL
       END AS SFZPDJS,
 
-      # 28. 股东或关联方状态：01→有效, 00→无效
+      # 24. 股东或关联方状态：01→有效, 00→无效
       CASE
           WHEN cur.A060017 = '01' THEN '有效'
           WHEN cur.A060017 = '00' THEN '无效'
           WHEN cur.A060017 LIKE '00-%' THEN CONCAT('其他-', SUBSTR(cur.A060017, 4))
-          ELSE NULLIF(TRIM(cur.A060017), '')
+          ELSE NULL
       END AS GDHGLFZT,
 
-      # 29. 涉密标志：一表通映射规则文档未提供来源，当前置空
+      # 25. 最近一次变动日期：yyyy-mm-dd 转为 yyyymmdd
+      TO_CHAR(cur.A060023, 'YYYYMMDD') AS ZJYCBDRQ,
+
+      # 26. 备注：直接取自 T_1_6.A060030
+      NULLIF(TRIM(cur.A060030), '') AS BBZ,
+
+      # 27. 采集日期：入参格式化输出
+      I_DATE AS CJRQ,
+
+      # 28. 归属分支机构：一表通映射规则文档未提供来源，置空
+      NULL AS GSFZJG,
+
+      # 29. 涉密标志：一表通映射规则文档未提供来源，置空
       NULL AS SENSITIVEFLAG
 
   FROM eligible_t16 cur
