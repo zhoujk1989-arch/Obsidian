@@ -22,7 +22,7 @@ Use this skill for lineage work in `regulatory-data-lab`. Treat lineage as an ev
    - Concept/system page: reusable rules and object entry points.
 5. Do not create placeholder wikilinks. If a page or SQL file is not found, write plain text such as `待补充（未找到：候选路径；检索词：...）`.
 6. In Markdown tables, escape SQL wikilink aliases: `[[sql/<系统名>/<文件名>.sql\|<文件名>.sql]]`.
-7. Use the bundled parser script when SQL is available and a mechanical first pass will reduce missed tables, fields, filters, joins, or constants. By default it tries GSP first, applying the GSP 10,000-character preprocessing/splitting guard, then supplements with sqlglot/regex. The script output is candidate evidence; AI review remains mandatory.
+7. Use the bundled parser script when SQL is available and a mechanical first pass will reduce missed tables, fields, filters, joins, or constants. By default it tries GSP first, applying the GSP 10,000-character preprocessing/splitting guard, then supplements with sqlglot/regex. The default output is a Markdown lineage scaffold for AI review, not raw JSON. The script output is candidate evidence; AI review remains mandatory.
 8. JPype/Java/GSP JAR are required prerequisites for the default `--engine auto` path. If `scripts/check_gsp_prereqs.py` reports JPype missing, fix the Python environment first instead of accepting regex-only lineage. Use `--engine sqlglot` only when the user explicitly approves skipping GSP.
 
 ## Workflow
@@ -35,13 +35,13 @@ Use this skill for lineage work in `regulatory-data-lab`. Treat lineage as an ev
    - Read `索引.md`, then `概念/概念-系统-<系统名>.md` when it exists.
    - Search with `rg` for target table names, field names, Chinese names, aliases, procedure names, source fields, and target fields.
    - Open relevant data table pages, lineage pages, report pages, and SQL files. Do not rely on one page when SQL or another page can verify the claim.
-   - For SQL ingest or SQL-backed maintenance, run `scripts/check_gsp_prereqs.py` when GSP readiness is unclear, then run `scripts/extract_sql_lineage.py` on the relevant SQL file or directory when practical. Use `--engine auto` by default so GSP is attempted first; if JPype is missing, repair the environment before continuing. The extractor accepts both `--file path.sql` and positional `path.sql`. Use `references/programmatic-lineage.md` for interpretation rules.
+   - For SQL ingest or SQL-backed maintenance, run `scripts/check_gsp_prereqs.py` when GSP readiness is unclear, then run `scripts/extract_sql_lineage.py` on the relevant SQL file or directory when practical. Use `--engine auto` by default so GSP is attempted first; if JPype is missing, repair the environment before continuing. The extractor accepts both `--file path.sql` and positional `path.sql`. Its default Markdown output is the preferred input for Hermes/AI drafting; use `--format json` only for parser debugging. Use `references/programmatic-lineage.md` for interpretation rules.
    - Use `工具/血缘脚手架.py` only if the repository workflow specifically benefits from it; manually verify every edge before writing it as confirmed.
    - If regulatory interpretation is required, follow `.agents/rules/外部来源规则.md` and record only `regulatory-knowledge-vault` wikilinks.
 
 3. **Build the lineage model**
    - List nodes: source tables, dimension/reference tables, CTEs, procedures/views, target tables, report outputs, downstream consumers.
-   - Use programmatic `relationships` as candidate table-level edges and `columnDependencies` as candidate field-level or dependency-condition evidence. Prefer `candidate_gsp` edges over lighter `candidate_regex` edges when both exist, but still verify against SQL and knowledge pages.
+   - Use the Markdown `表级 Edge List 候选` as candidate table-level edges, `字段级 Edge List 候选` as candidate direct field mappings, and `关键过滤与依赖条件候选` as filter/join/dependency evidence. Prefer `candidate_gsp` edges over lighter `candidate_regex` edges when both exist, but still verify against SQL and knowledge pages.
    - List table-level edges with transform type and evidence.
    - List field-level edges for every target output field when the target is a regulatory report, standard interface table, or core downstream result table.
    - Record constants, parameters, NULL assignments, system dates, default values, CASE branches, code mappings, date conversions, window functions, aggregations, and filters as lineage-relevant logic.
@@ -89,3 +89,5 @@ Use `references/programmatic-lineage.md` when SQL parsing should combine program
 Use `references/lineage-checklist.md` before finishing non-trivial lineage work.
 
 Use `scripts/check_gsp_prereqs.py` to verify Java + JPype + GSP JAR availability before running the extraction script when needed. The check exits non-zero when prerequisites are missing so the agent fixes the cause before writing lineage.
+
+Use the Markdown scaffold produced by `scripts/extract_sql_lineage.py` as the working evidence. Do not paste or reason from raw `gsp_json` unless the user specifically asks for parser debugging.

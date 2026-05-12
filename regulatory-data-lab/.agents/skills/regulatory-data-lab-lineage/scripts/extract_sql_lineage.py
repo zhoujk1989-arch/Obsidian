@@ -70,6 +70,7 @@ class TableEdge:
     type: str
     statement_index: int
     confidence: str = "candidate"
+    source_file: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -82,6 +83,7 @@ class ColumnEdge:
     statement_index: int
     expression: str = ""
     confidence: str = "candidate"
+    source_file: Optional[str] = None
 
 
 def normalize_table_name(name: str) -> str:
@@ -124,7 +126,10 @@ def strip_comments(sql: str) -> str:
     sql = re.sub(r"/\*.*?\*/", "", sql, flags=re.DOTALL)
     cleaned_lines = []
     for line in sql.splitlines():
-        cleaned_lines.append(_strip_inline_comment(line))
+        cleaned = _strip_inline_comment(line)
+        if cleaned.strip().startswith("#"):
+            continue
+        cleaned_lines.append(cleaned)
     return "\n".join(cleaned_lines)
 
 
@@ -343,6 +348,8 @@ def _strip_inline_comment(line: str) -> str:
                 continue
             in_double = not in_double
         elif not in_single and not in_double and ch == "-" and i + 1 < len(line) and line[i + 1] == "-":
+            return line[:i]
+        elif not in_single and not in_double and ch == "#" and not line[:i].strip():
             return line[:i]
         i += 1
     return line
@@ -597,6 +604,7 @@ class GSPAdapter:
                                 "statement_index": statement_index,
                                 "expression": "GSP",
                                 "confidence": "candidate_gsp",
+                                "source_file": source_file,
                             }
                         )
 
@@ -1072,6 +1080,7 @@ def parse_statement(
     default_schema: Optional[str],
     engine: str,
     gsp_adapter: Optional[GSPAdapter],
+    source_file: Optional[str] = None,
 ) -> Dict[str, Any]:
     target, target_columns = extract_insert_target(statement)
     if not target:
@@ -1081,7 +1090,7 @@ def parse_statement(
 
     gsp_result: Dict[str, Any] = {"relationships": [], "columnDependencies": []}
     if engine in {"auto", "gsp"} and gsp_adapter:
-        gsp_result = gsp_adapter.parse(statement, dialect, None, statement_index)
+        gsp_result = gsp_adapter.parse(statement, dialect, source_file, statement_index)
 
     sources, _, _ = sqlglot_tables(statement, dialect)
     if gsp_result.get("sources"):
@@ -1102,13 +1111,14 @@ def parse_statement(
                 type=rel.get("type", "fdd"),
                 statement_index=statement_index,
                 confidence=rel.get("confidence", "candidate_gsp"),
+                source_file=rel.get("source_file") or source_file,
             )
             for rel in gsp_result.get("relationships", [])
             if rel.get("source") and rel.get("target")
         ]
     elif target:
         table_edges = [
-            TableEdge(source=s, target=target, type="fdd", statement_index=statement_index)
+            TableEdge(source=s, target=target, type="fdd", statement_index=statement_index, confidence="candidate_table_scan", source_file=source_file)
             for s in sorted(sources)
             if s.upper() != "DUAL"
         ]
@@ -1125,6 +1135,7 @@ def parse_statement(
                 statement_index=statement_index,
                 expression=dep.get("expression", "GSP"),
                 confidence=dep.get("confidence", "candidate_gsp"),
+                source_file=dep.get("source_file") or source_file,
             )
             for dep in gsp_result.get("columnDependencies", [])
             if dep.get("source_table") and dep.get("target_table")
@@ -1146,6 +1157,7 @@ def parse_statement(
         "gsp_chunk_count": gsp_result.get("gsp_chunk_count"),
         "gsp_skipped_chunk_count": gsp_result.get("gsp_skipped_chunk_count"),
         "gsp_errors": gsp_result.get("gsp_errors"),
+        "gsp_json": gsp_result.get("gsp_json"),
         "statement_preview": compact_sql(statement),
     }
 
@@ -1193,7 +1205,7 @@ def parse_sql(
 
     gsp_adapter = GSPAdapter(gsp_jar_dir) if engine in {"auto", "gsp"} else None
     parsed_statements = [
-        parse_statement(stmt, idx + 1, effective_dialect, default_schema, engine, gsp_adapter)
+        parse_statement(stmt, idx + 1, effective_dialect, default_schema, engine, gsp_adapter, source_file)
         for idx, stmt in enumerate(statements)
         if stmt.strip()
     ]
@@ -1251,6 +1263,342 @@ def discover_sql_files(path: str) -> List[str]:
     return sorted(files)
 
 
+def markdown_cell(value: Any) -> str:
+    text = "" if value is None else str(value)
+    text = re.sub(r"\s+", " ", text.replace("\n", " ")).strip()
+    if not text:
+        text = "待补充"
+    return text.replace("|", "\\|")
+
+
+def inline_code(value: Any) -> str:
+    text = "" if value is None else str(value).strip()
+    if not text:
+        return "待补充"
+    text = text.replace("`", "'")
+    return f"`{text}`"
+
+
+def basename_or_inline(path: Optional[str]) -> str:
+    if not path:
+        return "inline SQL"
+    return os.path.basename(path)
+
+
+def count_by(items: Iterable[Dict[str, Any]], key: str) -> Dict[str, int]:
+    counts: Dict[str, int] = {}
+    for item in items:
+        value = str(item.get(key) or "UNKNOWN")
+        counts[value] = counts.get(value, 0) + 1
+    return counts
+
+
+def format_counts(counts: Dict[str, int]) -> str:
+    if not counts:
+        return "无"
+    return "；".join(f"{key}={value}" for key, value in sorted(counts.items()))
+
+
+def normalize_table_edges(results: Dict[str, Any]) -> List[Dict[str, Any]]:
+    items = []
+    file_results = results.get("files") or [results]
+    for file_result in file_results:
+        fallback_file = file_result.get("source_file") or results.get("input")
+        for rel in file_result.get("relationships", []):
+            items.append(
+                {
+                    "source": rel.get("source", ""),
+                    "target": rel.get("target", ""),
+                    "type": rel.get("type", "fdd"),
+                    "source_file": rel.get("source_file") or fallback_file,
+                    "statement_index": rel.get("statement_index"),
+                    "confidence": rel.get("confidence", "candidate"),
+                    "neo4j_type": rel.get("neo4j_type") or RELATION_TYPE_MAP.get(rel.get("type", "fdd"), "DERIVES_TO"),
+                }
+            )
+    return dedupe_dicts(items)
+
+
+def infer_validation_note(dep: Dict[str, Any]) -> str:
+    confidence = dep.get("confidence", "candidate")
+    source_table = str(dep.get("source_table") or "")
+    source_column = str(dep.get("source_column") or "")
+    if source_table == "UNKNOWN":
+        return "源对象未知，需人工追溯别名、子查询或表达式来源"
+    if source_table == "CONSTANT_OR_EXPRESSION":
+        return "常量或表达式候选，需确认目标字段允许该赋值"
+    if source_column in {"UNKNOWN", ""}:
+        return "源字段未知，需人工补充字段级来源"
+    if confidence == "candidate_gsp":
+        return "GSP 解析候选，需核对 SQL 和知识页后确认"
+    if confidence == "candidate_regex":
+        return "sqlglot/regex 候选，需重点复核别名、子查询和表达式来源"
+    if confidence == "candidate_table_scan":
+        return "表扫描候选，只能作为表级线索"
+    if confidence == "candidate_constant":
+        return "常量/表达式候选，需人工确认处理逻辑"
+    return "候选证据，需 AI/人工复核后确认"
+
+
+def normalize_column_edges(results: Dict[str, Any]) -> List[Dict[str, Any]]:
+    items = []
+    file_results = results.get("files") or [results]
+    for file_result in file_results:
+        fallback_file = file_result.get("source_file") or results.get("input")
+        for dep in file_result.get("columnDependencies", []):
+            item = {
+                "source_table": dep.get("source_table", ""),
+                "source_column": dep.get("source_column", ""),
+                "target_table": dep.get("target_table", ""),
+                "target_column": dep.get("target_column", ""),
+                "dependency_type": dep.get("dependency_type", "fdd"),
+                "source_file": dep.get("source_file") or fallback_file,
+                "statement_index": dep.get("statement_index"),
+                "snippet": dep.get("snippet") or dep.get("expression") or "",
+                "confidence": dep.get("confidence", "candidate"),
+                "validation_note": dep.get("validation_note") or infer_validation_note(dep),
+            }
+            items.append(item)
+    return dedupe_dicts(items)
+
+
+def split_field_and_condition_edges(column_edges: Sequence[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    field_edges = []
+    condition_edges = []
+    for dep in column_edges:
+        dep_type = str(dep.get("dependency_type") or "fdd").lower()
+        target_column = str(dep.get("target_column") or "")
+        if dep_type in {"join", "fdr"} or target_column in {"*", ""}:
+            if not is_noise_condition_edge(dep):
+                condition_edges.append(dep)
+        else:
+            field_edges.append(dep)
+    return field_edges, condition_edges
+
+
+def relation_type_text(dep: Dict[str, Any]) -> str:
+    dep_type = str(dep.get("dependency_type") or "fdd").lower()
+    expr = str(dep.get("snippet") or "").upper()
+    source_table = str(dep.get("source_table") or "")
+    source_column = str(dep.get("source_column") or "").upper()
+    if dep_type == "join":
+        return "JOIN 条件"
+    if dep_type == "fdr":
+        return "过滤依赖"
+    if "CASE " in expr or "DECODE(" in expr:
+        return "条件映射 / 码值转换"
+    if re.search(r"\b(SUM|COUNT|AVG|MIN|MAX)\s*\(", expr):
+        return "聚合派生"
+    if "SUBSTR" in expr or "SUBSTRING" in expr:
+        return "截取派生"
+    if "TO_CHAR" in expr or "TO_DATE" in expr or "DATE" in expr:
+        return "日期转换"
+    if "CONCAT" in expr or "||" in expr:
+        return "拼接派生"
+    if source_table == "CONSTANT_OR_EXPRESSION" or source_column in {"NULL", "SYSDATE"}:
+        return "常量赋值"
+    return "直接映射"
+
+
+def is_noise_condition_edge(dep: Dict[str, Any]) -> bool:
+    if dep.get("source_table") != "UNKNOWN":
+        return False
+    token = str(dep.get("source_column") or "").upper()
+    noisy_tokens = {
+        "LEFT", "RIGHT", "INNER", "OUTER", "FULL", "CROSS", "JOIN", "SELECT", "FROM",
+        "WHERE", "EXISTS", "NOT", "MIN", "MAX", "SUM", "COUNT", "TO_CHAR", "TO_DATE",
+        "SUBSTR", "SUBSTRING", "SRC", "ORG", "T", "T_MIN",
+    }
+    return token in noisy_tokens
+
+
+def processing_logic_text(dep: Dict[str, Any]) -> str:
+    relation = relation_type_text(dep)
+    if relation in {"JOIN 条件", "过滤依赖"}:
+        return f"{relation}候选"
+    if relation == "直接映射":
+        return "直接映射候选"
+    return f"{relation}候选"
+
+
+def table_transform_text(rel: Dict[str, Any]) -> str:
+    rel_type = str(rel.get("type") or "fdd").lower()
+    confidence = str(rel.get("confidence") or "")
+    if confidence == "candidate_table_scan":
+        return "直接读取 / 待复核"
+    if rel_type == "join":
+        return "JOIN"
+    if rel_type == "fdr":
+        return "过滤依赖"
+    if rel_type == "call":
+        return "过程调用"
+    if rel_type == "er":
+        return "引用关系"
+    return "直接读取"
+
+
+def evidence_text(source_file: Optional[str], statement_index: Optional[Any]) -> str:
+    label = basename_or_inline(source_file)
+    if statement_index:
+        return f"{inline_code(label)} stmt {statement_index}"
+    return inline_code(label)
+
+
+def render_markdown(results: Dict[str, Any]) -> str:
+    file_results = results.get("files") or [results]
+    table_edges = normalize_table_edges(results)
+    column_edges = normalize_column_edges(results)
+    field_edges, condition_edges = split_field_and_condition_edges(column_edges)
+    all_confidences = count_by([*table_edges, *column_edges], "confidence")
+    field_confidences = count_by(field_edges, "confidence")
+    gsp_available = sum(1 for item in file_results if item.get("gsp_available"))
+    gsp_errors = [item.get("gsp_error") for item in file_results if item.get("gsp_error")]
+    skipped_chunks = sum(
+        (stmt.get("gsp_skipped_chunk_count") or 0)
+        for item in file_results
+        for stmt in item.get("statements", [])
+    )
+    unknown_sources = sum(1 for dep in column_edges if dep.get("source_table") == "UNKNOWN")
+    regex_edges = sum(1 for dep in column_edges if dep.get("confidence") == "candidate_regex")
+    gsp_edges = sum(1 for dep in column_edges if dep.get("confidence") == "candidate_gsp")
+    table_scan_edges = sum(1 for rel in table_edges if rel.get("confidence") == "candidate_table_scan")
+
+    lines: List[str] = ["# SQL 血缘脚手架候选", ""]
+    lines.extend(
+        [
+            "## 解析摘要",
+            "",
+            f"- 输入: {inline_code(results.get('input') or file_results[0].get('source_file') or 'inline SQL')}",
+            f"- 文件数: {results.get('file_count', len(file_results))}",
+            f"- 引擎: {inline_code(results.get('engine') or file_results[0].get('engine'))}",
+            f"- GSP 状态: 可用 {gsp_available}/{len(file_results)}；错误 {len(gsp_errors)}；跳过块 {skipped_chunks}",
+            f"- 候选规模: 表级 {len(table_edges)}；字段级 {len(field_edges)}；条件/关联 {len(condition_edges)}",
+            f"- 置信度分布: {format_counts(all_confidences)}",
+        ]
+    )
+    fallback_edges = regex_edges + table_scan_edges
+    if gsp_available and fallback_edges > gsp_edges:
+        lines.append(
+            f"- 结论提示: GSP 可用，并发现 {gsp_edges} 条 `candidate_gsp` 字段候选；但 `candidate_regex` / `candidate_table_scan` 候选更多，不能把字段级血缘误写成 GSP 已确认。"
+        )
+    elif gsp_available and regex_edges and not gsp_edges:
+        lines.append("- 结论提示: GSP 环境可用，但字段级候选主要来自 `candidate_regex` / `candidate_table_scan`，不能视为 GSP 已确认字段级血缘。")
+    elif gsp_edges:
+        lines.append(f"- 结论提示: 发现 {gsp_edges} 条 `candidate_gsp` 字段候选，仍需结合 SQL 和知识页复核。")
+    lines.append("")
+
+    lines.extend(["## 表级 Edge List 候选", "", "| From | To | Transform | Evidence | 确认状态 |", "| --- | --- | --- | --- | --- |"])
+    if table_edges:
+        for rel in table_edges:
+            lines.append(
+                "| "
+                + " | ".join(
+                    [
+                        markdown_cell(inline_code(rel.get("source"))),
+                        markdown_cell(inline_code(rel.get("target"))),
+                        markdown_cell(table_transform_text(rel)),
+                        markdown_cell(evidence_text(rel.get("source_file"), rel.get("statement_index"))),
+                        "待确认",
+                    ]
+                )
+                + " |"
+            )
+    else:
+        lines.append("| 待补充 | 待补充 | 待确认 | 未提取到表级候选 | 待确认 |")
+    lines.append("")
+
+    lines.extend(
+        [
+            "## 字段级 Edge List 候选",
+            "",
+            "| 源对象 | 源字段 | 目标对象 | 目标字段 | 处理逻辑 | 关系类型 | 代码摘要 | 确认状态 |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    if field_edges:
+        for dep in field_edges:
+            lines.append(
+                "| "
+                + " | ".join(
+                    [
+                        markdown_cell(inline_code(dep.get("source_table"))),
+                        markdown_cell(inline_code(dep.get("source_column"))),
+                        markdown_cell(inline_code(dep.get("target_table"))),
+                        markdown_cell(inline_code(dep.get("target_column"))),
+                        markdown_cell(processing_logic_text(dep)),
+                        markdown_cell(relation_type_text(dep)),
+                        markdown_cell(inline_code(compact_sql(str(dep.get("snippet") or ""), 180))),
+                        "待确认",
+                    ]
+                )
+                + " |"
+            )
+    else:
+        lines.append("| 待补充 | 待补充 | 待补充 | 待补充 | 未提取到字段级候选 | 待确认 | 待补充 | 待确认 |")
+    lines.append("")
+
+    lines.extend(
+        [
+            "## 关键过滤与依赖条件候选",
+            "",
+            "| 条件对象 | 条件字段 | 条件或关联规则 | 业务/血缘含义 | 证据 | 确认状态 |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    if condition_edges:
+        for dep in condition_edges:
+            lines.append(
+                "| "
+                + " | ".join(
+                    [
+                        markdown_cell(inline_code(dep.get("source_table"))),
+                        markdown_cell(inline_code(dep.get("source_column"))),
+                        markdown_cell(inline_code(compact_sql(str(dep.get("snippet") or ""), 220))),
+                        markdown_cell(relation_type_text(dep)),
+                        markdown_cell(evidence_text(dep.get("source_file"), dep.get("statement_index"))),
+                        "待确认",
+                    ]
+                )
+                + " |"
+            )
+    else:
+        lines.append("| 无额外条件候选 | 待补充 | 待补充 | 待补充 | 待补充 | 待确认 |")
+    lines.append("")
+
+    lines.extend(
+        [
+            "## AI 复核清单",
+            "",
+            "- 只把 `confidence: candidate_gsp` 视为 GSP 产出；`candidate_regex` 和 `candidate_table_scan` 必须人工核 SQL。",
+            "- 将表级候选写入血缘页前，确认源表、目标表、SQL 文件和数据表页是否存在，缺页不要写 wikilink。",
+            "- 将字段级候选写入血缘页前，逐条核对别名、子查询、表达式、常量、NULL、日期转换和 CASE 分支。",
+            "- `join` / `fdr` 候选只进入“关键过滤与依赖条件”，除非它明确影响某个目标字段。",
+            "- 所有候选默认是“待确认”；只有 SQL、字段字典、既有知识页或用户确认能支撑时才改为“已确认”。",
+            "",
+            "## 缺口与风险",
+            "",
+        ]
+    )
+    risks = []
+    if gsp_errors:
+        risks.append(f"GSP 错误 {len(gsp_errors)} 个: " + "; ".join(str(err) for err in gsp_errors[:3]))
+    if skipped_chunks:
+        risks.append(f"GSP 因字符限制跳过 {skipped_chunks} 个 chunk，需要人工补查对应 SQL 片段。")
+    if table_scan_edges:
+        risks.append(f"{table_scan_edges} 条表级边来自 `candidate_table_scan`，只说明同一语句内出现源/目标表。")
+    if regex_edges:
+        risks.append(f"{regex_edges} 条字段/条件边来自 `candidate_regex`，复杂别名和多层子查询来源可能不准。")
+    if unknown_sources:
+        risks.append(f"{unknown_sources} 条候选的源对象为 `UNKNOWN`，需要人工追溯。")
+    if field_confidences and not gsp_edges:
+        risks.append("未取得 `candidate_gsp` 字段级边，字段级血缘不能按 GSP 自动解析结论写成已确认。")
+    if not risks:
+        risks.append("未发现脚本层面的明显缺口；仍需按知识库规则做 AI/人工复核。")
+    lines.extend(f"- {risk}" for risk in risks)
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Extract SQL lineage candidates for AI-assisted documentation.")
     input_group = parser.add_mutually_exclusive_group(required=False)
@@ -1261,7 +1609,8 @@ def main() -> int:
     parser.add_argument("--engine", default="auto", choices=["auto", "gsp", "sqlglot"], help="auto prefers GSP then supplements with sqlglot/regex")
     parser.add_argument("--gsp-jar-dir", help="Directory containing GSP jar files; defaults to skill vendor/gsp/jar")
     parser.add_argument("--default-schema", help="Schema to prefix unqualified tables")
-    parser.add_argument("--output-file", help="Write JSON output to this file")
+    parser.add_argument("--format", default="markdown", choices=["markdown", "json"], help="Output format. markdown is optimized for AI lineage-page drafting; json is for debugging.")
+    parser.add_argument("--output-file", help="Write output to this file")
     args = parser.parse_args()
     selected_file = args.file or args.path
 
@@ -1286,7 +1635,7 @@ def main() -> int:
             "columnDependencies": dedupe_dicts(dep for item in per_file for dep in item.get("columnDependencies", [])),
         }
 
-    output = json.dumps(results, ensure_ascii=False, indent=2)
+    output = json.dumps(results, ensure_ascii=False, indent=2) if args.format == "json" else render_markdown(results)
     if args.output_file:
         with open(args.output_file, "w", encoding="utf-8") as handle:
             handle.write(output)

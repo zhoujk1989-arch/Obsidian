@@ -1,6 +1,6 @@
 # Programmatic Lineage Extraction
 
-Use `scripts/extract_sql_lineage.py` when SQL is available and the task benefits from a first-pass mechanical extraction before AI writes or updates knowledge pages.
+Use `scripts/extract_sql_lineage.py` when SQL is available and the task benefits from a first-pass mechanical extraction before AI writes or updates knowledge pages. The default output is Markdown, shaped like the repository lineage template, so Hermes can review and write pages without reading raw parser JSON.
 
 Default engine order is:
 
@@ -36,6 +36,12 @@ This skill embeds only the reusable parsing methods needed from the lineage engi
 
 Do not import or call the old external `sql-lineage-engine` project. Do not bring in Neo4j export, logs, `.venv`, Docker, uploader logic, or upload/service code. The only copied runtime files are the GSP JARs required by the parser.
 
+The Markdown scaffold intentionally follows the useful pre-Neo4j model from the old engine:
+
+- Table lineage candidates: `source`, `target`, `type`, `source_file`, `confidence`
+- Column lineage candidates: `source_table`, `source_column`, `target_table`, `target_column`, `dependency_type`, `snippet`, `confidence`, `validation_note`
+- `join` and `fdr` candidates are rendered into `关键过滤与依赖条件候选`, not mixed into direct field mapping rows.
+
 ## Run
 
 If the environment is new or changed, verify GSP readiness first:
@@ -62,13 +68,28 @@ python3 .agents/skills/regulatory-data-lab-lineage/scripts/extract_sql_lineage.p
 For a directory:
 
 ```bash
-python3 .agents/skills/regulatory-data-lab-lineage/scripts/extract_sql_lineage.py --file sql/<系统名>/ --dialect auto --engine auto --output-file /tmp/lineage.json
+python3 .agents/skills/regulatory-data-lab-lineage/scripts/extract_sql_lineage.py --file sql/<系统名>/ --dialect auto --engine auto --output-file /tmp/lineage.md
 ```
 
 For inline SQL:
 
 ```bash
 python3 .agents/skills/regulatory-data-lab-lineage/scripts/extract_sql_lineage.py --sql "insert into b(id) select id from a" --dialect auto --engine auto
+```
+
+The output contains these sections:
+
+- `## 解析摘要`
+- `## 表级 Edge List 候选`
+- `## 字段级 Edge List 候选`
+- `## 关键过滤与依赖条件候选`
+- `## AI 复核清单`
+- `## 缺口与风险`
+
+Use `--format json` only for debugging parser internals:
+
+```bash
+python3 .agents/skills/regulatory-data-lab-lineage/scripts/extract_sql_lineage.py --file sql/<系统名>/<文件名>.sql --dialect auto --engine auto --format json
 ```
 
 Use `--engine gsp` only when you specifically want to force GSP attempt. Use `--engine sqlglot` only when the user explicitly accepts skipping GSP. Regex-only fallback output is weaker and must be treated as candidate evidence only.
@@ -79,9 +100,11 @@ Treat script output as a draft extraction layer. The AI must still:
 
 - Verify every important edge against the SQL snippet and existing knowledge pages.
 - Check `gsp_available`, `gsp_error`, and each edge confidence before trusting coverage. `candidate_gsp` is usually stronger than `candidate_regex`, but neither is automatically confirmed.
+- Treat only `confidence: candidate_gsp` as a GSP-produced edge. `candidate_table_scan` means the script inferred a table-level candidate from target/source table scanning after GSP did not return a usable edge.
 - Check `gsp_chunk_count`, `gsp_skipped_chunk_count`, and `gsp_errors` for large SQL. If chunks were skipped, mark coverage as incomplete and keep the unresolved parts in Open Questions.
-- Convert `relationships` into the lineage page `表级 Edge List`.
-- Convert `columnDependencies` into the lineage page `字段级 Edge List`.
+- Convert the Markdown `表级 Edge List 候选` into the lineage page `表级 Edge List`.
+- Convert the Markdown `字段级 Edge List 候选` into the lineage page `字段级 Edge List`.
+- Convert the Markdown `关键过滤与依赖条件候选` into the lineage page `关键过滤与依赖条件`.
 - Map dependency hints to repository relation types:
   - `fdd` direct selected expression -> `直接映射`, `条件映射`, `聚合派生`, `窗口派生`, `日期转换`, `码值转换`, `常量赋值`, etc. after reading expression context.
   - `join` -> record in `关键过滤与依赖条件`; only add field edge when it affects a target field or standard field-level coverage requires dependency capture.
@@ -91,7 +114,7 @@ Treat script output as a draft extraction layer. The AI must still:
 
 ## Recommended Documentation Flow
 
-1. Run the script on the relevant SQL file or directory and save JSON when the output is large.
+1. Run the script on the relevant SQL file or directory and save Markdown when the output is large.
 2. Read the target data table page, source data table pages, existing lineage page, report page, and system page.
 3. Compare programmatic candidates with existing page content.
 4. Write confirmed, suspected, and pending edges separately.
