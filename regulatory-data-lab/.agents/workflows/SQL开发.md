@@ -2,7 +2,7 @@
 
 当用户要求写 SQL、生成 SQL、补 SQL、写存储过程、生成视图、加工脚本、调度脚本或校验 SQL 时，执行本流程。
 
-必须优先使用 `.agents/skills/sql-dev/` 中的 SQL 开发 skill；同时遵守 `AGENTS.md` 的仓库级规则。本文件负责仓库内知识回写和交付纪律。
+必须优先使用 `.agents/skills/sql-dev/` 中的 SQL 开发 skill；涉及血缘页、字段级来源、上下游影响或回链检查时，同时使用 `.agents/skills/regulatory-data-lab-lineage/`。同时遵守 `AGENTS.md` 的仓库级规则。本文件负责仓库内知识回写和交付纪律。
 
 ## 需求抽取
 

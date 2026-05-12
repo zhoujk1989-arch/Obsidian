@@ -20,3 +20,5 @@
 SQL 文件统一放入 `sql/<系统名>/`。本仓库不再维护独立，不再保留原始 SQL、表结构、业务需求或语法参考材料目录。
 
 具体规则以 `AGENTS.md` 为准。
+
+Hermes/Claude 类智能体执行血缘影响分析、血缘维护、SQL 来源去向维护或上下游影响分析时，应同时引用 `.agents/skills/regulatory-data-lab-lineage/`。

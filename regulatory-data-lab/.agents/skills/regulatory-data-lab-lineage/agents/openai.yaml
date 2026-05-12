@@ -1,0 +1,4 @@
+interface:
+  display_name: "Regulatory Data Lab Lineage"
+  short_description: "Parse SQL and maintain regulatory lineage"
+  default_prompt: "Use $regulatory-data-lab-lineage to parse SQL with GSP-first lineage extraction, review candidates with AI judgment, update lineage pages, and assess downstream impact."
