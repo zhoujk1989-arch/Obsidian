@@ -24,10 +24,12 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass, asdict
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
 
 SQL_EXTENSIONS = (".sql", ".prc", ".pkb", ".pks", ".plb", ".pls", ".fnc", ".trg", ".vw", ".ddl")
+SKILL_VENV_PYTHON = Path.home() / ".hermes" / "venvs" / "regulatory-data-lab-lineage" / "bin" / "python"
 
 RELATION_TYPE_MAP = {
     "fdd": "DERIVES_TO",
@@ -139,6 +141,78 @@ def get_gsp_char_limit() -> int:
         return max(1000, int(raw))
     except ValueError:
         return 10000
+
+
+def candidate_jpype_pythons() -> List[str]:
+    candidates = [
+        os.environ.get("HERMES_LINEAGE_PYTHON", ""),
+        str(Path(__file__).resolve().parent.parent / ".venv" / "bin" / "python"),
+        str(SKILL_VENV_PYTHON),
+        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/opt/homebrew/opt/python@3.11/bin/python3.11",
+        "/opt/homebrew/bin/python3",
+    ]
+    result: List[str] = []
+    seen: Set[str] = set()
+    for candidate in candidates:
+        if not candidate or candidate in seen:
+            continue
+        seen.add(candidate)
+        if os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            result.append(candidate)
+    return result
+
+
+def python_has_jpype(python_executable: str) -> bool:
+    try:
+        result = subprocess.run(
+            [python_executable, "-c", "import jpype"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except Exception:
+        return False
+    return result.returncode == 0
+
+
+def require_gsp_prereqs(engine: str, gsp_jar_dir: Optional[str]) -> None:
+    if engine == "sqlglot":
+        return
+
+    jar_dir = gsp_jar_dir or default_gsp_jar_dir()
+    if not glob.glob(os.path.join(jar_dir, "*.jar")):
+        raise SystemExit(f"GSP prerequisite missing: no jar files found in {jar_dir}")
+
+    try:
+        subprocess.run(["java", "-version"], capture_output=True, text=True, check=True, timeout=10)
+    except Exception as exc:
+        raise SystemExit(f"GSP prerequisite missing: java is unavailable or failed: {exc}") from exc
+
+    try:
+        import jpype  # noqa: F401
+        return
+    except Exception:
+        pass
+
+    current = os.path.realpath(sys.executable)
+    for candidate in candidate_jpype_pythons():
+        if os.path.realpath(candidate) == current:
+            continue
+        if python_has_jpype(candidate):
+            os.execv(candidate, [candidate, os.path.abspath(__file__), *sys.argv[1:]])
+
+    install_cmd = (
+        "/opt/homebrew/opt/python@3.12/bin/python3.12 -m venv "
+        f"{SKILL_VENV_PYTHON.parent.parent} && "
+        f"{SKILL_VENV_PYTHON} -m pip install jpype1"
+    )
+    raise SystemExit(
+        "GSP prerequisite missing: JPype is not available for this Python interpreter. "
+        "Install/fix it before lineage extraction, for example:\n"
+        f"  {install_cmd}\n"
+        "Then rerun extract_sql_lineage.py --engine auto."
+    )
 
 
 def split_for_gsp(sql: str, limit: Optional[int] = None) -> List[str]:
@@ -1179,25 +1253,33 @@ def discover_sql_files(path: str) -> List[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Extract SQL lineage candidates for AI-assisted documentation.")
-    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group = parser.add_mutually_exclusive_group(required=False)
     input_group.add_argument("--sql", help="SQL text to parse")
     input_group.add_argument("--file", help="SQL file or directory")
+    parser.add_argument("path", nargs="?", help="SQL file or directory; equivalent to --file")
     parser.add_argument("--dialect", default="auto", help="auto, oracle, hive, mysql, postgres, spark, tsql")
     parser.add_argument("--engine", default="auto", choices=["auto", "gsp", "sqlglot"], help="auto prefers GSP then supplements with sqlglot/regex")
     parser.add_argument("--gsp-jar-dir", help="Directory containing GSP jar files; defaults to skill vendor/gsp/jar")
     parser.add_argument("--default-schema", help="Schema to prefix unqualified tables")
     parser.add_argument("--output-file", help="Write JSON output to this file")
     args = parser.parse_args()
+    selected_file = args.file or args.path
+
+    if args.sql and selected_file:
+        parser.error("use either --sql or a file/directory path, not both")
+    if not args.sql and not selected_file:
+        parser.error("one input is required: --sql, --file, or a positional file/directory path")
+    require_gsp_prereqs(args.engine, args.gsp_jar_dir)
 
     if args.sql:
         results: Dict[str, Any] = parse_sql(args.sql, None, args.dialect, args.default_schema, args.engine, args.gsp_jar_dir)
     else:
-        files = discover_sql_files(args.file)
+        files = discover_sql_files(selected_file)
         per_file = [parse_sql(read_text(path), path, args.dialect, args.default_schema, args.engine, args.gsp_jar_dir) for path in files]
         results = {
             "parser": "regulatory-data-lab-lineage.script",
             "engine": args.engine,
-            "input": args.file,
+            "input": selected_file,
             "file_count": len(files),
             "files": per_file,
             "relationships": dedupe_dicts(rel for item in per_file for rel in item.get("relationships", [])),

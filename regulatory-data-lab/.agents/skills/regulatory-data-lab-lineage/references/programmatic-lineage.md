@@ -6,9 +6,9 @@ Default engine order is:
 
 1. GSP first, using vendored JAR files under `vendor/gsp/jar/`.
 2. sqlglot for supplemental parsing where available.
-3. regex fallback for basic table/projection/filter candidates.
+3. regex fallback for basic table/projection/filter candidates only after GSP prerequisites are satisfied, or when `--engine sqlglot` is explicitly selected.
 
-If JPype, JVM, or GSP JAR loading is unavailable, the script records `gsp_available: false` and `gsp_error`, then continues with sqlglot/regex candidates.
+If JPype, JVM, or GSP JAR loading is unavailable, fix the prerequisite before running the default `--engine auto` path. JPype absence is an environment problem, not a completed lineage extraction.
 
 GSP Lite/free runtimes commonly have an input limit around 10,000 characters. The script handles this before calling GSP:
 
@@ -38,6 +38,21 @@ Do not import or call the old external `sql-lineage-engine` project. Do not brin
 
 ## Run
 
+If the environment is new or changed, verify GSP readiness first:
+
+```bash
+python3 .agents/skills/regulatory-data-lab-lineage/scripts/check_gsp_prereqs.py
+```
+
+On this machine the skill uses a Hermes-managed Python environment when the default `/usr/bin/python3` lacks JPype:
+
+```bash
+/opt/homebrew/opt/python@3.12/bin/python3.12 -m venv ~/.hermes/venvs/regulatory-data-lab-lineage
+~/.hermes/venvs/regulatory-data-lab-lineage/bin/python -m pip install jpype1
+```
+
+`check_gsp_prereqs.py` and `extract_sql_lineage.py --engine auto` automatically re-exec through that environment if it has JPype installed.
+
 From the repository root:
 
 ```bash
@@ -56,7 +71,7 @@ For inline SQL:
 python3 .agents/skills/regulatory-data-lab-lineage/scripts/extract_sql_lineage.py --sql "insert into b(id) select id from a" --dialect auto --engine auto
 ```
 
-Use `--engine gsp` only when you specifically want to force GSP attempt. Use `--engine sqlglot` to skip GSP and avoid JVM startup. If `sqlglot` is unavailable, the script falls back to regex-based table and projection candidates. Fallback output is weaker and must be treated as candidate evidence only.
+Use `--engine gsp` only when you specifically want to force GSP attempt. Use `--engine sqlglot` only when the user explicitly accepts skipping GSP. Regex-only fallback output is weaker and must be treated as candidate evidence only.
 
 ## AI Review Contract
 
