@@ -11,10 +11,14 @@
             "id": "6b460df4b48bf705",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "regulatory-knowledge-vault/AGENTS.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "AGENTS"
             }
           }
         ]
@@ -177,5 +181,18 @@
     }
   },
   "active": "6b460df4b48bf705",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-14-PDPD02_CKRXX-存款人信息-原文.md",
+    "regulatory-knowledge-vault/03-实体/PDPD02_CKRXX-存款人信息.md",
+    "regulatory-knowledge-vault/02-主题/存款保险系统-表间关系.md",
+    "regulatory-knowledge-vault/03-实体/PDPD01_CKZHXX-存款账户信息.md",
+    "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-14-PDPD01_CKZHXX-存款账户信息-原文.md",
+    "regulatory-knowledge-vault/01-资料库/存款保险系统/README.md",
+    "regulatory-knowledge-vault/04-综合/存款保险系统-报表目录.md",
+    "regulatory-knowledge-vault/03-实体/存款保险2.0系统.md",
+    "regulatory-knowledge-vault/03-实体/PDPD01_CKRXX-存款人信息.md",
+    "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-14-PDPD01_CKRXX-存款人信息-原文.md",
+    "regulatory-knowledge-vault/01-资料库/存款保险系统",
+    "regulatory-knowledge-vault/03-实体/1104-G01-资产负债项目统计表.md"
+  ]
 }
