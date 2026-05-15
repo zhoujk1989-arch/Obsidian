@@ -1,3 +1,22 @@
+## ingest 2026-05-15 PDPD04_CKZHXX（境外高管存款账户信息）
+
+- type: ingest
+- summary: 入库 PDPD04_CKZHXX（存款账户信息 - 个人存款 - 高管人员 - 境外），29 字段，6 张码表。
+- changed:
+  - CREATE 01-资料库/存款保险系统/2026-05-15-PDPD04_CKZHXX-存款账户信息 (个人存款 - 高管人员 - 境外)-原文.md：忠实转录原文，29 字段 +6 码表。
+  - CREATE 03-实体/PDPD04_CKZHXX-存款账户信息 (个人存款 - 高管人员 - 境外).md：实体页含核心定位、四表对比矩阵（账户级）、与 PDPD02_CKZHXX 差异分析、字段梳理、6 张码表值域。
+  - UPDATE 04-综合/存款保险系统 - 报表目录.md：新增第7行 PDPD04_CKZHXX，总数6→7张。
+  - UPDATE 03-实体/存款保险2.0系统.md：覆盖表清单新增 PDPD04_CKZHXX，总数6→7张（境内3+境外4）。
+  - UPDATE 01-资料库/存款保险系统/README.md：新增 PDPD04_CKZHXX 条目。
+  - UPDATE 06-项目/监管系统知识整理.md：新增里程碑 + 更新下一步。
+  - UPDATE 00-首页/当前工作台.md：新增 PDPD04_CKZHXX 摄入记录。
+- 核心差异（PDPD04_CKZHXX vs PDPD02_CKZHXX）：
+  - 同 29 字段，6 张码表
+  - PDPD04_CKZHXX 无 dep_cust_name 字段（PDPD02 有）
+  - 仅通过 identi_code 关联到不同的高管/非高管人信息表
+- 待确认：PDPD03_CKZHXX（境内高管账户表）是否存在？
+- 闭环：证据层 (原文页) + 知识层 (实体页 + 系统页 + 目录页) + 队列层 (工作台/项目页) + 日志层 (log.md)
+
 ## ingest 2026-05-15 PDPD04_CKRXX（境外高管存款人信息）
 
 - type: ingest
