@@ -1,3 +1,22 @@
+## ingest 2026-05-18 PDPD03_CKZHXX（个人存款-高管人员-境内）存款账户信息
+
+- type: ingest
+- summary: 入库 PDPD03_CKZHXX（存款账户信息 - 个人存款 - 高管人员 - 境内），29 字段，6 张码表。
+- changed:
+  - CREATE 01-资料库/存款保险系统/2026-05-18-PDPD03_CKZHXX-存款账户信息(个人存款-高管人员-境内)-原文.md：忠实转录原文，29 字段 + 6 码表。
+  - CREATE 03-实体/PDPD03_CKZHXX-存款账户信息(个人存款-高管人员-境内).md：实体页含核心定位、表间聚合关系、与境内普通存款账户 PDPD01_CKZHXX 差异对比、字段梳理、6 张常用码表值域。
+  - UPDATE 04-综合/存款保险系统-报表目录.md：新增第 8 行 PDPD03_CKZHXX，总数 7→8 张。
+  - UPDATE 03-实体/存款保险2.0系统.md：覆盖表清单新增 PDPD03_CKZHXX，总数 7→8 张（境内 4+境外 4），更新报表关系图，关联链接加入实体清单。
+  - UPDATE 04-综合/监管系统-报表清单.md：存款保险2.0系统覆盖数 6→8 张，并修正以前过期的计数描述。
+  - UPDATE 01-资料库/存款保险系统/README.md：重组 README 资料清单，修复错位的 PDPD04，并按顺序录入 PDPD03_CKZHXX。
+  - UPDATE 06-项目/监管系统知识整理.md：新增 2026-05-18 摄入里程碑，加入 PDPD03_CKZHXX 相关实体与资料引用链接，并在下一步中移去已完成的确认事项。
+  - UPDATE 00-首页/当前工作台.md：在已摄入资料中新增 PDPD03_CKZHXX 摄入历史记录。
+- 核心差异（PDPD03_CKZHXX vs PDPD01_CKZHXX）：
+  - 29 字段 vs 30 字段（缺少 acct_safe_flag 被保险账户标志，高管存款不计入被保险/受保存款保护体系）
+  - 6 张码表 vs 7 张码表（少引用 acct_safe_flag 的 0/1/9 二值标志码表）
+  - 部分字段排序变动（如 verify_status 和 data_status 为 F11/F12，在 PDPD01_CKZHXX 中为 F12/F13）
+- 闭环：证据层 (原文页) + 知识层 (实体页 + 系统页 + 目录页) + 队列层 (工作台/项目页) + 日志层 (log.md)
+
 ## ingest 2026-05-15 PDPD04_CKZHXX（境外高管存款账户信息）
 
 - type: ingest
