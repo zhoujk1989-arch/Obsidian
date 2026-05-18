@@ -11,10 +11,14 @@
             "id": "6b460df4b48bf705",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "关系图谱"
+              "type": "markdown",
+              "state": {
+                "file": "regulatory-knowledge-vault/AGENTS.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "AGENTS"
             }
           }
         ]
@@ -178,6 +182,8 @@
   },
   "active": "6b460df4b48bf705",
   "lastOpenFiles": [
+    "regulatory-knowledge-vault/03-实体/大集中系统-A1480-线上联合消费贷款专项统计月报表.md",
+    "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1480-线上联合消费贷款专项统计月报表-原文.md",
     "regulatory-knowledge-vault/03-实体/大集中系统-A1470-个人住房贷款流量统计月报表.md",
     "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1470-个人住房贷款流量统计月报表-原文.md",
     "regulatory-knowledge-vault/04-综合/大集中系统-报表目录.md",
@@ -202,8 +208,6 @@
     "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1369_A2369-个人住房贷款及以房地产为抵押品的贷款统计季报表-原文.md",
     "regulatory-knowledge-vault/03-实体/大集中系统-A1333_A2333-涉农贷款季报表.md",
     "regulatory-knowledge-vault/AGENTS.md",
-    "regulatory-knowledge-vault/03-实体/大集中系统-A1302-监管类指标季报表.md",
-    "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1302-监管类指标季报表-原文.md",
     "regulatory-knowledge-vault/01-资料库/大集中系统",
     "regulatory-knowledge-vault/01-资料库/存款保险2.0系统",
     "regulatory-knowledge-vault/01-资料库/存款保险系统"
