@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "regulatory-knowledge-vault/AGENTS.md",
+                "file": "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1333_A2333-涉农贷款季报表-原文.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "AGENTS"
+              "title": "2026-05-18-A1333_A2333-涉农贷款季报表-原文"
             }
           }
         ]
@@ -182,6 +182,9 @@
   },
   "active": "6b460df4b48bf705",
   "lastOpenFiles": [
+    "regulatory-knowledge-vault/03-实体/大集中系统-A1333_A2333-涉农贷款季报表.md",
+    "regulatory-knowledge-vault/AGENTS.md",
+    "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1333_A2333-涉农贷款季报表-原文.md",
     "regulatory-knowledge-vault/04-综合/大集中系统-报表目录.md",
     "regulatory-knowledge-vault/03-实体/大集中系统-A1302-监管类指标季报表.md",
     "regulatory-knowledge-vault/01-资料库/大集中系统/2026-05-18-A1302-监管类指标季报表-原文.md",
@@ -197,7 +200,6 @@
     "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-15-PDPD04_CKRXX-存款人信息(个人存款-高管人员-境外)-原文.md",
     "regulatory-knowledge-vault/03-实体/PDPD03_CKRXX-存款人信息(个人存款-高管人员-境内).md",
     "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-15-PDPD03_CKRXX-存款人信息(个人存款-高管人员-境内)-原文.md",
-    "regulatory-knowledge-vault/AGENTS.md",
     "regulatory-knowledge-vault/03-实体/PDPD02_CKZHXX-存款账户信息(个人存款-不含高管人员-境外).md",
     "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-15-PDPD02_CKZHXX-存款账户信息(个人存款-不含高管人员-境外)-原文.md",
     "regulatory-knowledge-vault/04-综合/存款保险2.0系统-报表目录.md",
@@ -208,8 +210,6 @@
     "regulatory-knowledge-vault/03-实体/PDPD02_CKRXX-存款人信息.md",
     "regulatory-knowledge-vault/02-主题/存款保险系统-表间关系.md",
     "regulatory-knowledge-vault/03-实体/PDPD01_CKZHXX-存款账户信息.md",
-    "regulatory-knowledge-vault/01-资料库/存款保险系统/2026-05-14-PDPD01_CKZHXX-存款账户信息-原文.md",
-    "regulatory-knowledge-vault/01-资料库/存款保险系统/README.md",
     "regulatory-knowledge-vault/01-资料库/存款保险系统"
   ]
 }
